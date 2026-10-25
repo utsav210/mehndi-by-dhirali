@@ -28,8 +28,13 @@ class RazorpayClient:
         Creates an authorized Razorpay order on the payment provider server.
         Amount must be in integer minor units (paise).
         """
-        # If in placeholder test mode without real API keys, return deterministic mock order
-        if self.key_id.startswith("rzp_test_placeholder") or "placeholder" in self.key_secret:
+        # If in placeholder or simulation test mode, return deterministic mock order
+        if (
+            self.key_id.startswith("rzp_test_placeholder")
+            or "placeholder" in self.key_secret
+            or "paste_your" in self.key_id
+            or "paste_your" in self.key_secret
+        ):
             logger.info("Using simulated Razorpay order for development/testing", amount=amount_minor)
             return {
                 "id": f"order_mock_{receipt or 'mbd'}_{amount_minor}",
@@ -64,7 +69,12 @@ class RazorpayClient:
         Verifies the authenticity of Razorpay payment signature using HMAC SHA256.
         Official algorithm: HMAC-SHA256(order_id + "|" + payment_id, secret) == signature
         """
-        if self.key_id.startswith("rzp_test_placeholder") or "placeholder" in self.key_secret:
+        if (
+            self.key_id.startswith("rzp_test_placeholder")
+            or "placeholder" in self.key_secret
+            or "paste_your" in self.key_id
+            or "paste_your" in self.key_secret
+        ):
             # Allow simulation mode in local dev testing
             logger.info("Simulation mode: verified payment signature for mock order", payment_id=razorpay_payment_id)
             return True
