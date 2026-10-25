@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.pyo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Build outputs
+dist/
+build/
+.vercel/
+.output/
+
+# Python virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Alembic
+migrations/versions/__pycache__/
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Misc
+*.egg-info/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+
+# Antigravity skills (do not commit)
+.gemini/
