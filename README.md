@@ -1,6 +1,6 @@
 # Mehndi By Dhirali — Premium Mehndi E-commerce
 
-A full-stack e-commerce website for **Mehndi By Dhirali**, selling premium mehndi cones, mehndi powder, aftercare oils, practice tools, mehndi kits, and accessories.
+A full-stack e-commerce website for **Mehndi By Dhirali**, selling premium mehndi cones, mehndi powder, bridal & student mehndi kits, and accessories.
 
 ## Tech Stack
 

@@ -106,7 +106,7 @@ export default function AccountPage() {
                 My Wishlist
               </h3>
               <p className="text-xs text-secondary-text mt-1">
-                Saved cones, oils, and henna practice templates for later.
+                Saved cones, henna kits, and accessories for later.
               </p>
             </div>
             <span className="mt-4 text-xs font-semibold text-antique-gold group-hover:underline">

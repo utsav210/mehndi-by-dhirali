@@ -13,10 +13,10 @@ def test_create_order_pricing_calculated_by_server(client, admin_headers):
     prod_res = client.post(
         "/api/admin/products",
         json={
-            "name": "Eucalyptus Aftercare Oil",
-            "slug": "eucalyptus-oil",
+            "name": "Henna Bridal Cones Pack",
+            "slug": "henna-bridal-cones-pack",
             "category_id": cat_id,
-            "description": "Pure aftercare oil",
+            "description": "Fresh henna cones box",
             "price_minor": 25000,  # ₹250.00
             "stock_quantity": 20,
             "sku": "MBD-OIL-01",

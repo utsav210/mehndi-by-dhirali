@@ -18,17 +18,25 @@ logger = structlog.get_logger(__name__)
 
 
 def seed_initial_categories():
-    """Seeds default boutique categories if database is empty."""
+    """Seeds default boutique categories if database is empty and cleans up removed categories."""
     db = SessionLocal()
     try:
+        # Clean up deprecated categories if present
+        removed_slugs = ["aftercare-oils", "practice-tools"]
+        for slug in removed_slugs:
+            cat = db.query(Category).filter(Category.slug == slug).first()
+            if cat and len(cat.products) == 0:
+                db.delete(cat)
+            elif cat:
+                cat.is_active = False
+        db.commit()
+
         if db.query(Category).count() == 0:
             default_categories = [
                 {"name": "Mehndi Cones", "slug": "mehndi-cones", "description": "Freshly mixed organic henna cones", "sort_order": 1},
                 {"name": "Mehndi Powder", "slug": "mehndi-powder", "description": "Triple-sifted 100% natural Sojat henna powder", "sort_order": 2},
-                {"name": "Aftercare Oils", "slug": "aftercare-oils", "description": "Pure eucalyptus and essential oil blends", "sort_order": 3},
-                {"name": "Practice Tools", "slug": "practice-tools", "description": "Acrylic practice hands and acrylic boards", "sort_order": 4},
-                {"name": "Mehndi Kits", "slug": "mehndi-kits", "description": "Complete bridal and professional student kits", "sort_order": 5},
-                {"name": "Accessories", "slug": "accessories", "description": "Sealant spray, cellophane sheets, pin tips", "sort_order": 6},
+                {"name": "Mehndi Kits", "slug": "mehndi-kits", "description": "Complete bridal and professional student kits", "sort_order": 3},
+                {"name": "Accessories", "slug": "accessories", "description": "Sealant spray, cellophane sheets, pin tips", "sort_order": 4},
             ]
             for cat_data in default_categories:
                 c = Category(**cat_data, is_active=True)
@@ -100,6 +108,7 @@ app.include_router(api_router, prefix="/api")
 
 
 @app.get("/")
+@app.get("/api")
 def root_redirect():
     return {
         "app": "Mehndi By Dhirali API",

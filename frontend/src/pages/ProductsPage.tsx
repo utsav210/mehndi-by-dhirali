@@ -23,8 +23,6 @@ export default function ProductsPage() {
     { id: 'all', name: 'All Categories' },
     { id: 'mehndi-cones', name: 'Mehndi Cones' },
     { id: 'mehndi-powder', name: 'Mehndi Powder' },
-    { id: 'aftercare-oils', name: 'Aftercare Oils' },
-    { id: 'practice-tools', name: 'Practice Tools' },
     { id: 'mehndi-kits', name: 'Bridal & Student Kits' },
     { id: 'accessories', name: 'Accessories' },
   ]
@@ -61,7 +59,7 @@ export default function ProductsPage() {
               Our Products
             </h1>
             <p className="mt-1 text-sm text-secondary-text">
-              Handcrafted organic henna cones, pure essential oils, and professional supplies.
+              Handcrafted organic henna cones, premium powder, bridal kits, and accessories.
             </p>
           </div>
 

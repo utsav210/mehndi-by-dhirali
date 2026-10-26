@@ -144,8 +144,6 @@ export default function AdminProductsPage() {
                 >
                   <option value="mehndi-cones">Mehndi Cones</option>
                   <option value="mehndi-powder">Mehndi Powder</option>
-                  <option value="aftercare-oils">Aftercare Oils</option>
-                  <option value="practice-tools">Practice Tools</option>
                   <option value="mehndi-kits">Bridal & Student Kits</option>
                   <option value="accessories">Accessories</option>
                 </select>

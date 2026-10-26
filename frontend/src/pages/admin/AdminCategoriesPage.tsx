@@ -14,10 +14,8 @@ interface CategoryItem {
 const DEFAULT_CATEGORIES: CategoryItem[] = [
   { id: '1', name: 'Mehndi Cones', slug: 'mehndi-cones', description: 'Freshly mixed organic henna cones', itemsCount: 0 },
   { id: '2', name: 'Mehndi Powder', slug: 'mehndi-powder', description: 'Triple-sifted 100% natural Sojat henna powder', itemsCount: 0 },
-  { id: '3', name: 'Aftercare Oils', slug: 'aftercare-oils', description: 'Pure eucalyptus and tea tree essential oil blends', itemsCount: 0 },
-  { id: '4', name: 'Practice Tools', slug: 'practice-tools', description: 'Acrylic practice hands and acrylic boards', itemsCount: 0 },
-  { id: '5', name: 'Mehndi Kits', slug: 'mehndi-kits', description: 'Complete bridal and professional student kits', itemsCount: 0 },
-  { id: '6', name: 'Accessories', slug: 'accessories', description: 'Sealant spray, cellophane rolling sheets, pin tips', itemsCount: 0 },
+  { id: '3', name: 'Mehndi Kits', slug: 'mehndi-kits', description: 'Complete bridal and professional student kits', itemsCount: 0 },
+  { id: '4', name: 'Accessories', slug: 'accessories', description: 'Sealant spray, cellophane rolling sheets, pin tips', itemsCount: 0 },
 ]
 
 export default function AdminCategoriesPage() {

@@ -42,7 +42,7 @@ export default function CartPage() {
               Your cart is empty
             </h2>
             <p className="mt-2 text-sm text-secondary-text max-w-sm mx-auto">
-              Explore our fresh organic henna cones, bridal studio kits, and essential aftercare products.
+              Explore our fresh organic henna cones, bridal studio kits, and essential accessories.
             </p>
             <div className="mt-6">
               <Link
