@@ -271,4 +271,66 @@ export const INITIAL_PRODUCTS: Product[] = [
     created_at: '2026-10-26T00:00:00Z',
     updated_at: '2026-10-26T00:00:00Z',
   },
+  {
+    id: 'kit-trial',
+    name: 'Trial Kit',
+    slug: 'trial-kit',
+    description:
+      'Complete beginner starter trial kit including 100gm organic Sojat mehndi powder, 30ml eucalyptus mehndi oil, 10 precut transparent cellophane sheets, 2 durable piping bags, and 10 precision plastic pins. Perfect for students and beginners to roll and mix fresh cones at home.',
+    specifications:
+      'Contents: 100gm powder + 30ml oil + 10 cello sheets + 2 piping bags + 10 pins | Ideal for: Beginners & Practice',
+    category_id: 'cat-mehndi-kits',
+    category_name: 'Bridal & Student Kits',
+    category_slug: 'mehndi-kits',
+    price_minor: 14900, // ₹149.00
+    compare_at_price_minor: 22900, // ₹229.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-KIT-TRIAL',
+    weight_grams: 250,
+    images: [
+      {
+        id: 'img-kit-trial',
+        product_id: 'kit-trial',
+        url: '/images/products/trial-kit.png',
+        alt_text: 'Trial Kit (100gm Powder + 30ml Oil + 10 Sheets + 2 Bags + 10 Pins)',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'kit-artist',
+    name: 'Mehndi Artist Kit',
+    slug: 'mehndi-artist-kit',
+    description:
+      'All-in-one comprehensive kit for professional mehndi artists and bridal work. Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone.',
+    specifications:
+      'Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal',
+    category_id: 'cat-mehndi-kits',
+    category_name: 'Bridal & Student Kits',
+    category_slug: 'mehndi-kits',
+    price_minor: 39900, // ₹399.00
+    compare_at_price_minor: 59900, // ₹599.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-KIT-ARTIST',
+    weight_grams: 500,
+    images: [
+      {
+        id: 'img-kit-artist',
+        product_id: 'kit-artist',
+        url: '/images/products/mehndi-artist-kit.png',
+        alt_text: 'Mehndi Artist Kit (200gm Powder + 100ml Oil + 5 Bags + Pins + Sheets + Cones)',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
 ]

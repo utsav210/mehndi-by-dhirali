@@ -65,13 +65,14 @@ def seed_initial_categories():
 
 
 def seed_initial_products():
-    """Seeds initial Mehndi Cones, Mehndi Powder, and Mehndi Oil products if not already present."""
+    """Seeds initial Mehndi Cones, Mehndi Powder, Mehndi Oil, and Kits products if not already present."""
     db = SessionLocal()
     try:
         cones_cat = db.query(Category).filter(Category.slug == "mehndi-cones").first()
         powder_cat = db.query(Category).filter(Category.slug == "mehndi-powder").first()
         oil_cat = db.query(Category).filter(Category.slug == "mehndi-oil").first()
-        if not cones_cat and not powder_cat and not oil_cat:
+        kits_cat = db.query(Category).filter(Category.slug == "mehndi-kits").first()
+        if not cones_cat and not powder_cat and not oil_cat and not kits_cat:
             return
 
         products_data = [
@@ -194,6 +195,33 @@ def seed_initial_products():
                 "description": "Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil.",
                 "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil",
                 "image_url": "/images/products/mehndi-oil.png",
+            },
+            # Mehndi Kits
+            {
+                "category_id": kits_cat.id if kits_cat else None,
+                "name": "Trial Kit",
+                "slug": "trial-kit",
+                "price_minor": 14900,  # ₹149.00
+                "compare_at_price_minor": 22900,  # ₹229.00
+                "sku": "MBD-KIT-TRIAL",
+                "stock_quantity": 100,
+                "weight_grams": 250,
+                "description": "Complete beginner starter trial kit including 100gm organic Sojat mehndi powder, 30ml eucalyptus mehndi oil, 10 precut transparent cellophane sheets, 2 durable piping bags, and 10 precision plastic pins. Perfect for students and beginners to roll and mix fresh cones at home.",
+                "specifications": "Contents: 100gm powder + 30ml oil + 10 cello sheets + 2 piping bags + 10 pins | Ideal for: Beginners & Practice",
+                "image_url": "/images/products/trial-kit.png",
+            },
+            {
+                "category_id": kits_cat.id if kits_cat else None,
+                "name": "Mehndi Artist Kit",
+                "slug": "mehndi-artist-kit",
+                "price_minor": 39900,  # ₹399.00
+                "compare_at_price_minor": 59900,  # ₹599.00
+                "sku": "MBD-KIT-ARTIST",
+                "stock_quantity": 100,
+                "weight_grams": 500,
+                "description": "All-in-one comprehensive kit for professional mehndi artists and bridal work. Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone.",
+                "specifications": "Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal",
+                "image_url": "/images/products/mehndi-artist-kit.png",
             },
         ]
 

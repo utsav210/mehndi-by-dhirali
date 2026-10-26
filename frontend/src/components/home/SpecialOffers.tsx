@@ -17,14 +17,14 @@ export default function SpecialOffers({ className }: { className?: string }) {
               Complete Bridal Mehndi Studio Kit
             </h2>
             <p className="mt-4 text-warm-ivory/90 text-sm sm:text-base leading-relaxed">
-              Curated especially for professional artists and brides. Includes fresh Rajasthani cones, pure essential oil blend, sealant spray, design practice sheets, and organic aftercare balm.
+              Curated especially for professional artists and brides. Includes 200gm triple-sifted henna powder, 100ml essential oil, piping bags, 0.38mm pins, cellophane rolling sheets, pencil cones, and dark stain cone.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
-                to="/products"
+                to="/products/mehndi-artist-kit"
                 className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-6 py-3 text-sm font-semibold text-forest-green shadow-xs hover:bg-antique-gold/90 transition-colors"
               >
-                <span>Explore Bridal Kits</span>
+                <span>Explore Artist Kit (₹399)</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <span className="text-xs text-warm-ivory/80">
