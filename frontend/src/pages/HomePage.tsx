@@ -30,7 +30,7 @@ export default function HomePage() {
       <SpecialOffers />
 
       {/* 5. Featured / Latest Products */}
-      <FeaturedProducts products={INITIAL_PRODUCTS} title="Featured Mehndi Cones" />
+      <FeaturedProducts products={INITIAL_PRODUCTS} title="Featured Cones & Organic Powder" />
 
       {/* 6. Media / Tutorials Section */}
       <MediaSection />

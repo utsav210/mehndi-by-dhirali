@@ -51,15 +51,18 @@ def seed_initial_categories():
 
 
 def seed_initial_products():
-    """Seeds initial Mehndi Cones packs if not already present."""
+    """Seeds initial Mehndi Cones and Mehndi Powder products if not already present."""
     db = SessionLocal()
     try:
-        category = db.query(Category).filter(Category.slug == "mehndi-cones").first()
-        if not category:
+        cones_cat = db.query(Category).filter(Category.slug == "mehndi-cones").first()
+        powder_cat = db.query(Category).filter(Category.slug == "mehndi-powder").first()
+        if not cones_cat and not powder_cat:
             return
 
         products_data = [
+            # Mehndi Cones
             {
+                "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 5 Mehndi Cones",
                 "slug": "pack-of-5-mehndi-cones",
                 "price_minor": 9900,  # ₹99.00
@@ -69,8 +72,10 @@ def seed_initial_products():
                 "weight_grams": 150,
                 "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 5). Formulated with pure eucalyptus essential oil for a deep, rich mahogany stain. Ultra-smooth 0.38mm tip for intricate bridal and festive designs.",
                 "specifications": "Quantity: 5 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "image_url": "/images/products/mehndi-cones.png",
             },
             {
+                "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 8 Mehndi Cones",
                 "slug": "pack-of-8-mehndi-cones",
                 "price_minor": 15900,  # ₹159.00
@@ -80,8 +85,10 @@ def seed_initial_products():
                 "weight_grams": 240,
                 "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 8). Hand-poured in small artisanal batches with natural eucalyptus oil for guaranteed dark stain.",
                 "specifications": "Quantity: 8 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "image_url": "/images/products/mehndi-cones.png",
             },
             {
+                "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 12 Mehndi Cones",
                 "slug": "pack-of-12-mehndi-cones",
                 "price_minor": 23900,  # ₹239.00
@@ -91,8 +98,10 @@ def seed_initial_products():
                 "weight_grams": 360,
                 "description": "Complete 1-dozen pack of freshly rolled organic henna cones. Ideal for family celebrations, Karwa Chauth, Eid, and wedding festivities. Zero chemicals, 100% natural.",
                 "specifications": "Quantity: 12 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "image_url": "/images/products/mehndi-cones.png",
             },
             {
+                "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 16 Mehndi Cones",
                 "slug": "pack-of-16-mehndi-cones",
                 "price_minor": 31900,  # ₹319.00
@@ -102,8 +111,10 @@ def seed_initial_products():
                 "weight_grams": 480,
                 "description": "Value bundle of 16 organic bridal henna cones. Crafted with triple-sifted micro-fine henna powder and pure essential oils for smooth flow and crisp line work.",
                 "specifications": "Quantity: 16 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "image_url": "/images/products/mehndi-cones.png",
             },
             {
+                "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 20 Mehndi Cones",
                 "slug": "pack-of-20-mehndi-cones",
                 "price_minor": 39900,  # ₹399.00
@@ -113,8 +124,10 @@ def seed_initial_products():
                 "weight_grams": 600,
                 "description": "Studio pack of 20 fresh organic henna cones. Perfect for henna artists and large family occasions. Long-lasting, rich burgundy dye release.",
                 "specifications": "Quantity: 20 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "image_url": "/images/products/mehndi-cones.png",
             },
             {
+                "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 50 Mehndi Cones",
                 "slug": "pack-of-50-mehndi-cones",
                 "price_minor": 99900,  # ₹999.00
@@ -124,14 +137,44 @@ def seed_initial_products():
                 "weight_grams": 1500,
                 "description": "Bulk artist master pack of 50 freshly rolled organic henna cones. Shipped in insulated packaging to maintain optimal freshness. The ultimate value for professional bridal bookings.",
                 "specifications": "Quantity: 50 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "image_url": "/images/products/mehndi-cones.png",
+            },
+            # Mehndi Powder
+            {
+                "category_id": powder_cat.id if powder_cat else None,
+                "name": "100 gm Mehndi Powder",
+                "slug": "100-gm-mehndi-powder",
+                "price_minor": 8900,  # ₹89.00
+                "compare_at_price_minor": 12900,  # ₹129.00
+                "sku": "MBD-POWDER-100",
+                "stock_quantity": 100,
+                "weight_grams": 100,
+                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment.",
+                "specifications": "Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic",
+                "image_url": "/images/products/mehndi-powder.png",
+            },
+            {
+                "category_id": powder_cat.id if powder_cat else None,
+                "name": "200 gm Mehndi Powder",
+                "slug": "200-gm-mehndi-powder",
+                "price_minor": 17800,  # ₹178.00
+                "compare_at_price_minor": 24900,  # ₹249.00
+                "sku": "MBD-POWDER-200",
+                "stock_quantity": 100,
+                "weight_grams": 200,
+                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning.",
+                "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic",
+                "image_url": "/images/products/mehndi-powder.png",
             },
         ]
 
         for p_data in products_data:
+            if not p_data["category_id"]:
+                continue
             existing = db.query(Product).filter(Product.slug == p_data["slug"]).first()
             if not existing:
                 prod = Product(
-                    category_id=category.id,
+                    category_id=p_data["category_id"],
                     name=p_data["name"],
                     slug=p_data["slug"],
                     price_minor=p_data["price_minor"],
@@ -148,7 +191,7 @@ def seed_initial_products():
                 db.flush()
                 img = ProductImage(
                     product_id=prod.id,
-                    url="/images/products/mehndi-cones.png",
+                    url=p_data["image_url"],
                     alt_text=prod.name,
                     sort_order=1,
                     is_primary=True,
@@ -157,8 +200,9 @@ def seed_initial_products():
             else:
                 existing.price_minor = p_data["price_minor"]
                 existing.compare_at_price_minor = p_data["compare_at_price_minor"]
+                existing.category_id = p_data["category_id"]
         db.commit()
-        logger.info("Seeded initial Mehndi Cones product catalogue.")
+        logger.info("Seeded initial store product catalogue.")
     except Exception as e:
         logger.warning("Product seed check skipped or failed", error=str(e))
     finally:

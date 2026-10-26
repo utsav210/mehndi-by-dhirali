@@ -181,4 +181,64 @@ export const INITIAL_PRODUCTS: Product[] = [
     created_at: '2026-10-26T00:00:00Z',
     updated_at: '2026-10-26T00:00:00Z',
   },
+  {
+    id: 'powder-100g',
+    name: '100 gm Mehndi Powder',
+    slug: '100-gm-mehndi-powder',
+    description:
+      '100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment.',
+    specifications: 'Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic',
+    category_id: 'cat-mehndi-powder',
+    category_name: 'Mehndi Powder',
+    category_slug: 'mehndi-powder',
+    price_minor: 8900, // ₹89.00
+    compare_at_price_minor: 12900, // ₹129.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-POWDER-100',
+    weight_grams: 100,
+    images: [
+      {
+        id: 'img-powder-100',
+        product_id: 'powder-100g',
+        url: '/images/products/mehndi-powder.png',
+        alt_text: '100 gm Organic Mehndi Powder',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'powder-200g',
+    name: '200 gm Mehndi Powder',
+    slug: '200-gm-mehndi-powder',
+    description:
+      '100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning.',
+    specifications: 'Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic',
+    category_id: 'cat-mehndi-powder',
+    category_name: 'Mehndi Powder',
+    category_slug: 'mehndi-powder',
+    price_minor: 17800, // ₹178.00
+    compare_at_price_minor: 24900, // ₹249.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-POWDER-200',
+    weight_grams: 200,
+    images: [
+      {
+        id: 'img-powder-200',
+        product_id: 'powder-200g',
+        url: '/images/products/mehndi-powder.png',
+        alt_text: '200 gm Organic Mehndi Powder',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
 ]
