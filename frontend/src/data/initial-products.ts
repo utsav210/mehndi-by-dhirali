@@ -1,0 +1,184 @@
+import type { Product } from '@/types'
+
+export const INITIAL_PRODUCTS: Product[] = [
+  {
+    id: 'cone-pack-5',
+    name: 'Pack of 5 Mehndi Cones',
+    slug: 'pack-of-5-mehndi-cones',
+    description:
+      'Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 5). Formulated with pure eucalyptus essential oil for a deep, rich mahogany stain. Ultra-smooth 0.38mm tip for intricate bridal and festive designs.',
+    specifications: 'Quantity: 5 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen',
+    category_id: 'cat-mehndi-cones',
+    category_name: 'Mehndi Cones',
+    category_slug: 'mehndi-cones',
+    price_minor: 9900, // ₹99.00
+    compare_at_price_minor: 14900, // ₹149.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-CONE-05',
+    weight_grams: 150,
+    images: [
+      {
+        id: 'img-cone-5',
+        product_id: 'cone-pack-5',
+        url: '/images/products/mehndi-cones.png',
+        alt_text: 'Pack of 5 Mehndi Cones',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'cone-pack-8',
+    name: 'Pack of 8 Mehndi Cones',
+    slug: 'pack-of-8-mehndi-cones',
+    description:
+      'Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 8). Hand-poured in small artisanal batches with natural eucalyptus oil for guaranteed dark stain.',
+    specifications: 'Quantity: 8 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen',
+    category_id: 'cat-mehndi-cones',
+    category_name: 'Mehndi Cones',
+    category_slug: 'mehndi-cones',
+    price_minor: 15900, // ₹159.00
+    compare_at_price_minor: 22900, // ₹229.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-CONE-08',
+    weight_grams: 240,
+    images: [
+      {
+        id: 'img-cone-8',
+        product_id: 'cone-pack-8',
+        url: '/images/products/mehndi-cones.png',
+        alt_text: 'Pack of 8 Mehndi Cones',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'cone-pack-12',
+    name: 'Pack of 12 Mehndi Cones',
+    slug: 'pack-of-12-mehndi-cones',
+    description:
+      'Complete 1-dozen pack of freshly rolled organic henna cones. Ideal for family celebrations, Karwa Chauth, Eid, and wedding festivities. Zero chemicals, 100% natural.',
+    specifications: 'Quantity: 12 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen',
+    category_id: 'cat-mehndi-cones',
+    category_name: 'Mehndi Cones',
+    category_slug: 'mehndi-cones',
+    price_minor: 23900, // ₹239.00
+    compare_at_price_minor: 34900, // ₹349.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-CONE-12',
+    weight_grams: 360,
+    images: [
+      {
+        id: 'img-cone-12',
+        product_id: 'cone-pack-12',
+        url: '/images/products/mehndi-cones.png',
+        alt_text: 'Pack of 12 Mehndi Cones',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'cone-pack-16',
+    name: 'Pack of 16 Mehndi Cones',
+    slug: 'pack-of-16-mehndi-cones',
+    description:
+      'Value bundle of 16 organic bridal henna cones. Crafted with triple-sifted micro-fine henna powder and pure essential oils for smooth flow and crisp line work.',
+    specifications: 'Quantity: 16 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen',
+    category_id: 'cat-mehndi-cones',
+    category_name: 'Mehndi Cones',
+    category_slug: 'mehndi-cones',
+    price_minor: 31900, // ₹319.00
+    compare_at_price_minor: 45900, // ₹459.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-CONE-16',
+    weight_grams: 480,
+    images: [
+      {
+        id: 'img-cone-16',
+        product_id: 'cone-pack-16',
+        url: '/images/products/mehndi-cones.png',
+        alt_text: 'Pack of 16 Mehndi Cones',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'cone-pack-20',
+    name: 'Pack of 20 Mehndi Cones',
+    slug: 'pack-of-20-mehndi-cones',
+    description:
+      'Studio pack of 20 fresh organic henna cones. Perfect for henna artists and large family occasions. Long-lasting, rich burgundy dye release.',
+    specifications: 'Quantity: 20 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen',
+    category_id: 'cat-mehndi-cones',
+    category_name: 'Mehndi Cones',
+    category_slug: 'mehndi-cones',
+    price_minor: 39900, // ₹399.00
+    compare_at_price_minor: 59900, // ₹599.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-CONE-20',
+    weight_grams: 600,
+    images: [
+      {
+        id: 'img-cone-20',
+        product_id: 'cone-pack-20',
+        url: '/images/products/mehndi-cones.png',
+        alt_text: 'Pack of 20 Mehndi Cones',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'cone-pack-50',
+    name: 'Pack of 50 Mehndi Cones',
+    slug: 'pack-of-50-mehndi-cones',
+    description:
+      'Bulk artist master pack of 50 freshly rolled organic henna cones. Shipped in insulated packaging to maintain optimal freshness. The ultimate value for professional bridal bookings.',
+    specifications: 'Quantity: 50 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen',
+    category_id: 'cat-mehndi-cones',
+    category_name: 'Mehndi Cones',
+    category_slug: 'mehndi-cones',
+    price_minor: 99900, // ₹999.00
+    compare_at_price_minor: 149900, // ₹1,499.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-CONE-50',
+    weight_grams: 1500,
+    images: [
+      {
+        id: 'img-cone-50',
+        product_id: 'cone-pack-50',
+        url: '/images/products/mehndi-cones.png',
+        alt_text: 'Pack of 50 Mehndi Cones',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+]

@@ -5,6 +5,8 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import ProductGrid from '@/components/products/ProductGrid'
 import type { Product } from '@/types'
 import { Filter, SlidersHorizontal } from 'lucide-react'
+import { INITIAL_PRODUCTS } from '@/data/initial-products'
+import { apiClient } from '@/lib/api-client'
 
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -12,12 +14,47 @@ export default function ProductsPage() {
     searchParams.get('category') || 'all'
   )
   const [sortBy, setSortBy] = useState<string>(searchParams.get('sort') || 'featured')
-  const [products] = useState<Product[]>([]) // Intentionally empty: owner will add products later
-  const [isLoading] = useState<boolean>(false)
+  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     document.title = 'All Products — Mehndi By Dhirali'
-  }, [])
+
+    async function fetchProducts() {
+      try {
+        setIsLoading(true)
+        const params: Record<string, string> = {}
+        if (selectedCategory && selectedCategory !== 'all') {
+          params.category_slug = selectedCategory
+        }
+        if (sortBy) {
+          params.sort = sortBy
+        }
+        const data = await apiClient.get<{ items: Product[] }>('/products', { params })
+        if (data?.items && data.items.length > 0) {
+          setProducts(data.items)
+          return
+        }
+      } catch {
+        // Fall back gracefully to local catalog
+      }
+
+      // Filter and sort INITIAL_PRODUCTS locally
+      let filtered = [...INITIAL_PRODUCTS]
+      if (selectedCategory && selectedCategory !== 'all') {
+        filtered = filtered.filter((p) => p.category_slug === selectedCategory)
+      }
+      if (sortBy === 'price-asc') {
+        filtered.sort((a, b) => a.price_minor - b.price_minor)
+      } else if (sortBy === 'price-desc') {
+        filtered.sort((a, b) => b.price_minor - a.price_minor)
+      }
+      setProducts(filtered)
+      setIsLoading(false)
+    }
+
+    fetchProducts()
+  }, [selectedCategory, sortBy])
 
   const categories = [
     { id: 'all', name: 'All Categories' },

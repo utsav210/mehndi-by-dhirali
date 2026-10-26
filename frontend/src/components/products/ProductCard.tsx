@@ -117,12 +117,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       </Link>
 
       {/* Product info */}
-      <div className="flex flex-1 flex-col p-4">
-        {/* Category */}
-        <span className="mb-1 text-xs uppercase tracking-wider text-secondary-text">
-          {product.category_name}
-        </span>
-
+      <div className="flex flex-1 flex-col items-center text-center p-4">
         {/* Name */}
         <Link
           to={`/products/${product.slug}`}
@@ -131,23 +126,29 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           {product.name}
         </Link>
 
+        {/* Category */}
+        <span className="mt-1 mb-2 text-xs uppercase tracking-wider text-antique-gold font-medium">
+          {product.category_name}
+        </span>
+
         {/* Price */}
-        <div className="mt-2">
+        <div className="mt-1">
           <PriceDisplay
             priceMinor={product.price_minor}
             compareAtPriceMinor={product.compare_at_price_minor}
             size="sm"
+            className="justify-center"
           />
         </div>
 
         {/* Add to cart */}
-        <div className="mt-auto pt-4">
+        <div className="mt-auto w-full pt-4">
           <button
             type="button"
             onClick={handleAddToCart}
             disabled={isOutOfStock}
             className={cn(
-              'w-full rounded-full py-2.5 text-sm font-medium transition-colors',
+              'w-full rounded-full py-2.5 text-sm font-medium transition-colors cursor-pointer',
               isOutOfStock
                 ? 'cursor-not-allowed bg-sand-beige text-secondary-text'
                 : 'bg-bottle-green text-white hover:bg-forest-green focus-visible:ring-2 focus-visible:ring-bottle-green focus-visible:ring-offset-2'

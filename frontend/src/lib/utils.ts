@@ -9,7 +9,7 @@ export function formatPrice(amountInPaise: number): string {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amountInPaise / 100)
 }

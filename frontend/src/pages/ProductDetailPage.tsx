@@ -5,6 +5,9 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import PriceDisplay from '@/components/products/PriceDisplay'
 import { useCartStore } from '@/lib/cart-store'
 import { toast } from 'sonner'
+import { INITIAL_PRODUCTS } from '@/data/initial-products'
+import { apiClient } from '@/lib/api-client'
+import type { Product } from '@/types'
 import {
   Heart,
   ShoppingBag,
@@ -18,36 +21,66 @@ import {
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>()
+  const [product, setProduct] = useState<Product | null>(() => {
+    return INITIAL_PRODUCTS.find((p) => p.slug === slug) || null
+  })
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const addItem = useCartStore((s) => s.addItem)
   const openCart = useCartStore((s) => s.openCart)
 
   useEffect(() => {
-    document.title = `${slug ? slug.replace(/-/g, ' ') : 'Product'} — Mehndi By Dhirali`
+    // Attempt to fetch fresh product from API, keep initial product as fallback
+    async function fetchProduct() {
+      if (!slug) return
+      try {
+        const data = await apiClient.get<Product>(`/products/${slug}`)
+        if (data) {
+          setProduct(data)
+          return
+        }
+      } catch {
+        // Fall back to matched initial product
+      }
+      const matched = INITIAL_PRODUCTS.find((p) => p.slug === slug)
+      if (matched) {
+        setProduct(matched)
+      }
+    }
+    fetchProduct()
   }, [slug])
 
-  // Mock product object for detail display preview
-  const productTitle = slug
+  const productTitle = product
+    ? product.name
+    : slug
     ? slug
         .split('-')
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ')
     : 'Premium Rajasthani Mehndi Cone'
 
+  useEffect(() => {
+    document.title = `${productTitle} — Mehndi By Dhirali`
+  }, [productTitle])
+
+  const primaryImage = product?.images?.find((img) => img.is_primary) ?? product?.images?.[0]
+  const priceMinor = product?.price_minor ?? 9900
+  const compareAtPriceMinor = product?.compare_at_price_minor ?? 14900
+  const stockQuantity = product?.stock_quantity ?? 100
+
   const handleAddToCart = () => {
     addItem({
-      product_id: slug || 'preview-product',
+      product_id: product?.id || slug || 'preview-product',
       product_name: productTitle,
-      product_slug: slug || 'preview-product',
-      product_image: '',
-      price_minor: 12000, // ₹120.00
-      compare_at_price_minor: 15000,
+      product_slug: product?.slug || slug || 'preview-product',
+      product_image: primaryImage?.url || '/images/products/mehndi-cones.png',
+      price_minor: priceMinor,
+      compare_at_price_minor: compareAtPriceMinor,
       quantity,
-      stock_quantity: 50,
-      sku: 'MBD-CONE-01',
+      stock_quantity: stockQuantity,
+      sku: product?.sku || 'MBD-CONE-01',
     })
-    toast.success(`Added ${quantity} ${productTitle} to your cart!`)
+    toast.success(`Added ${quantity} × ${productTitle} to your cart!`)
     openCart()
   }
 
@@ -70,16 +103,21 @@ export default function ProductDetailPage() {
           {/* Left: Product Image Gallery */}
           <div>
             <div className="aspect-square w-full rounded-2xl border border-subtle-border bg-warm-ivory/40 flex items-center justify-center overflow-hidden relative shadow-xs">
-              <div className="text-center p-8">
-                <Sparkles className="h-16 w-16 text-antique-gold mx-auto mb-3 opacity-60" />
-                <p className="font-serif text-lg font-semibold text-bottle-green">
-                  {productTitle}
-                </p>
-                <span className="text-xs text-secondary-text mt-1 block">
-                  Product image will be displayed when added by store owner.
-                </span>
-              </div>
-              <div className="absolute top-4 left-4 rounded-full bg-antique-gold px-3 py-1 text-xs font-semibold text-forest-green">
+              {primaryImage?.url ? (
+                <img
+                  src={primaryImage.url}
+                  alt={primaryImage.alt_text || productTitle}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="text-center p-8">
+                  <Sparkles className="h-16 w-16 text-antique-gold mx-auto mb-3 opacity-60" />
+                  <p className="font-serif text-lg font-semibold text-bottle-green">
+                    {productTitle}
+                  </p>
+                </div>
+              )}
+              <div className="absolute top-4 left-4 rounded-full bg-antique-gold px-3 py-1 text-xs font-semibold text-forest-green shadow-xs">
                 Fresh Batch
               </div>
             </div>
@@ -88,17 +126,24 @@ export default function ProductDetailPage() {
           {/* Right: Product Details */}
           <div className="flex flex-col justify-start">
             <span className="text-xs font-semibold uppercase tracking-wider text-antique-gold">
-              Handcrafted in Small Batches
+              {product?.category_name || 'Mehndi Cones'}
             </span>
             <h1 className="font-serif text-3xl font-bold text-bottle-green mt-2 sm:text-4xl">
               {productTitle}
             </h1>
 
-            {/* Price */}
+            {/* Price Showcase: OG strikethrough price first, discounted bold price second */}
             <div className="mt-4">
-              <PriceDisplay priceMinor={12000} compareAtPriceMinor={15000} size="lg" />
+              <PriceDisplay priceMinor={priceMinor} compareAtPriceMinor={compareAtPriceMinor} size="lg" />
               <p className="text-xs text-secondary-text mt-1">Inclusive of all taxes.</p>
             </div>
+
+            {/* Description */}
+            {product?.description && (
+              <p className="mt-4 text-sm leading-relaxed text-secondary-text">
+                {product.description}
+              </p>
+            )}
 
             {/* Highlights */}
             <div className="my-6 border-y border-subtle-border py-4 space-y-2">
@@ -114,6 +159,11 @@ export default function ProductDetailPage() {
                 <Check className="h-4 w-4 text-success" />
                 <span>Ultra-smooth 0.38mm tip for intricate bridal work</span>
               </div>
+              {product?.specifications && (
+                <div className="flex items-center gap-2 text-xs text-primary-text font-medium text-bottle-green pt-1">
+                  <span>✦ {product.specifications}</span>
+                </div>
+              )}
             </div>
 
             {/* Quantity Selector and Add to Cart */}
@@ -123,7 +173,7 @@ export default function ProductDetailPage() {
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="p-2.5 hover:bg-warm-ivory text-primary-text transition"
+                    className="p-2.5 hover:bg-warm-ivory text-primary-text transition cursor-pointer"
                     aria-label="Decrease quantity"
                   >
                     <Minus className="h-4 w-4" />
@@ -134,7 +184,7 @@ export default function ProductDetailPage() {
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => q + 1)}
-                    className="p-2.5 hover:bg-warm-ivory text-primary-text transition"
+                    className="p-2.5 hover:bg-warm-ivory text-primary-text transition cursor-pointer"
                     aria-label="Increase quantity"
                   >
                     <Plus className="h-4 w-4" />
@@ -156,7 +206,7 @@ export default function ProductDetailPage() {
                     setIsWishlisted(!isWishlisted)
                     toast.success(isWishlisted ? 'Removed from wishlist' : 'Saved to wishlist!')
                   }}
-                  className={`p-3 rounded-full border transition ${
+                  className={`p-3 rounded-full border transition cursor-pointer ${
                     isWishlisted
                       ? 'border-error text-error bg-error/10'
                       : 'border-subtle-border text-secondary-text hover:text-bottle-green'

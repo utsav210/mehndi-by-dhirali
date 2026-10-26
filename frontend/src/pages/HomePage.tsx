@@ -3,6 +3,7 @@ import PageLayout from '@/components/layout/PageLayout'
 import HeroBanner from '@/components/home/HeroBanner'
 import CategoryGrid from '@/components/home/CategoryGrid'
 import FeaturedProducts from '@/components/home/FeaturedProducts'
+import { INITIAL_PRODUCTS } from '@/data/initial-products'
 import BrandHighlights from '@/components/home/BrandHighlights'
 import SpecialOffers from '@/components/home/SpecialOffers'
 import MediaSection from '@/components/home/MediaSection'
@@ -28,8 +29,8 @@ export default function HomePage() {
       {/* 4. Special Offers / Bridal Kit */}
       <SpecialOffers />
 
-      {/* 5. Featured / Latest Products (empty for now, owner will add products later) */}
-      <FeaturedProducts products={[]} title="Featured Mehndi Cones & Powder" />
+      {/* 5. Featured / Latest Products */}
+      <FeaturedProducts products={INITIAL_PRODUCTS} title="Featured Mehndi Cones" />
 
       {/* 6. Media / Tutorials Section */}
       <MediaSection />

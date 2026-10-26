@@ -32,7 +32,20 @@ export default function PriceDisplay({
 
   return (
     <div className={cn('flex flex-wrap items-center gap-2', className)}>
-      {/* Current price */}
+      {/* Original price (strikethrough) — placed first to match boutique price showcase */}
+      {isOnSale && (
+        <span
+          className={cn(
+            'text-secondary-text/80 line-through font-normal',
+            classes.original
+          )}
+          aria-label={`Original price ${formatPrice(compareAtPriceMinor)}`}
+        >
+          {formatPrice(compareAtPriceMinor)}
+        </span>
+      )}
+
+      {/* Current / discounted price */}
       <span
         className={cn(
           'font-bold text-bottle-green',
@@ -41,19 +54,6 @@ export default function PriceDisplay({
       >
         {formatPrice(priceMinor)}
       </span>
-
-      {/* Original price (strikethrough) */}
-      {isOnSale && (
-        <span
-          className={cn(
-            'text-secondary-text line-through',
-            classes.original
-          )}
-          aria-label={`Original price ${formatPrice(compareAtPriceMinor)}`}
-        >
-          {formatPrice(compareAtPriceMinor)}
-        </span>
-      )}
 
       {/* Discount % badge */}
       {isOnSale && discount > 0 && (
