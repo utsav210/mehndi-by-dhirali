@@ -14,8 +14,9 @@ interface CategoryItem {
 const DEFAULT_CATEGORIES: CategoryItem[] = [
   { id: '1', name: 'Mehndi Cones', slug: 'mehndi-cones', description: 'Freshly mixed organic henna cones', itemsCount: 0 },
   { id: '2', name: 'Mehndi Powder', slug: 'mehndi-powder', description: 'Triple-sifted 100% natural Sojat henna powder', itemsCount: 0 },
-  { id: '3', name: 'Mehndi Kits', slug: 'mehndi-kits', description: 'Complete bridal and professional student kits', itemsCount: 0 },
-  { id: '4', name: 'Accessories', slug: 'accessories', description: 'Sealant spray, cellophane rolling sheets, pin tips', itemsCount: 0 },
+  { id: '3', name: 'Mehndi Oil', slug: 'mehndi-oil', description: 'Pure eucalyptus and essential herbal oil blends', itemsCount: 0 },
+  { id: '4', name: 'Mehndi Kits', slug: 'mehndi-kits', description: 'Complete bridal and professional student kits', itemsCount: 0 },
+  { id: '5', name: 'Accessories', slug: 'accessories', description: 'Sealant spray, cellophane rolling sheets, pin tips', itemsCount: 0 },
 ]
 
 export default function AdminCategoriesPage() {

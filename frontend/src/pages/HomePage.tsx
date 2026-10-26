@@ -30,7 +30,7 @@ export default function HomePage() {
       <SpecialOffers />
 
       {/* 5. Featured / Latest Products */}
-      <FeaturedProducts products={INITIAL_PRODUCTS} title="Featured Cones & Organic Powder" />
+      <FeaturedProducts products={INITIAL_PRODUCTS} title="Featured Henna Cones, Powder & Oils" />
 
       {/* 6. Media / Tutorials Section */}
       <MediaSection />

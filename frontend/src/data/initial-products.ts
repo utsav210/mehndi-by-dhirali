@@ -241,4 +241,34 @@ export const INITIAL_PRODUCTS: Product[] = [
     created_at: '2026-10-26T00:00:00Z',
     updated_at: '2026-10-26T00:00:00Z',
   },
+  {
+    id: 'oil-100ml',
+    name: '100ML Mehndi oil',
+    slug: '100ml-mehndi-oil',
+    description:
+      'Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil.',
+    specifications: 'Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil',
+    category_id: 'cat-mehndi-oil',
+    category_name: 'Mehndi Oil',
+    category_slug: 'mehndi-oil',
+    price_minor: 23000, // ₹230.00
+    compare_at_price_minor: 32900, // ₹329.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-OIL-100',
+    weight_grams: 100,
+    images: [
+      {
+        id: 'img-oil-100',
+        product_id: 'oil-100ml',
+        url: '/images/products/mehndi-oil.png',
+        alt_text: '100ML Pure Mehndi Oil',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
 ]

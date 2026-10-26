@@ -32,12 +32,26 @@ def seed_initial_categories():
                 cat.is_active = False
         db.commit()
 
+        # Ensure Mehndi Oil category exists
+        oil_cat = db.query(Category).filter(Category.slug == "mehndi-oil").first()
+        if not oil_cat:
+            c = Category(
+                name="Mehndi Oil",
+                slug="mehndi-oil",
+                description="Pure eucalyptus and essential herbal oil blends",
+                sort_order=3,
+                is_active=True,
+            )
+            db.add(c)
+            db.commit()
+
         if db.query(Category).count() == 0:
             default_categories = [
                 {"name": "Mehndi Cones", "slug": "mehndi-cones", "description": "Freshly mixed organic henna cones", "sort_order": 1},
                 {"name": "Mehndi Powder", "slug": "mehndi-powder", "description": "Triple-sifted 100% natural Sojat henna powder", "sort_order": 2},
-                {"name": "Mehndi Kits", "slug": "mehndi-kits", "description": "Complete bridal and professional student kits", "sort_order": 3},
-                {"name": "Accessories", "slug": "accessories", "description": "Sealant spray, cellophane sheets, pin tips", "sort_order": 4},
+                {"name": "Mehndi Oil", "slug": "mehndi-oil", "description": "Pure eucalyptus and essential herbal oil blends", "sort_order": 3},
+                {"name": "Mehndi Kits", "slug": "mehndi-kits", "description": "Complete bridal and professional student kits", "sort_order": 4},
+                {"name": "Accessories", "slug": "accessories", "description": "Sealant spray, cellophane sheets, pin tips", "sort_order": 5},
             ]
             for cat_data in default_categories:
                 c = Category(**cat_data, is_active=True)
@@ -51,12 +65,13 @@ def seed_initial_categories():
 
 
 def seed_initial_products():
-    """Seeds initial Mehndi Cones and Mehndi Powder products if not already present."""
+    """Seeds initial Mehndi Cones, Mehndi Powder, and Mehndi Oil products if not already present."""
     db = SessionLocal()
     try:
         cones_cat = db.query(Category).filter(Category.slug == "mehndi-cones").first()
         powder_cat = db.query(Category).filter(Category.slug == "mehndi-powder").first()
-        if not cones_cat and not powder_cat:
+        oil_cat = db.query(Category).filter(Category.slug == "mehndi-oil").first()
+        if not cones_cat and not powder_cat and not oil_cat:
             return
 
         products_data = [
@@ -165,6 +180,20 @@ def seed_initial_products():
                 "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning.",
                 "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic",
                 "image_url": "/images/products/mehndi-powder.png",
+            },
+            # Mehndi Oil
+            {
+                "category_id": oil_cat.id if oil_cat else None,
+                "name": "100ML Mehndi oil",
+                "slug": "100ml-mehndi-oil",
+                "price_minor": 23000,  # ₹230.00
+                "compare_at_price_minor": 32900,  # ₹329.00
+                "sku": "MBD-OIL-100",
+                "stock_quantity": 100,
+                "weight_grams": 100,
+                "description": "Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil.",
+                "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil",
+                "image_url": "/images/products/mehndi-oil.png",
             },
         ]
 

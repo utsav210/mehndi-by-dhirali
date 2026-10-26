@@ -17,8 +17,9 @@ interface CategoryGridProps {
 const DEMO_CATEGORIES: Category[] = [
   { id: 'demo-1', name: 'Mehndi Cones', slug: 'mehndi-cones', description: null, image_url: null, sort_order: 1, is_active: true },
   { id: 'demo-2', name: 'Mehndi Powder', slug: 'mehndi-powder', description: null, image_url: null, sort_order: 2, is_active: true },
-  { id: 'demo-5', name: 'Mehndi Kits', slug: 'mehndi-kits', description: null, image_url: null, sort_order: 3, is_active: true },
-  { id: 'demo-6', name: 'Accessories', slug: 'accessories', description: null, image_url: null, sort_order: 4, is_active: true },
+  { id: 'demo-3', name: 'Mehndi Oil', slug: 'mehndi-oil', description: null, image_url: null, sort_order: 3, is_active: true },
+  { id: 'demo-4', name: 'Mehndi Kits', slug: 'mehndi-kits', description: null, image_url: null, sort_order: 4, is_active: true },
+  { id: 'demo-5', name: 'Accessories', slug: 'accessories', description: null, image_url: null, sort_order: 5, is_active: true },
 ]
 
 export default function CategoryGrid({
@@ -41,7 +42,7 @@ export default function CategoryGrid({
         </p>
 
         {/* Grid */}
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {displayCategories.map((category) => (
             <Link
               key={category.id}

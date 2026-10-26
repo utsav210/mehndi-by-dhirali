@@ -60,6 +60,7 @@ export default function ProductsPage() {
     { id: 'all', name: 'All Categories' },
     { id: 'mehndi-cones', name: 'Mehndi Cones' },
     { id: 'mehndi-powder', name: 'Mehndi Powder' },
+    { id: 'mehndi-oil', name: 'Mehndi Oil' },
     { id: 'mehndi-kits', name: 'Bridal & Student Kits' },
     { id: 'accessories', name: 'Accessories' },
   ]
