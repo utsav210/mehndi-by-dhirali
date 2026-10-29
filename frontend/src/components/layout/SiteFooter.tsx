@@ -47,6 +47,7 @@ interface FooterLink {
 const QUICK_LINKS: FooterLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Products', href: '/products' },
+  { label: 'Track Your Order', href: '/track' },
   { label: 'About Us', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]

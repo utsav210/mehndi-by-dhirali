@@ -92,6 +92,13 @@ export interface Order {
   shipping_address: Address
   items: OrderItem[]
   razorpay_order_id: string | null
+  tracking_number?: string | null
+  courier_partner?: string | null
+  tracking_url?: string | null
+  estimated_delivery?: string | null
+  shipped_at?: string | null
+  delivered_at?: string | null
+  tracking_notes?: string | null
   created_at: string
   updated_at: string
 }
@@ -99,13 +106,46 @@ export interface Order {
 export type OrderStatus =
   | 'pending_payment'
   | 'paid'
+  | 'confirmed'
   | 'processing'
   | 'shipped'
+  | 'in_transit'
+  | 'out_for_delivery'
   | 'delivered'
   | 'payment_failed'
   | 'cancelled'
   | 'refund_pending'
   | 'refunded'
+
+export interface TrackingTimelineStep {
+  step_key: string
+  title: string
+  description: string
+  timestamp: string | null
+  is_completed: boolean
+  is_current: boolean
+}
+
+export interface OrderTrackingResponse {
+  order_number: string
+  tracking_number: string | null
+  courier_partner: string | null
+  tracking_url: string | null
+  status: string
+  status_label: string
+  estimated_delivery: string | null
+  shipped_at: string | null
+  delivered_at: string | null
+  tracking_notes: string | null
+  recipient_name: string | null
+  destination_city: string | null
+  destination_state: string | null
+  total_minor: number
+  currency: string
+  items: OrderItem[]
+  timeline: TrackingTimelineStep[]
+  created_at: string
+}
 
 export interface OrderItem {
   id: string

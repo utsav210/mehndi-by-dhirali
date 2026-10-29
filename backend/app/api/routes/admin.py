@@ -5,6 +5,7 @@ Hiding buttons on frontend is not security — backend authorization enforced fo
 """
 import uuid
 from typing import List, Optional
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
@@ -16,7 +17,7 @@ from app.models.order import Order
 from app.models.audit import AuditLog
 from app.core.deps import get_admin_user
 from app.schemas.product import ProductResponse, ProductCreate, ProductUpdate, CategoryResponse, CategoryCreate
-from app.schemas.order import OrderResponse
+from app.schemas.order import OrderResponse, OrderTrackingUpdate
 from app.schemas.common import MessageResponse, PaginatedResponse
 from app.integrations.storage.client import storage_client
 
@@ -236,7 +237,7 @@ def admin_list_orders(
 @router.put("/orders/{id}/status", response_model=OrderResponse)
 def admin_update_order_status(
     id: str,
-    new_status: str = Query(..., pattern="^(pending_payment|paid|processing|shipped|delivered|cancelled|refunded)$"),
+    new_status: str = Query(..., pattern="^(pending_payment|paid|confirmed|processing|shipped|in_transit|out_for_delivery|delivered|cancelled|refunded)$"),
     admin: User = Depends(get_admin_user),
     db: Session = Depends(get_db),
 ):
@@ -246,6 +247,10 @@ def admin_update_order_status(
 
     old_status = order.status
     order.status = new_status
+    if new_status in ["shipped", "in_transit", "out_for_delivery"] and not order.shipped_at:
+        order.shipped_at = datetime.now(timezone.utc)
+    elif new_status == "delivered" and not order.delivered_at:
+        order.delivered_at = datetime.now(timezone.utc)
 
     audit = AuditLog(
         user_id=admin.id,
@@ -253,6 +258,64 @@ def admin_update_order_status(
         resource_type="order",
         resource_id=order.id,
         details=f"Status transitioned from '{old_status}' to '{new_status}'",
+    )
+    db.add(audit)
+
+    db.commit()
+    db.refresh(order)
+    return order
+
+
+@router.put("/orders/{id}/tracking", response_model=OrderResponse)
+def admin_update_order_tracking(
+    id: str,
+    data: OrderTrackingUpdate,
+    admin: User = Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Admin endpoint to update order tracking numbers, courier partner,
+    estimated delivery, and delivery status.
+    Reflected immediately on customer tracking page.
+    """
+    order = db.query(Order).filter(Order.id == id).first()
+    if not order:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found.")
+
+    if data.status:
+        valid_statuses = [
+            "pending_payment", "paid", "confirmed", "processing",
+            "shipped", "in_transit", "out_for_delivery", "delivered",
+            "cancelled", "refunded",
+        ]
+        if data.status not in valid_statuses:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid status '{data.status}'. Must be one of {valid_statuses}",
+            )
+        order.status = data.status
+        if data.status in ["shipped", "in_transit", "out_for_delivery"] and not order.shipped_at:
+            order.shipped_at = datetime.now(timezone.utc)
+        elif data.status == "delivered" and not order.delivered_at:
+            order.delivered_at = datetime.now(timezone.utc)
+
+    if data.tracking_number is not None:
+        order.tracking_number = data.tracking_number.strip() if data.tracking_number.strip() else None
+    if data.courier_partner is not None:
+        order.courier_partner = data.courier_partner.strip() if data.courier_partner.strip() else None
+    if data.tracking_url is not None:
+        order.tracking_url = data.tracking_url.strip() if data.tracking_url.strip() else None
+    if data.estimated_delivery is not None:
+        order.estimated_delivery = data.estimated_delivery.strip() if data.estimated_delivery.strip() else None
+    if data.tracking_notes is not None:
+        order.tracking_notes = data.tracking_notes.strip() if data.tracking_notes.strip() else None
+
+    audit = AuditLog(
+        user_id=admin.id,
+        action="order.tracking_update",
+        resource_type="order",
+        resource_id=order.id,
+        details=f"Updated tracking: status='{order.status}', tracking_number='{order.tracking_number}', courier='{order.courier_partner}'",
     )
     db.add(audit)
 

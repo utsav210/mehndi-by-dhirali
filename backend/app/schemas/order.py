@@ -58,6 +58,56 @@ class OrderResponse(BaseModel):
     razorpay_order_id: Optional[str] = None
     items: List[OrderItemResponse] = []
     created_at: datetime
+    # Fulfillment & Tracking fields
+    tracking_number: Optional[str] = None
+    courier_partner: Optional[str] = None
+    tracking_url: Optional[str] = None
+    estimated_delivery: Optional[str] = None
+    shipped_at: Optional[datetime] = None
+    delivered_at: Optional[datetime] = None
+    tracking_notes: Optional[str] = None
+    guest_name: Optional[str] = None
+    guest_email: Optional[str] = None
+    guest_phone: Optional[str] = None
 
     class Config:
         from_attributes = True
+
+
+class OrderTrackingUpdate(BaseModel):
+    status: Optional[str] = None  # e.g. paid, processing, shipped, in_transit, out_for_delivery, delivered, cancelled
+    tracking_number: Optional[str] = None
+    courier_partner: Optional[str] = None
+    tracking_url: Optional[str] = None
+    estimated_delivery: Optional[str] = None
+    tracking_notes: Optional[str] = None
+
+
+class TrackingTimelineStep(BaseModel):
+    step_key: str
+    title: str
+    description: str
+    timestamp: Optional[datetime] = None
+    is_completed: bool
+    is_current: bool
+
+
+class OrderTrackingResponse(BaseModel):
+    order_number: str
+    status: str
+    status_label: str
+    tracking_number: Optional[str] = None
+    courier_partner: Optional[str] = None
+    tracking_url: Optional[str] = None
+    estimated_delivery: Optional[str] = None
+    created_at: datetime
+    shipped_at: Optional[datetime] = None
+    delivered_at: Optional[datetime] = None
+    tracking_notes: Optional[str] = None
+    timeline: List[TrackingTimelineStep] = []
+    items: List[OrderItemResponse] = []
+    recipient_name: Optional[str] = None
+    destination_city: Optional[str] = None
+    destination_state: Optional[str] = None
+    total_minor: int
+    currency: str = "INR"

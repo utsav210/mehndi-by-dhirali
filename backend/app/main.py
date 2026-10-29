@@ -2,6 +2,9 @@
 Main FastAPI Application Entry Point for Mehndi By Dhirali.
 Configured for local Uvicorn development and Vercel serverless deployment.
 """
+import os
+os.environ.setdefault("DISABLE_SQLALCHEMY_CEXT", "1")
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -266,11 +269,36 @@ def seed_initial_products():
         db.close()
 
 
+def ensure_order_tracking_columns():
+    """Ensures fulfillment and tracking columns exist on orders table across SQL dialects."""
+    try:
+        from sqlalchemy import inspect, text
+        insp = inspect(engine)
+        existing = [col["name"] for col in insp.get_columns("orders")]
+        new_cols = [
+            ("tracking_number", "VARCHAR(100)"),
+            ("courier_partner", "VARCHAR(100)"),
+            ("tracking_url", "VARCHAR(500)"),
+            ("estimated_delivery", "VARCHAR(100)"),
+            ("shipped_at", "TIMESTAMP"),
+            ("delivered_at", "TIMESTAMP"),
+            ("tracking_notes", "TEXT"),
+        ]
+        with engine.connect() as conn:
+            for col_name, col_type in new_cols:
+                if col_name not in existing:
+                    conn.execute(text(f"ALTER TABLE orders ADD COLUMN {col_name} {col_type};"))
+            conn.commit()
+    except Exception as e:
+        logger.warning("Order tracking columns check skipped", error=str(e))
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: Ensure tables exist
     try:
         Base.metadata.create_all(bind=engine)
+        ensure_order_tracking_columns()
         seed_initial_categories()
         seed_initial_products()
         logger.info("Database schema verified.")

@@ -16,8 +16,9 @@ interface MobileNavLink {
 
 const NAV_LINKS: MobileNavLink[] = [
   { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/about' },
   { label: 'Products', href: '/products' },
+  { label: 'Track Order', href: '/track' },
+  { label: 'About Us', href: '/about' },
   { label: 'Contact Us', href: '/contact' },
 ]
 

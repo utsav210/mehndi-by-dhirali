@@ -2,6 +2,9 @@
 Database session and connection engine.
 Compatible with Neon PostgreSQL (serverless pooler) and local SQLite fallback.
 """
+import os
+os.environ.setdefault("DISABLE_SQLALCHEMY_CEXT", "1")
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from app.core.config import settings

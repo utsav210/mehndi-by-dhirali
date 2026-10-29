@@ -93,3 +93,88 @@ def test_cannot_order_exceeding_stock(client, admin_headers):
     )
     assert res.status_code == 400
     assert "insufficient stock" in res.json()["detail"].lower()
+
+
+def test_order_tracking_lifecycle(client, admin_headers):
+    # 1. Create a product & place order
+    cat_res = client.post(
+        "/api/admin/categories",
+        json={"name": "Tracking Cones", "slug": "track-cones", "sort_order": 3},
+        headers=admin_headers,
+    )
+    prod_res = client.post(
+        "/api/admin/products",
+        json={
+            "name": "Trackable Cones Box",
+            "slug": "trackable-cones-box",
+            "category_id": cat_res.json()["id"],
+            "description": "Premium cones",
+            "price_minor": 9900,
+            "stock_quantity": 20,
+            "sku": "MBD-TRK-01",
+        },
+        headers=admin_headers,
+    )
+    order_res = client.post(
+        "/api/orders",
+        json={
+            "items": [{"product_id": prod_res.json()["id"], "quantity": 1}],
+            "email": "bride.tracking@example.com",
+            "phone": "+919988776655",
+            "shipping_address": {
+                "full_name": "Riya Sharma",
+                "phone": "+919988776655",
+                "address_line_1": "Flat 4B, Lotus Apartments",
+                "city": "Jaipur",
+                "state": "Rajasthan",
+                "postal_code": "302001",
+            },
+        },
+    )
+    assert order_res.status_code == 201
+    order_data = order_res.json()
+    order_id = order_data["id"]
+    order_number = order_data["order_number"]
+
+    # 2. Admin updates tracking details: sets status='shipped', tracking_number='DEL123456789', courier='Delhivery Express'
+    trk_update = client.put(
+        f"/api/admin/orders/{order_id}/tracking",
+        json={
+            "status": "shipped",
+            "tracking_number": "DEL123456789",
+            "courier_partner": "Delhivery Express",
+            "tracking_url": "https://www.delhivery.com/track/package/DEL123456789",
+            "estimated_delivery": "Within 2-3 business days",
+            "tracking_notes": "Departed Jaipur Hub",
+        },
+        headers=admin_headers,
+    )
+    assert trk_update.status_code == 200
+    updated = trk_update.json()
+    assert updated["tracking_number"] == "DEL123456789"
+    assert updated["courier_partner"] == "Delhivery Express"
+    assert updated["status"] == "shipped"
+
+    # 3. Customer tracks order by order_number and email
+    track_res = client.get(
+        f"/api/orders/track?order_number={order_number}&email_or_phone=bride.tracking@example.com"
+    )
+    assert track_res.status_code == 200
+    track_data = track_res.json()
+    assert track_data["order_number"] == order_number
+    assert track_data["tracking_number"] == "DEL123456789"
+    assert track_data["courier_partner"] == "Delhivery Express"
+    assert track_data["status"] == "shipped"
+    assert track_data["recipient_name"] == "Riya Sharma"
+    assert track_data["destination_city"] == "Jaipur"
+    assert len(track_data["timeline"]) == 6
+    # Shipped stage should be marked as completed/current
+    shipped_step = next(s for s in track_data["timeline"] if s["step_key"] == "shipped")
+    assert shipped_step["is_completed"] is True
+
+    # 4. Customer tracks order by tracking_number directly
+    track_by_awb = client.get(
+        f"/api/orders/track?tracking_number=DEL123456789&email_or_phone=+919988776655"
+    )
+    assert track_by_awb.status_code == 200
+    assert track_by_awb.json()["order_number"] == order_number

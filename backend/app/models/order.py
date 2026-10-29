@@ -3,7 +3,7 @@ Order and OrderItem models.
 All monetary totals are stored in integer minor units (paise).
 Historical product name, SKU, and unit price are snapshotted to preserve invoicing integrity.
 """
-from sqlalchemy import Column, String, Integer, ForeignKey, Text
+from sqlalchemy import Column, String, Integer, ForeignKey, Text, DateTime
 from sqlalchemy.orm import relationship
 from app.db.base import Base, UUIDMixin, TimestampMixin
 
@@ -34,6 +34,15 @@ class Order(Base, UUIDMixin, TimestampMixin):
     guest_name = Column(String(100), nullable=True)
     guest_phone = Column(String(20), nullable=True)
     notes = Column(Text, nullable=True)
+
+    # Shipment Tracking & Fulfillment
+    tracking_number = Column(String(100), index=True, nullable=True)
+    courier_partner = Column(String(100), nullable=True)
+    tracking_url = Column(String(500), nullable=True)
+    estimated_delivery = Column(String(100), nullable=True)
+    shipped_at = Column(DateTime(timezone=True), nullable=True)
+    delivered_at = Column(DateTime(timezone=True), nullable=True)
+    tracking_notes = Column(Text, nullable=True)
 
     # Relationships
     user = relationship("User", back_populates="orders")

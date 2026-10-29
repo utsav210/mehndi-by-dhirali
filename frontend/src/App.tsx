@@ -17,6 +17,7 @@ import WishlistPage from '@/pages/WishlistPage'
 import ComparePage from '@/pages/ComparePage'
 import AboutPage from '@/pages/AboutPage'
 import ContactPage from '@/pages/ContactPage'
+import TrackOrderPage from '@/pages/TrackOrderPage'
 import PrivacyPage from '@/pages/PrivacyPage'
 import TermsPage from '@/pages/TermsPage'
 import ShippingReturnsPage from '@/pages/ShippingReturnsPage'
@@ -55,6 +56,8 @@ export default function App() {
           <Route path="/payment/result" element={<PaymentResultPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/compare" element={<ComparePage />} />
+          <Route path="/track" element={<TrackOrderPage />} />
+          <Route path="/tracking" element={<TrackOrderPage />} />
 
           {/* Customer Authentication & Account */}
           <Route path="/login" element={<LoginPage />} />
