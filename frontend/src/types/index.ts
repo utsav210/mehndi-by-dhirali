@@ -51,6 +51,7 @@ export interface CartItem {
   quantity: number
   stock_quantity: number
   sku: string
+  weight_grams?: number | null
 }
 
 export interface User {
@@ -86,9 +87,11 @@ export interface Order {
   status: OrderStatus
   subtotal_minor: number
   shipping_minor: number
+  cod_fee_minor?: number | null
   discount_minor: number
   total_minor: number
   currency: string
+  payment_method?: string | null
   shipping_address: Address
   items: OrderItem[]
   razorpay_order_id: string | null

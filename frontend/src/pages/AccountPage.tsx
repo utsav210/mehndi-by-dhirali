@@ -3,26 +3,37 @@ import { Link, useNavigate } from 'react-router-dom'
 import PageLayout from '@/components/layout/PageLayout'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { useAuthStore } from '@/lib/auth-store'
-import { Package, MapPin, Heart, LogOut, Shield } from 'lucide-react'
+import { Package, MapPin, Truck, LogOut, Shield } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function AccountPage() {
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const isLoading = useAuthStore((s) => s.isLoading)
   const logout = useAuthStore((s) => s.logout)
 
   useEffect(() => {
     document.title = 'My Account — Mehndi By Dhirali'
-  }, [])
+    if (!isLoading && !isAuthenticated && !user) {
+      navigate('/login')
+    }
+  }, [user, isAuthenticated, isLoading, navigate])
 
   const handleLogout = async () => {
-    await logout()
-    navigate('/')
+    try {
+      await logout()
+      toast.success('Signed out successfully.')
+    } catch {
+      toast.success('Signed out.')
+    }
+    navigate('/login')
   }
 
   const currentUser = user || {
-    first_name: 'Valued',
-    last_name: 'Customer',
-    email: 'customer@mehndibydhirali.com',
+    first_name: 'Customer',
+    last_name: '',
+    email: '',
     role: 'customer',
   }
 
@@ -46,9 +57,11 @@ export default function AccountPage() {
               Account Overview
             </span>
             <h1 className="font-serif text-3xl font-bold text-bottle-green mt-1">
-              Namaste, {currentUser.first_name}!
+              Namaste, {currentUser.first_name || 'Henna Lover'}!
             </h1>
-            <p className="text-xs text-secondary-text mt-1">{currentUser.email}</p>
+            {currentUser.email && (
+              <p className="text-xs text-secondary-text mt-1">{currentUser.email}</p>
+            )}
           </div>
 
           <div className="flex items-center gap-3">
@@ -64,7 +77,7 @@ export default function AccountPage() {
             <button
               type="button"
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 rounded-full border border-subtle-border px-4 py-2 text-xs font-semibold text-secondary-text hover:text-error hover:border-error transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-subtle-border px-4 py-2 text-xs font-semibold text-secondary-text hover:text-red-700 hover:border-red-300 transition cursor-pointer"
             >
               <LogOut className="h-3.5 w-3.5" />
               <span>Sign Out</span>
@@ -76,7 +89,7 @@ export default function AccountPage() {
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
             to="/account/orders"
-            className="group rounded-2xl border border-subtle-border p-6 bg-white shadow-xs hover:shadow-card transition flex flex-col justify-between"
+            className="group rounded-2xl border border-subtle-border p-6 bg-white shadow-xs hover:shadow-card hover:border-bottle-green/30 transition flex flex-col justify-between"
           >
             <div>
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bottle-green/10 text-bottle-green mb-4 group-hover:scale-105 transition-transform">
@@ -86,7 +99,7 @@ export default function AccountPage() {
                 Order History
               </h3>
               <p className="text-xs text-secondary-text mt-1">
-                View your active shipments, delivery tracking, and past invoices.
+                View your purchases, historical receipts, and invoice summaries.
               </p>
             </div>
             <span className="mt-4 text-xs font-semibold text-antique-gold group-hover:underline">
@@ -95,22 +108,22 @@ export default function AccountPage() {
           </Link>
 
           <Link
-            to="/wishlist"
-            className="group rounded-2xl border border-subtle-border p-6 bg-white shadow-xs hover:shadow-card transition flex flex-col justify-between"
+            to="/track"
+            className="group rounded-2xl border border-subtle-border p-6 bg-white shadow-xs hover:shadow-card hover:border-bottle-green/30 transition flex flex-col justify-between"
           >
             <div>
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bottle-green/10 text-bottle-green mb-4 group-hover:scale-105 transition-transform">
-                <Heart className="h-6 w-6" />
+                <Truck className="h-6 w-6" />
               </div>
               <h3 className="font-serif text-lg font-semibold text-bottle-green">
-                My Wishlist
+                Live Shipment Tracking
               </h3>
               <p className="text-xs text-secondary-text mt-1">
-                Saved cones, henna kits, and accessories for later.
+                Real-time tracking with AWB number and courier partner delivery status.
               </p>
             </div>
             <span className="mt-4 text-xs font-semibold text-antique-gold group-hover:underline">
-              Explore wishlist →
+              Track active shipment →
             </span>
           </Link>
 
@@ -120,14 +133,14 @@ export default function AccountPage() {
                 <MapPin className="h-6 w-6" />
               </div>
               <h3 className="font-serif text-lg font-semibold text-bottle-green">
-                Saved Addresses
+                Delivery Addresses
               </h3>
               <p className="text-xs text-secondary-text mt-1">
-                Manage default delivery addresses for quick checkout.
+                Default delivery addresses are saved automatically during checkout.
               </p>
             </div>
             <span className="mt-4 text-xs text-secondary-text">
-              Updated automatically during checkout
+              Updated securely per order
             </span>
           </div>
         </div>

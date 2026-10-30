@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
+import { useAuthStore } from '@/lib/auth-store'
 
 // Pages
 import HomePage from '@/pages/HomePage'
@@ -41,6 +43,12 @@ const queryClient = new QueryClient({
 })
 
 export default function App() {
+  const fetchUser = useAuthStore((s) => s.fetchUser)
+
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

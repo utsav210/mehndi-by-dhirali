@@ -29,6 +29,7 @@ class OrderCreateRequest(BaseModel):
     shipping_address: AddressCreate
     email: EmailStr
     phone: str
+    payment_method: Optional[str] = "prepaid"  # "cod" or "prepaid"
     notes: Optional[str] = None
 
 
@@ -52,9 +53,11 @@ class OrderResponse(BaseModel):
     status: str
     subtotal_minor: int
     shipping_minor: int
+    cod_fee_minor: Optional[int] = 0
     discount_minor: int
     total_minor: int
     currency: str
+    payment_method: Optional[str] = "prepaid"
     razorpay_order_id: Optional[str] = None
     items: List[OrderItemResponse] = []
     created_at: datetime

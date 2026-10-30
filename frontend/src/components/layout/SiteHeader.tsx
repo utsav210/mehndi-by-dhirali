@@ -1,32 +1,38 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
-  Heart,
   Menu,
   Search,
   ShoppingBag,
   User,
   X,
-  GitCompare,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useCartStore } from '@/lib/cart-store'
+import { useAuthStore } from '@/lib/auth-store'
 import { MobileNavigation } from './MobileNavigation'
 
 export function SiteHeader() {
+  const navigate = useNavigate()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   const itemCount = useCartStore((s) => s.getItemCount())
   const openCart = useCartStore((s) => s.openCart)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
 
-  // Placeholder wishlist count — will be wired to a real store later
-  const wishlistCount = 0
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`)
+      setIsSearchOpen(false)
+    }
+  }
 
   return (
     <>
-      <header className="border-subtle-border sticky top-0 z-40 border-b bg-white">
+      <header className="border-subtle-border sticky top-0 z-40 border-b bg-white shadow-2xs">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-6">
           {/* ── Left: Hamburger (mobile) + Search ───────────────── */}
           <div className="flex items-center gap-3 lg:flex-1">
@@ -34,29 +40,29 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setIsMobileNavOpen(true)}
-              className="text-bottle-green -ml-1 rounded-md p-1.5 transition-colors hover:bg-warm-ivory lg:hidden"
+              className="text-bottle-green -ml-1 rounded-md p-1.5 transition-colors hover:bg-warm-ivory lg:hidden cursor-pointer"
               aria-label="Open navigation menu"
             >
               <Menu className="h-5 w-5" />
             </button>
 
             {/* Search bar — desktop */}
-            <div className="relative hidden lg:block lg:w-72">
+            <form onSubmit={handleSearchSubmit} className="relative hidden lg:block lg:w-72">
               <Search className="text-secondary-text pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
               <input
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products…"
-                className="border-subtle-border bg-warm-ivory/50 placeholder:text-secondary-text focus:border-bottle-green w-full rounded-full border py-2 pl-9 pr-4 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-bottle-green/30"
+                className="border-subtle-border bg-warm-ivory/50 placeholder:text-secondary-text focus:border-bottle-green w-full rounded-full border py-2 pl-9 pr-4 text-sm transition-colors focus:outline-hidden focus:ring-1 focus:ring-bottle-green/30"
               />
-            </div>
+            </form>
 
             {/* Search toggle — mobile */}
             <button
               type="button"
               onClick={() => setIsSearchOpen((o) => !o)}
-              className="text-bottle-green rounded-md p-1.5 transition-colors hover:bg-warm-ivory lg:hidden"
+              className="text-bottle-green rounded-md p-1.5 transition-colors hover:bg-warm-ivory lg:hidden cursor-pointer"
               aria-label={isSearchOpen ? 'Close search' : 'Open search'}
             >
               {isSearchOpen ? (
@@ -83,39 +89,21 @@ export function SiteHeader() {
 
           {/* ── Right: Action Icons ──────────────────────────────── */}
           <div className="flex items-center justify-end gap-1 sm:gap-2 lg:flex-1">
-            {/* Account */}
+            {/* Account (removed Wishlist & Compare as per user request) */}
             <Link
-              to="/account"
+              to={isAuthenticated ? '/account' : '/login'}
               className="text-bottle-green hidden rounded-md p-2 transition-colors hover:bg-warm-ivory sm:inline-flex"
-              aria-label="My account"
+              aria-label={isAuthenticated ? 'My account' : 'Sign in'}
+              title={isAuthenticated ? 'My Account' : 'Sign In'}
             >
               <User className="h-5 w-5" />
-            </Link>
-
-            {/* Wishlist */}
-            <Link
-              to="/wishlist"
-              className="text-bottle-green relative hidden rounded-md p-2 transition-colors hover:bg-warm-ivory sm:inline-flex"
-              aria-label={`Wishlist${wishlistCount > 0 ? ` (${wishlistCount} items)` : ''}`}
-            >
-              <Heart className="h-5 w-5" />
-              {wishlistCount > 0 && <IconBadge count={wishlistCount} />}
-            </Link>
-
-            {/* Compare */}
-            <Link
-              to="/compare"
-              className="text-bottle-green hidden rounded-md p-2 transition-colors hover:bg-warm-ivory md:inline-flex"
-              aria-label="Compare products"
-            >
-              <GitCompare className="h-5 w-5" />
             </Link>
 
             {/* Cart */}
             <button
               type="button"
               onClick={openCart}
-              className="text-bottle-green relative rounded-md p-2 transition-colors hover:bg-warm-ivory"
+              className="text-bottle-green relative rounded-md p-2 transition-colors hover:bg-warm-ivory cursor-pointer"
               aria-label={`Shopping bag${itemCount > 0 ? ` (${itemCount} items)` : ''}`}
             >
               <ShoppingBag className="h-5 w-5" />
@@ -132,16 +120,16 @@ export function SiteHeader() {
           )}
         >
           <div className="px-4 py-2">
-            <div className="relative">
+            <form onSubmit={handleSearchSubmit} className="relative">
               <Search className="text-secondary-text pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
               <input
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products…"
-                className="border-subtle-border bg-warm-ivory/50 placeholder:text-secondary-text focus:border-bottle-green w-full rounded-full border py-2 pl-9 pr-4 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-bottle-green/30"
+                placeholder="Search cones, powders, kits…"
+                className="border-subtle-border bg-warm-ivory/50 placeholder:text-secondary-text focus:border-bottle-green w-full rounded-full border py-2 pl-9 pr-4 text-sm transition-colors focus:outline-hidden focus:ring-1 focus:ring-bottle-green/30"
               />
-            </div>
+            </form>
           </div>
         </div>
       </header>

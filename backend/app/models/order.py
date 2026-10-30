@@ -22,9 +22,11 @@ class Order(Base, UUIDMixin, TimestampMixin):
 
     subtotal_minor = Column(Integer, nullable=False)
     shipping_minor = Column(Integer, default=0, nullable=False)
+    cod_fee_minor = Column(Integer, default=0, nullable=True)
     discount_minor = Column(Integer, default=0, nullable=False)
     total_minor = Column(Integer, nullable=False)
     currency = Column(String(10), default="INR", nullable=False)
+    payment_method = Column(String(30), default="prepaid", nullable=True)
 
     # Razorpay tracking
     razorpay_order_id = Column(String(100), unique=True, index=True, nullable=True)

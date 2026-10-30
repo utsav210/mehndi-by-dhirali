@@ -47,11 +47,62 @@ def test_create_order_pricing_calculated_by_server(client, admin_headers):
 
     # Subtotal must be strictly 2 * 25000 = 50000 paise (₹500.00)
     assert order_data["subtotal_minor"] == 50000
-    # Shipping for orders < ₹999 is ₹70 (7000 paise)
-    assert order_data["shipping_minor"] == 7000
-    assert order_data["total_minor"] == 57000
+    # Shipping starts with ₹80 (8000 paise)
+    assert order_data["shipping_minor"] == 8000
+    assert order_data["total_minor"] == 58000
     assert order_data["status"] == "pending_payment"
     assert order_data["order_number"].startswith("MBD-")
+
+
+def test_create_order_cash_on_delivery(client, admin_headers):
+    # Setup product
+    cat_res = client.post(
+        "/api/admin/categories",
+        json={"name": "Henna Powder", "slug": "henna-powder", "sort_order": 2},
+        headers=admin_headers,
+    )
+    prod_res = client.post(
+        "/api/admin/products",
+        json={
+            "name": "100 gm Mehndi Powder",
+            "slug": "100-gm-powder-test",
+            "category_id": cat_res.json()["id"],
+            "description": "Test powder",
+            "price_minor": 9900,  # ₹99.00
+            "stock_quantity": 30,
+            "weight_grams": 100,
+            "sku": "MBD-PWD-01",
+        },
+        headers=admin_headers,
+    )
+    prod_id = prod_res.json()["id"]
+
+    order_payload = {
+        "items": [{"product_id": prod_id, "quantity": 1}],
+        "email": "cod.buyer@example.com",
+        "phone": "+919876543210",
+        "payment_method": "cod",
+        "shipping_address": {
+            "full_name": "Kavita Rao",
+            "phone": "+919876543210",
+            "address_line_1": "Sector 14, Ring Road",
+            "city": "Ahmedabad",
+            "state": "Gujarat",
+            "postal_code": "380015",
+            "country": "India",
+        },
+    }
+
+    res = client.post("/api/orders", json=order_payload)
+    assert res.status_code == 201
+    data = res.json()
+    assert data["subtotal_minor"] == 9900
+    assert data["shipping_minor"] == 8000  # Base ₹80
+    assert data["cod_fee_minor"] == 3000   # COD handling fee ₹30
+    assert data["total_minor"] == 9900 + 8000 + 3000  # 20900 (₹209)
+    assert data["payment_method"] == "cod"
+    assert data["status"] == "confirmed"
+    assert data["razorpay_order_id"] is None
 
 
 def test_cannot_order_exceeding_stock(client, admin_headers):

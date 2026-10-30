@@ -79,6 +79,7 @@ export default function ProductDetailPage() {
       quantity,
       stock_quantity: stockQuantity,
       sku: product?.sku || 'MBD-CONE-01',
+      weight_grams: product?.weight_grams,
     })
     toast.success(`Added ${quantity} × ${productTitle} to your cart!`)
     openCart()

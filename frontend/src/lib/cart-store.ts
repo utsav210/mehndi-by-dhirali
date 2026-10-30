@@ -18,6 +18,8 @@ interface CartState {
   // Computed
   getItemCount: () => number
   getSubtotal: () => number
+  getTotalWeightGrams: () => number
+  getShippingMinor: () => number
   getItem: (productId: string) => CartItem | undefined
 }
 
@@ -40,7 +42,11 @@ export const useCartStore = create<CartState>()(
               existing.quantity + item.quantity,
               existing.stock_quantity
             )
-            updatedItems[existingIndex] = { ...existing, quantity: newQuantity }
+            updatedItems[existingIndex] = {
+              ...existing,
+              quantity: newQuantity,
+              weight_grams: item.weight_grams ?? existing.weight_grams,
+            }
             return { items: updatedItems }
           }
 
@@ -85,6 +91,38 @@ export const useCartStore = create<CartState>()(
           (total, item) => total + item.price_minor * item.quantity,
           0
         )
+      },
+
+      getTotalWeightGrams: () => {
+        return get().items.reduce((total, item) => {
+          const itemWeight = item.weight_grams ?? 100
+          return total + itemWeight * item.quantity
+        }, 0)
+      },
+
+      getShippingMinor: () => {
+        const items = get().items
+        if (items.length === 0) return 0
+
+        // Check if any product has free shipping (Artist Kit + FREE shipping)
+        const hasFreeShipping = items.some(
+          (i) =>
+            i.product_slug === 'mehndi-artist-kit' ||
+            i.product_name.toLowerCase().includes('free shipping')
+        )
+        if (hasFreeShipping) {
+          return 0
+        }
+
+        const totalWeight = get().getTotalWeightGrams()
+        // Base shipping starts with ₹80 (8000 paise) for up to 0.5 kg (500g)
+        if (totalWeight <= 500) {
+          return 8000
+        }
+
+        // Tiered weight: every additional 0.5 kg (500g) adds ₹30
+        const extraBrackets = Math.ceil((totalWeight - 500) / 500)
+        return 8000 + extraBrackets * 3000
       },
 
       getItem: (productId: string) => {

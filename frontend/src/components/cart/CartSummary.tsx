@@ -20,8 +20,6 @@ interface CartSummaryProps {
   className?: string
 }
 
-const FREE_SHIPPING_THRESHOLD = 99900 // ₹999 in paise
-
 const trustBadges = [
   { icon: Shield, label: 'Secure Checkout' },
   { icon: Truck, label: 'Fast Delivery' },
@@ -38,20 +36,13 @@ export default function CartSummary({
   className,
 }: CartSummaryProps) {
   const getSubtotal = useCartStore((s) => s.getSubtotal)
+  const getShippingMinor = useCartStore((s) => s.getShippingMinor)
   const items = useCartStore((s) => s.items)
 
   const subtotal = getSubtotal()
-  const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD
-  const shippingDisplay =
-    shippingMinor != null
-      ? shippingMinor === 0
-        ? 'Free'
-        : formatPrice(shippingMinor)
-      : isFreeShipping
-        ? 'Free'
-        : 'Calculated at checkout'
+  const shippingAmount = shippingMinor != null ? shippingMinor : getShippingMinor()
+  const shippingDisplay = shippingAmount === 0 ? 'Free' : formatPrice(shippingAmount)
 
-  const shippingAmount = shippingMinor ?? 0
   const total = subtotal - discountMinor + shippingAmount
 
   if (items.length === 0) return null

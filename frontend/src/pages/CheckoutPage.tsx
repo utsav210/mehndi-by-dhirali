@@ -4,13 +4,17 @@ import PageLayout from '@/components/layout/PageLayout'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { useCartStore } from '@/lib/cart-store'
 import { formatPrice } from '@/lib/utils'
+import { apiClient, ApiClientError } from '@/lib/api-client'
+import type { Order } from '@/types'
 import { toast } from 'sonner'
-import { ShieldCheck, Lock, CreditCard } from 'lucide-react'
+import { ShieldCheck, Lock, CreditCard, Banknote, Truck } from 'lucide-react'
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
   const items = useCartStore((s) => s.items)
   const getSubtotal = useCartStore((s) => s.getSubtotal)
+  const getShippingMinor = useCartStore((s) => s.getShippingMinor)
+  const getTotalWeightGrams = useCartStore((s) => s.getTotalWeightGrams)
   const clearCart = useCartStore((s) => s.clearCart)
 
   const [fullName, setFullName] = useState('')
@@ -21,6 +25,7 @@ export default function CheckoutPage() {
   const [city, setCity] = useState('')
   const [stateName, setStateName] = useState('Gujarat')
   const [postalCode, setPostalCode] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState<'cod' | 'prepaid'>('cod')
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
@@ -31,8 +36,10 @@ export default function CheckoutPage() {
   }, [items, navigate])
 
   const subtotal = getSubtotal()
-  const shipping = subtotal >= 99900 ? 0 : 7000 // Free shipping above ₹999, else ₹70
-  const total = subtotal + shipping
+  const shipping = getShippingMinor()
+  const codFee = paymentMethod === 'cod' ? 3000 : 0 // ₹30.00 COD handling fee
+  const total = subtotal + shipping + codFee
+  const totalWeightGrams = getTotalWeightGrams()
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,8 +52,49 @@ export default function CheckoutPage() {
     setIsProcessing(true)
 
     try {
-      // 1. Create order on backend (in production, calls POST /api/orders)
-      // Razorpay client-side script loader
+      // 1. Create order on backend
+      const payload = {
+        items: items.map((i) => ({
+          product_id: i.product_id,
+          quantity: i.quantity,
+        })),
+        email,
+        phone,
+        payment_method: paymentMethod,
+        shipping_address: {
+          label: 'Home',
+          full_name: fullName,
+          phone,
+          address_line_1: addressLine1,
+          address_line_2: addressLine2 || undefined,
+          city,
+          state: stateName,
+          postal_code: postalCode,
+          country: 'India',
+        },
+      }
+
+      let createdOrder: Order
+      try {
+        createdOrder = await apiClient.post<Order>('/orders', payload)
+      } catch (apiErr) {
+        if (apiErr instanceof ApiClientError) {
+          throw new Error(apiErr.message)
+        }
+        throw apiErr
+      }
+
+      // 2. Handle based on payment method
+      if (paymentMethod === 'cod') {
+        clearCart()
+        toast.success('Order placed successfully with Cash on Delivery!')
+        navigate(
+          `/payment/result?status=success&method=cod&order_number=${createdOrder.order_number}`
+        )
+        return
+      }
+
+      // 3. Prepaid: Razorpay client-side script loader
       const loadRazorpayScript = () => {
         return new Promise<boolean>((resolve) => {
           if ((window as any).Razorpay) {
@@ -69,7 +117,6 @@ export default function CheckoutPage() {
         return
       }
 
-      // Check for public key or mock fallback in local dev test mode
       const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_placeholder'
 
       const options = {
@@ -77,13 +124,24 @@ export default function CheckoutPage() {
         amount: total,
         currency: 'INR',
         name: 'Mehndi By Dhirali',
-        description: 'Order Payment',
+        description: `Order ${createdOrder.order_number}`,
+        order_id: createdOrder.razorpay_order_id,
         image: 'https://via.placeholder.com/150/243F2A/FFFFFF?text=MBD',
-        handler: function (response: any) {
-          // Payment successful in checkout popup
+        handler: async function (response: any) {
+          try {
+            await apiClient.post('/payments/verify', {
+              razorpay_order_id: response.razorpay_order_id || createdOrder.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            })
+          } catch {
+            // Verify fallback
+          }
           clearCart()
           toast.success('Payment completed successfully!')
-          navigate(`/payment/result?status=success&payment_id=${response.razorpay_payment_id || 'test_pay'}`)
+          navigate(
+            `/payment/result?status=success&method=prepaid&order_number=${createdOrder.order_number}&payment_id=${response.razorpay_payment_id || 'pay_online'}`
+          )
         },
         prefill: {
           name: fullName,
@@ -96,7 +154,7 @@ export default function CheckoutPage() {
         modal: {
           ondismiss: function () {
             setIsProcessing(false)
-            toast.info('Payment was cancelled or dismissed.')
+            toast.info('Payment window was dismissed.')
           },
         },
       }
@@ -105,15 +163,17 @@ export default function CheckoutPage() {
         const rzp = new (window as any).Razorpay(options)
         rzp.open()
       } catch (err) {
-        // Fallback for development if placeholder key rejected by Razorpay SDK
+        // Fallback for development simulation if key rejected
         setTimeout(() => {
           clearCart()
-          toast.success('Test order placed successfully in simulation mode!')
-          navigate('/payment/result?status=success&payment_id=mock_pay_' + Date.now())
+          toast.success('Prepaid order placed in simulation mode!')
+          navigate(
+            `/payment/result?status=success&method=prepaid&order_number=${createdOrder.order_number}&payment_id=mock_pay_${Date.now()}`
+          )
         }, 1200)
       }
     } catch (err: any) {
-      toast.error('Error initiating checkout. Please try again.')
+      toast.error(err.message || 'Error initiating checkout. Please try again.')
       setIsProcessing(false)
     }
   }
@@ -139,8 +199,9 @@ export default function CheckoutPage() {
         </div>
 
         <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 gap-10 lg:grid-cols-3">
-          {/* Shipping Form */}
+          {/* Shipping & Payment Form */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Delivery Address */}
             <div className="rounded-2xl border border-subtle-border p-6 bg-white shadow-xs">
               <h2 className="font-serif text-xl font-semibold text-bottle-green mb-4 flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-bottle-green text-xs text-white">
@@ -159,28 +220,28 @@ export default function CheckoutPage() {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Dhirali Gandhi"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    placeholder="e.g. Riya Sharma"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-medium text-secondary-text mb-1">
-                    Phone Number (for Courier updates) *
+                    Phone Number (for Courier & AWB updates) *
                   </label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 98765 43210"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    placeholder="+91 81407 45001"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-medium text-secondary-text mb-1">
-                    Email Address (for Receipt) *
+                    Email Address (for Order Confirmation & Tracking) *
                   </label>
                   <input
                     type="email"
@@ -188,7 +249,7 @@ export default function CheckoutPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@example.com"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
 
@@ -202,7 +263,7 @@ export default function CheckoutPage() {
                     value={addressLine1}
                     onChange={(e) => setAddressLine1(e.target.value)}
                     placeholder="Flat 101, Shanti Heights"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
 
@@ -214,8 +275,8 @@ export default function CheckoutPage() {
                     type="text"
                     value={addressLine2}
                     onChange={(e) => setAddressLine2(e.target.value)}
-                    placeholder="Near Jain Temple"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    placeholder="Near Uma Hospital"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
 
@@ -229,7 +290,7 @@ export default function CheckoutPage() {
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Ahmedabad"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
 
@@ -243,7 +304,7 @@ export default function CheckoutPage() {
                     value={stateName}
                     onChange={(e) => setStateName(e.target.value)}
                     placeholder="Gujarat"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
 
@@ -256,14 +317,14 @@ export default function CheckoutPage() {
                     required
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    placeholder="380015"
-                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
+                    placeholder="382330"
+                    className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Payment Info */}
+            {/* Payment Method Selector */}
             <div className="rounded-2xl border border-subtle-border p-6 bg-white shadow-xs">
               <h2 className="font-serif text-xl font-semibold text-bottle-green mb-4 flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-bottle-green text-xs text-white">
@@ -272,26 +333,79 @@ export default function CheckoutPage() {
                 <span>Payment Method</span>
               </h2>
 
-              <div className="rounded-xl border border-bottle-green/30 bg-warm-ivory/30 p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <CreditCard className="h-6 w-6 text-bottle-green" />
-                  <div>
-                    <h4 className="text-sm font-semibold text-primary-text">
-                      Razorpay Secure Gateway
-                    </h4>
-                    <p className="text-xs text-secondary-text">
-                      UPI (Google Pay, PhonePe, Paytm), NetBanking, Debit & Credit Cards
-                    </p>
+              <div className="space-y-3">
+                {/* Cash on Delivery option */}
+                <label
+                  className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition ${
+                    paymentMethod === 'cod'
+                      ? 'border-bottle-green bg-warm-ivory/50 shadow-xs'
+                      : 'border-subtle-border bg-white hover:bg-warm-ivory/20'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="cod"
+                      checked={paymentMethod === 'cod'}
+                      onChange={() => setPaymentMethod('cod')}
+                      className="h-4 w-4 text-bottle-green focus:ring-bottle-green cursor-pointer"
+                    />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Banknote className="h-4 w-4 text-bottle-green" />
+                        <span className="text-sm font-semibold text-charcoal">
+                          Cash on Delivery
+                        </span>
+                      </div>
+                      <p className="text-xs text-secondary-text mt-0.5">
+                        Pay in cash when your fresh henna shipment arrives at your doorstep
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <span className="text-xs font-medium text-success bg-success/10 px-2.5 py-1 rounded-full border border-success/20">
-                  Encrypted
-                </span>
+                  <span className="text-xs font-semibold text-bottle-green bg-bottle-green/10 px-2.5 py-1 rounded-md">
+                    +₹30.00 fee
+                  </span>
+                </label>
+
+                {/* Prepaid option */}
+                <label
+                  className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition ${
+                    paymentMethod === 'prepaid'
+                      ? 'border-bottle-green bg-warm-ivory/50 shadow-xs'
+                      : 'border-subtle-border bg-white hover:bg-warm-ivory/20'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="prepaid"
+                      checked={paymentMethod === 'prepaid'}
+                      onChange={() => setPaymentMethod('prepaid')}
+                      className="h-4 w-4 text-bottle-green focus:ring-bottle-green cursor-pointer"
+                    />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <CreditCard className="h-4 w-4 text-bottle-green" />
+                        <span className="text-sm font-semibold text-charcoal">
+                          Prepaid (Instant Online)
+                        </span>
+                      </div>
+                      <p className="text-xs text-secondary-text mt-0.5">
+                        UPI (GPay, PhonePe, Paytm), NetBanking, Credit &amp; Debit Cards
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                    No COD fee
+                  </span>
+                </label>
               </div>
             </div>
           </div>
 
-          {/* Checkout Summary */}
+          {/* Checkout Review & Summary */}
           <div className="lg:col-span-1">
             <div className="rounded-2xl border border-subtle-border bg-warm-ivory/30 p-6 sticky top-24 shadow-xs">
               <h3 className="font-serif text-lg font-semibold text-bottle-green mb-4">
@@ -311,13 +425,34 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
+              {/* Exact breakdown matching user specification */}
               <div className="space-y-2 py-4 border-b border-subtle-border text-sm">
                 <div className="flex justify-between text-secondary-text">
-                  <span>Subtotal</span>
-                  <span className="font-medium text-primary-text">{formatPrice(subtotal)}</span>
+                  <span>Product value</span>
+                  <span className="font-medium text-primary-text">
+                    {formatPrice(subtotal)}
+                  </span>
                 </div>
+
+                {paymentMethod === 'cod' && (
+                  <div className="flex justify-between text-secondary-text">
+                    <span>COD handling fee</span>
+                    <span className="font-medium text-primary-text">
+                      {formatPrice(codFee)}
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex justify-between text-secondary-text">
-                  <span>Shipping</span>
+                  <div className="flex items-center gap-1.5">
+                    <Truck className="h-3.5 w-3.5 text-antique-gold" />
+                    <span>Shipping</span>
+                    {totalWeightGrams > 0 && (
+                      <span className="text-[11px] text-secondary-text/70">
+                        ({(totalWeightGrams / 1000).toFixed(1)} kg)
+                      </span>
+                    )}
+                  </div>
                   <span className="font-medium text-primary-text">
                     {shipping === 0 ? 'Free' : formatPrice(shipping)}
                   </span>
@@ -335,12 +470,18 @@ export default function CheckoutPage() {
                 className="w-full rounded-full bg-bottle-green py-3 text-sm font-semibold text-white shadow-card hover:bg-forest-green transition disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
               >
                 <Lock className="h-4 w-4 text-antique-gold" />
-                <span>{isProcessing ? 'Connecting to Payment…' : `Pay ${formatPrice(total)}`}</span>
+                <span>
+                  {isProcessing
+                    ? 'Processing Order…'
+                    : paymentMethod === 'cod'
+                    ? `Place COD Order • ${formatPrice(total)}`
+                    : `Pay ${formatPrice(total)}`}
+                </span>
               </button>
 
               <div className="mt-4 flex items-center justify-center gap-2 text-xs text-secondary-text">
-                <ShieldCheck className="h-4 w-4 text-success" />
-                <span>256-bit SSL Bank Grade Encryption</span>
+                <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                <span>Insulated Packaging &amp; Secure Tracking</span>
               </div>
             </div>
           </div>

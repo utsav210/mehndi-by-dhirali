@@ -3,10 +3,10 @@ import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const ANNOUNCEMENTS = [
-  '✦ Free Shipping on Orders Above ₹999 ✦',
-  '✦ Premium Quality Natural Mehndi ✦',
-  '✦ 100% Organic Ingredients ✦',
-  '✦ Handcrafted with Love in India ✦',
+  '✦ Free Shipping on Artist Kit & Large Orders ✦',
+  '✦ Cash on Delivery & Fast Doorstep Dispatch Available ✦',
+  '✦ 100% Organic Rajasthani Sojat Henna Cones ✦',
+  '✦ Join Our Free WhatsApp Community Classes ✦',
 ] as const
 
 const ROTATE_INTERVAL_MS = 4000

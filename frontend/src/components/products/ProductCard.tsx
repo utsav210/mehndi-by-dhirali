@@ -41,6 +41,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       quantity: 1,
       stock_quantity: product.stock_quantity,
       sku: product.sku,
+      weight_grams: product.weight_grams,
     })
     openCart()
   }

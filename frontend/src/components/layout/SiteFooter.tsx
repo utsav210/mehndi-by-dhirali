@@ -1,14 +1,12 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Mail,
-  Phone,
   MapPin,
-  Send,
+  Phone,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-/* ─── Social SVG Icons ──────────────────────────────────────────────── */
+/* ─── Social SVG Icons ─────────────────────────────────────────────── */
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -20,19 +18,19 @@ function InstagramIcon({ className }: { className?: string }) {
   )
 }
 
-function FacebookIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn('h-5 w-5', className)}>
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-    </svg>
-  )
-}
-
 function YoutubeIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn('h-5 w-5', className)}>
       <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
       <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+    </svg>
+  )
+}
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn('h-5 w-5', className)}>
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
     </svg>
   )
 }
@@ -67,78 +65,55 @@ interface SocialLink {
 
 const SOCIAL_LINKS: SocialLink[] = [
   {
-    label: 'Instagram',
-    href: 'https://instagram.com/',
+    label: 'Instagram (@mehndi_by_dhirali07)',
+    href: 'https://www.instagram.com/mehndi_by_dhirali07/',
     icon: InstagramIcon,
   },
   {
-    label: 'Facebook',
-    href: 'https://facebook.com/',
-    icon: FacebookIcon,
-  },
-  {
-    label: 'YouTube',
-    href: 'https://youtube.com/',
+    label: 'YouTube (@mehndi_by_dhirali07)',
+    href: 'https://www.youtube.com/channel/UCmJikx0yiVrpqzps213L-KA',
     icon: YoutubeIcon,
   },
   {
-    label: 'Pinterest',
-    href: 'https://pinterest.com/',
-    icon: PinterestIcon,
+    label: 'WhatsApp Support (+91 81407 45001)',
+    href: 'https://wa.me/918140745001',
+    icon: WhatsAppIcon,
   },
 ]
 
 /* ─── Component ────────────────────────────────────────────────────── */
 
 export function SiteFooter() {
-  const [email, setEmail] = useState('')
   const currentYear = new Date().getFullYear()
-
-  const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    // TODO: Wire to newsletter API
-    setEmail('')
-  }
 
   return (
     <footer className="bg-bottle-green text-warm-ivory" role="contentinfo">
-      {/* ── Newsletter Section ──────────────────────────────────── */}
-      <div className="border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-4 py-10 lg:px-6">
+      {/* ── WhatsApp Community Banner (Replaces repeated email subscribe) ── */}
+      <div className="border-b border-white/10 bg-forest-green/40">
+        <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
           <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
-            <div className="max-w-md">
-              <h3 className="font-serif text-xl font-semibold text-white sm:text-2xl">
-                Join Our Community
+            <div className="max-w-xl">
+              <span className="text-xs font-semibold uppercase tracking-widest text-antique-gold flex items-center gap-1.5 justify-center md:justify-start mb-1">
+                <span>✦</span>
+                <span>Free Classes &amp; Workshop Updates</span>
+              </span>
+              <h3 className="font-serif text-xl font-bold text-white sm:text-2xl">
+                Join Our WhatsApp Community Group
               </h3>
-              <p className="text-warm-ivory/70 mt-1 text-sm">
-                Subscribe for exclusive offers, mehndi tips &amp; new product launches.
+              <p className="text-warm-ivory/80 mt-1 text-xs sm:text-sm">
+                Join our exclusive community group for FREE mehndi classes, tips, and live workshop updates.
               </p>
             </div>
 
-            <form
-              onSubmit={handleNewsletterSubmit}
-              className="flex w-full max-w-sm gap-2"
+            <a
+              href="https://chat.whatsapp.com/LVmXHBXQbzH35cg719kxy6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 text-sm shadow-md transition-all hover:scale-105 shrink-0"
             >
-              <label htmlFor="footer-newsletter" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="footer-newsletter"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address"
-                className="flex-1 rounded-md border border-white/20 bg-white/10 px-4 py-2.5 text-sm text-white placeholder:text-white/50 focus:border-antique-gold focus:outline-none focus:ring-1 focus:ring-antique-gold/40"
-              />
-              <button
-                type="submit"
-                className="bg-antique-gold hover:bg-antique-gold/90 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white transition-colors"
-              >
-                <Send className="h-4 w-4" />
-                <span className="hidden sm:inline">Subscribe</span>
-              </button>
-            </form>
+              <WhatsAppIcon className="h-5 w-5" />
+              <span>Join WhatsApp Community</span>
+            </a>
           </div>
         </div>
       </div>
@@ -166,8 +141,7 @@ export function SiteFooter() {
               </span>
             </Link>
             <p className="text-warm-ivory/70 mt-4 max-w-xs text-sm leading-relaxed">
-              Crafting the finest natural mehndi products with love, tradition
-              and a commitment to quality since generations.
+              Crafting 100% pure organic Rajasthani Sojat henna cones, powders, oils, and bridal kits with artisanal dedication.
             </p>
           </div>
 
@@ -217,42 +191,50 @@ export function SiteFooter() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="mailto:hello@mehndibydhirali.com"
-                  className="text-warm-ivory/70 flex items-start gap-2.5 text-sm transition-colors hover:text-white"
+                  href="mailto:dhiralidarji2103@gmail.com"
+                  className="text-warm-ivory/80 flex items-start gap-2.5 text-xs transition-colors hover:text-white"
                 >
-                  <Mail className="mt-0.5 h-4 w-4 shrink-0" />
-                  hello@mehndibydhirali.com
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-antique-gold" />
+                  <span>dhiralidarji2103@gmail.com</span>
                 </a>
+              </li>
+              <li>
+                <div className="text-warm-ivory/80 flex items-start gap-2.5 text-xs">
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-antique-gold" />
+                  <div className="flex flex-col">
+                    <a href="tel:+918140745001" className="hover:text-white">+91 81407 45001</a>
+                    <a href="tel:+919662746292" className="hover:text-white">+91 96627 46292</a>
+                  </div>
+                </div>
               </li>
               <li>
                 <a
-                  href="tel:+919876543210"
-                  className="text-warm-ivory/70 flex items-start gap-2.5 text-sm transition-colors hover:text-white"
+                  href="https://share.google/00ZRrLHQcSv6uUyWW"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-warm-ivory/80 flex items-start gap-2.5 text-xs transition-colors hover:text-white group"
                 >
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0" />
-                  +91 98765 43210
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-antique-gold" />
+                  <span>
+                    Mehndi By Dhirali, Ambalalpark Society, 38, near Uma Hospital, Nava Naroda, Ahmedabad, Gujarat 382330
+                  </span>
                 </a>
-              </li>
-              <li>
-                <span className="text-warm-ivory/70 flex items-start gap-2.5 text-sm">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-                  Mumbai, Maharashtra, India
-                </span>
               </li>
             </ul>
 
-            {/* Social */}
-            <div className="mt-6 flex items-center gap-3">
+            {/* Social Icons */}
+            <div className="mt-5 flex items-center gap-2.5">
               {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-warm-ivory/60 rounded-md p-1.5 transition-colors hover:bg-white/10 hover:text-white"
+                  className="text-warm-ivory/70 rounded-full bg-white/10 p-2 transition-all hover:bg-antique-gold hover:text-forest-green"
                   aria-label={social.label}
+                  title={social.label}
                 >
-                  <social.icon className="h-5 w-5" />
+                  <social.icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
@@ -269,40 +251,18 @@ export function SiteFooter() {
         </div>
       </div>
 
-      {/* ── Bottom Bar ──────────────────────────────────────────── */}
-      <div className="mx-auto max-w-7xl px-4 py-5 lg:px-6">
-        <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+      {/* ── Copyright & Credits ──────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-4 py-6 lg:px-6">
+        <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
           <p className="text-warm-ivory/50 text-xs">
-            © {currentYear} Mehndi By Dhirali. All rights reserved.
+            &copy; {currentYear} Mehndi By Dhirali. All rights reserved. Artisanal organic henna.
           </p>
+
           <p className="text-warm-ivory/40 text-xs">
-            Handcrafted with ♥ in India
+            Crafted with passion in Ahmedabad, Gujarat
           </p>
         </div>
       </div>
     </footer>
-  )
-}
-
-/* ─── Pinterest Icon (not available in Lucide) ─────────────────────── */
-
-function PinterestIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn('h-5 w-5', className)}
-      aria-hidden="true"
-    >
-      <line x1="12" y1="17" x2="12" y2="22" />
-      <path d="M8 22l4-5 4 5" />
-      <circle cx="12" cy="10" r="7" />
-      <path d="M9.5 7.5C10 6 12 5 12 5s2 1 2.5 2.5C15 9 14 11 12 12c-2-1-3-3-2.5-4.5z" />
-    </svg>
   )
 }

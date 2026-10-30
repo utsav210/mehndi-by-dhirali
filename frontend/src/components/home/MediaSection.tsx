@@ -1,4 +1,4 @@
-import { Play, BookOpen, Video } from 'lucide-react'
+import { Play, BookOpen, Video, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface TutorialItem {
@@ -7,7 +7,10 @@ interface TutorialItem {
   category: string
   duration: string
   tag: string
+  url: string
 }
+
+const DHIRALI_YOUTUBE_CHANNEL = 'https://www.youtube.com/channel/UCmJikx0yiVrpqzps213L-KA'
 
 const TUTORIALS: TutorialItem[] = [
   {
@@ -16,6 +19,7 @@ const TUTORIALS: TutorialItem[] = [
     category: 'Technique',
     duration: '6 mins',
     tag: 'Beginner',
+    url: DHIRALI_YOUTUBE_CHANNEL,
   },
   {
     id: '2',
@@ -23,6 +27,7 @@ const TUTORIALS: TutorialItem[] = [
     category: 'Design',
     duration: '14 mins',
     tag: 'Intermediate',
+    url: DHIRALI_YOUTUBE_CHANNEL,
   },
   {
     id: '3',
@@ -30,6 +35,7 @@ const TUTORIALS: TutorialItem[] = [
     category: 'Stain Care',
     duration: '5 mins',
     tag: 'Essential',
+    url: DHIRALI_YOUTUBE_CHANNEL,
   },
 ]
 
@@ -55,12 +61,15 @@ export default function MediaSection({ className }: { className?: string }) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {TUTORIALS.map((tutorial) => (
-            <div
+            <a
               key={tutorial.id}
-              className="group rounded-2xl border border-subtle-border overflow-hidden bg-warm-ivory/20 shadow-xs hover:shadow-card transition-all"
+              href={tutorial.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-2xl border border-subtle-border overflow-hidden bg-warm-ivory/20 shadow-xs hover:shadow-card hover:border-antique-gold/50 transition-all block cursor-pointer"
             >
-              {/* Media Thumbnail Placeholder with Play button */}
-              <div className="relative aspect-video bg-gradient-to-br from-forest-green/80 to-bottle-green flex items-center justify-center overflow-hidden">
+              {/* Media Thumbnail with Play button */}
+              <div className="relative aspect-video bg-gradient-to-br from-forest-green to-bottle-green flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
                 <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-antique-gold text-forest-green shadow-lg group-hover:scale-110 transition-transform">
                   <Play className="h-6 w-6 ml-1 fill-current" />
@@ -75,16 +84,34 @@ export default function MediaSection({ className }: { className?: string }) {
 
               {/* Information */}
               <div className="p-5">
-                <div className="flex items-center gap-2 text-xs text-secondary-text mb-2">
-                  <BookOpen className="h-3.5 w-3.5 text-antique-gold" />
-                  <span>{tutorial.category}</span>
+                <div className="flex items-center justify-between text-xs text-secondary-text mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <BookOpen className="h-3.5 w-3.5 text-antique-gold" />
+                    <span>{tutorial.category}</span>
+                  </div>
+                  <span className="text-[11px] text-antique-gold font-semibold flex items-center gap-1">
+                    YouTube
+                    <ExternalLink className="h-3 w-3" />
+                  </span>
                 </div>
                 <h3 className="font-serif text-base font-semibold text-primary-text group-hover:text-bottle-green transition-colors line-clamp-2">
                   {tutorial.title}
                 </h3>
               </div>
-            </div>
+            </a>
           ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <a
+            href={DHIRALI_YOUTUBE_CHANNEL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-bottle-green bg-warm-ivory/60 hover:bg-bottle-green hover:text-white px-6 py-2.5 text-xs font-semibold text-bottle-green transition-all shadow-xs"
+          >
+            <span>Explore All Masterclasses on Dhirali's YouTube Channel</span>
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </section>

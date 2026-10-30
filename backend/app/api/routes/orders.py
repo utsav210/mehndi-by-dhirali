@@ -39,6 +39,8 @@ def create_order(
 
     # 1. Server-authoritative price & stock calculation from DB
     subtotal_minor = 0
+    total_weight_grams = 0
+    has_free_shipping_item = False
     order_items_to_create = []
 
     for item_req in data.items:
@@ -65,6 +67,11 @@ def create_order(
         line_total_minor = product.price_minor * item_req.quantity
         subtotal_minor += line_total_minor
 
+        prod_weight = product.weight_grams or 100
+        total_weight_grams += prod_weight * item_req.quantity
+        if product.slug == "mehndi-artist-kit" or "free shipping" in product.name.lower():
+            has_free_shipping_item = True
+
         # Primary image URL
         primary_img = ""
         if product.images:
@@ -87,12 +94,23 @@ def create_order(
             }
         )
 
-    # 2. Shipping calculation: Free on orders >= ₹999 (99900 paise), else ₹70 (7000 paise)
-    shipping_minor = 0 if subtotal_minor >= 99900 else 7000
-    discount_minor = 0
-    final_total_minor = subtotal_minor + shipping_minor - discount_minor
+    # 2. Shipping calculation based on product weight starting at ₹80 (8000 paise)
+    if has_free_shipping_item:
+        shipping_minor = 0
+    elif total_weight_grams <= 500:
+        shipping_minor = 8000  # ₹80.00 base up to 0.5 kg
+    else:
+        # Every additional 0.5 kg adds ₹30 (3000 paise)
+        extra_500g_units = (total_weight_grams - 500 + 499) // 500
+        shipping_minor = 8000 + (extra_500g_units * 3000)
 
-    # 3. Create or bind shipping address
+    # 3. Payment method & Cash on Delivery handling fee (₹30)
+    is_cod = (data.payment_method or "").lower() == "cod"
+    cod_fee_minor = 3000 if is_cod else 0
+    discount_minor = 0
+    final_total_minor = subtotal_minor + shipping_minor + cod_fee_minor - discount_minor
+
+    # 4. Create or bind shipping address
     shipping_addr = Address(
         user_id=current_user.id if current_user else "guest_" + uuid.uuid4().hex[:8],
         label=data.shipping_address.label,
@@ -108,28 +126,36 @@ def create_order(
     db.add(shipping_addr)
     db.flush()
 
-    # 4. Generate unique internal order number (e.g. MBD-202410-XXXX)
+    # 5. Generate unique internal order number (e.g. MBD-202410-XXXX)
     order_number = f"MBD-{datetime.now(timezone.utc).strftime('%Y%m')}-{uuid.uuid4().hex[:6].upper()}"
 
-    # 5. Create Razorpay order on server
-    rzp_order = razorpay_client.create_order(
-        amount_minor=final_total_minor,
-        currency="INR",
-        receipt=order_number,
-    )
+    # 6. Payment initiation (Prepaid generates Razorpay order, COD confirms immediately)
+    rzp_order_id = None
+    if not is_cod:
+        rzp_order = razorpay_client.create_order(
+            amount_minor=final_total_minor,
+            currency="INR",
+            receipt=order_number,
+        )
+        rzp_order_id = rzp_order.get("id")
+        initial_status = "pending_payment"
+    else:
+        initial_status = "confirmed"
 
-    # 6. Create pending local order
+    # 7. Create local order record
     new_order = Order(
         order_number=order_number,
         user_id=current_user.id if current_user else None,
         shipping_address_id=shipping_addr.id,
-        status="pending_payment",
+        status=initial_status,
         subtotal_minor=subtotal_minor,
         shipping_minor=shipping_minor,
+        cod_fee_minor=cod_fee_minor,
         discount_minor=discount_minor,
         total_minor=final_total_minor,
         currency="INR",
-        razorpay_order_id=rzp_order.get("id"),
+        payment_method="cod" if is_cod else "prepaid",
+        razorpay_order_id=rzp_order_id,
         guest_email=data.email if not current_user else current_user.email,
         guest_name=data.shipping_address.full_name,
         guest_phone=data.phone,

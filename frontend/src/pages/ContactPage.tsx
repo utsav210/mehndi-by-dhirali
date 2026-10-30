@@ -78,8 +78,8 @@ export default function ContactPage() {
                 <Mail className="h-5 w-5 text-antique-gold shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-semibold text-warm-ivory">Email Us</span>
-                  <a href="mailto:support@mehndibydhirali.com" className="text-warm-ivory/80 hover:underline">
-                    support@mehndibydhirali.com
+                  <a href="mailto:dhiralidarji2103@gmail.com" className="text-warm-ivory/80 hover:underline">
+                    dhiralidarji2103@gmail.com
                   </a>
                 </div>
               </div>
@@ -88,30 +88,71 @@ export default function ContactPage() {
                 <Phone className="h-5 w-5 text-antique-gold shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-semibold text-warm-ivory">Customer Care</span>
-                  <p className="text-warm-ivory/80">+91 98765 43210 (Mon-Sat, 10am - 6pm)</p>
+                  <p className="text-warm-ivory/80">
+                    <a href="tel:+918140745001" className="hover:underline">+91 81407 45001</a>,{' '}
+                    <a href="tel:+919662746292" className="hover:underline">+91 96627 46292</a>
+                  </p>
+                  <p className="text-[11px] text-warm-ivory/60 mt-0.5">Mon–Sat, 10am – 7pm IST</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-antique-gold shrink-0 mt-0.5" />
                 <div>
-                  <span className="block font-semibold text-warm-ivory">Studio Address</span>
-                  <p className="text-warm-ivory/80">Mehndi By Dhirali Atelier, Gujarat, India</p>
+                  <span className="block font-semibold text-warm-ivory">Address</span>
+                  <p className="text-warm-ivory/80">
+                    Mehndi By Dhirali, Ambalalpark Society, 38, near Uma Hospital, Nava Naroda, Ahmedabad, Gujarat 382330
+                  </p>
+                  <a
+                    href="https://share.google/00ZRrLHQcSv6uUyWW"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] text-antique-gold hover:underline mt-1 font-medium"
+                  >
+                    <span>View on Google Maps</span>
+                    <span>→</span>
+                  </a>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-white/10">
-              <span className="text-xs text-antique-gold block font-semibold mb-2">WhatsApp Support</span>
-              <a
-                href="https://wa.me/919876543210"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-bottle-green px-4 py-2 text-xs text-white hover:bg-forest-green transition"
-              >
-                <MessageCircle className="h-4 w-4 text-antique-gold" />
-                <span>Chat on WhatsApp</span>
-              </a>
+            <div className="pt-4 border-t border-white/10 space-y-3">
+              <div>
+                <span className="text-xs text-antique-gold block font-semibold mb-2">WhatsApp Support</span>
+                <a
+                  href="https://wa.me/918140745001"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-xs text-white hover:bg-emerald-800 transition"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  <span>Chat on WhatsApp (+91 81407 45001)</span>
+                </a>
+              </div>
+
+              <div className="pt-2 border-t border-white/10">
+                <span className="text-xs text-antique-gold block font-semibold mb-2">Follow Our Work</span>
+                <div className="flex flex-col gap-1.5 text-xs text-warm-ivory/90">
+                  <a
+                    href="https://www.youtube.com/channel/UCmJikx0yiVrpqzps213L-KA"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:text-antique-gold transition"
+                  >
+                    <span className="font-semibold text-white">YouTube:</span>
+                    <span>@mehndi_by_dhirali07</span>
+                  </a>
+                  <a
+                    href="https://www.instagram.com/mehndi_by_dhirali07/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:text-antique-gold transition"
+                  >
+                    <span className="font-semibold text-white">Instagram:</span>
+                    <span>@mehndi_by_dhirali07</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 

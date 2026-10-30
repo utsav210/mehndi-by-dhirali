@@ -89,8 +89,8 @@ def seed_initial_products():
                 "sku": "MBD-CONE-05",
                 "stock_quantity": 100,
                 "weight_grams": 150,
-                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 5). Formulated with pure eucalyptus essential oil for a deep, rich mahogany stain. Ultra-smooth 0.38mm tip for intricate bridal and festive designs.",
-                "specifications": "Quantity: 5 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 5). Formulated with pure eucalyptus essential oil for a deep, rich mahogany stain. Ultra-smooth 0.38mm tip for intricate bridal and festive designs. Step-by-step instruction & stain care card included.",
+                "specifications": "Quantity: 5 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/mehndi-cones.png",
             },
             {
@@ -102,8 +102,8 @@ def seed_initial_products():
                 "sku": "MBD-CONE-08",
                 "stock_quantity": 100,
                 "weight_grams": 240,
-                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 8). Hand-poured in small artisanal batches with natural eucalyptus oil for guaranteed dark stain.",
-                "specifications": "Quantity: 8 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 8). Hand-poured in small artisanal batches with natural eucalyptus oil for guaranteed dark stain. Step-by-step instruction & stain care card included.",
+                "specifications": "Quantity: 8 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/mehndi-cones.png",
             },
             {
@@ -115,8 +115,8 @@ def seed_initial_products():
                 "sku": "MBD-CONE-12",
                 "stock_quantity": 100,
                 "weight_grams": 360,
-                "description": "Complete 1-dozen pack of freshly rolled organic henna cones. Ideal for family celebrations, Karwa Chauth, Eid, and wedding festivities. Zero chemicals, 100% natural.",
-                "specifications": "Quantity: 12 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "description": "Complete 1-dozen pack of freshly rolled organic henna cones. Ideal for family celebrations, Karwa Chauth, Eid, and wedding festivities. Zero chemicals, 100% natural. Step-by-step instruction & stain care card included.",
+                "specifications": "Quantity: 12 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/mehndi-cones.png",
             },
             {
@@ -128,8 +128,8 @@ def seed_initial_products():
                 "sku": "MBD-CONE-16",
                 "stock_quantity": 100,
                 "weight_grams": 480,
-                "description": "Value bundle of 16 organic bridal henna cones. Crafted with triple-sifted micro-fine henna powder and pure essential oils for smooth flow and crisp line work.",
-                "specifications": "Quantity: 16 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "description": "Value bundle of 16 organic bridal henna cones. Crafted with triple-sifted micro-fine henna powder and pure essential oils for smooth flow and crisp line work. Step-by-step instruction & stain care card included.",
+                "specifications": "Quantity: 16 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/mehndi-cones.png",
             },
             {
@@ -141,8 +141,8 @@ def seed_initial_products():
                 "sku": "MBD-CONE-20",
                 "stock_quantity": 100,
                 "weight_grams": 600,
-                "description": "Studio pack of 20 fresh organic henna cones. Perfect for henna artists and large family occasions. Long-lasting, rich burgundy dye release.",
-                "specifications": "Quantity: 20 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "description": "Studio pack of 20 fresh organic henna cones. Perfect for henna artists and large family occasions. Long-lasting, rich burgundy dye release. Step-by-step instruction & stain care card included.",
+                "specifications": "Quantity: 20 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/mehndi-cones.png",
             },
             {
@@ -154,8 +154,8 @@ def seed_initial_products():
                 "sku": "MBD-CONE-50",
                 "stock_quantity": 100,
                 "weight_grams": 1500,
-                "description": "Bulk artist master pack of 50 freshly rolled organic henna cones. Shipped in insulated packaging to maintain optimal freshness. The ultimate value for professional bridal bookings.",
-                "specifications": "Quantity: 50 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen",
+                "description": "Bulk artist master pack of 50 freshly rolled organic henna cones. Shipped in insulated packaging to maintain optimal freshness. The ultimate value for professional bridal bookings. Step-by-step instruction & stain care card included.",
+                "specifications": "Quantity: 50 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/mehndi-cones.png",
             },
             # Mehndi Powder
@@ -163,40 +163,53 @@ def seed_initial_products():
                 "category_id": powder_cat.id if powder_cat else None,
                 "name": "100 gm Mehndi Powder",
                 "slug": "100-gm-mehndi-powder",
-                "price_minor": 8900,  # ₹89.00
-                "compare_at_price_minor": 12900,  # ₹129.00
+                "price_minor": 9900,  # ₹99.00
+                "compare_at_price_minor": 14900,  # ₹149.00
                 "sku": "MBD-POWDER-100",
                 "stock_quantity": 100,
                 "weight_grams": 100,
-                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment.",
-                "specifications": "Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic",
+                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment. Detailed step-by-step instruction card included.",
+                "specifications": "Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
                 "image_url": "/images/products/mehndi-powder.png",
             },
             {
                 "category_id": powder_cat.id if powder_cat else None,
                 "name": "200 gm Mehndi Powder",
                 "slug": "200-gm-mehndi-powder",
-                "price_minor": 17800,  # ₹178.00
-                "compare_at_price_minor": 24900,  # ₹249.00
+                "price_minor": 18900,  # ₹189.00
+                "compare_at_price_minor": 27900,  # ₹279.00
                 "sku": "MBD-POWDER-200",
                 "stock_quantity": 100,
                 "weight_grams": 200,
-                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning.",
-                "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic",
+                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning. Detailed step-by-step instruction card included.",
+                "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
                 "image_url": "/images/products/mehndi-powder.png",
+            },
+            {
+                "category_id": powder_cat.id if powder_cat else None,
+                "name": "50 gram Anti leakage powder",
+                "slug": "50-gram-anti-leakage-powder",
+                "price_minor": 4900,  # ₹49.00
+                "compare_at_price_minor": 7900,  # ₹79.00
+                "sku": "MBD-POWDER-ANTI-LEAK",
+                "stock_quantity": 100,
+                "weight_grams": 50,
+                "description": "Specialized 50g organic anti-leakage formula powder. Mix with your henna paste to improve consistency, eliminate smudging, and prevent tip seepage for razor-sharp lines. Detailed step-by-step instruction card included.",
+                "specifications": "Weight: 50g | Purpose: Anti-leakage paste stabilizer | 100% Herbal & Organic | Instruction card included",
+                "image_url": "/images/products/anti-leakage-powder.png",
             },
             # Mehndi Oil
             {
                 "category_id": oil_cat.id if oil_cat else None,
                 "name": "100ML Mehndi oil",
                 "slug": "100ml-mehndi-oil",
-                "price_minor": 23000,  # ₹230.00
-                "compare_at_price_minor": 32900,  # ₹329.00
+                "price_minor": 24900,  # ₹249.00
+                "compare_at_price_minor": 34900,  # ₹349.00
                 "sku": "MBD-OIL-100",
                 "stock_quantity": 100,
                 "weight_grams": 100,
-                "description": "Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil.",
-                "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil",
+                "description": "Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil. Detailed step-by-step instruction card included.",
+                "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil | Instruction card included",
                 "image_url": "/images/products/mehndi-oil.png",
             },
             # Mehndi Kits
@@ -204,26 +217,26 @@ def seed_initial_products():
                 "category_id": kits_cat.id if kits_cat else None,
                 "name": "Trial Kit",
                 "slug": "trial-kit",
-                "price_minor": 14900,  # ₹149.00
-                "compare_at_price_minor": 22900,  # ₹229.00
+                "price_minor": 17900,  # ₹179.00
+                "compare_at_price_minor": 24900,  # ₹249.00
                 "sku": "MBD-KIT-TRIAL",
                 "stock_quantity": 100,
                 "weight_grams": 250,
-                "description": "Complete beginner starter trial kit including 100gm organic Sojat mehndi powder, 30ml eucalyptus mehndi oil, 10 precut transparent cellophane sheets, 2 durable piping bags, and 10 precision plastic pins. Perfect for students and beginners to roll and mix fresh cones at home.",
-                "specifications": "Contents: 100gm powder + 30ml oil + 10 cello sheets + 2 piping bags + 10 pins | Ideal for: Beginners & Practice",
+                "description": "Complete beginner starter trial kit including 100gm organic Sojat mehndi powder, 30ml eucalyptus mehndi oil, 10 precut transparent cellophane sheets, 2 durable piping bags, and 10 precision plastic pins. Perfect for students and beginners to roll and mix fresh cones at home. Step-by-step instruction card included.",
+                "specifications": "Contents: 100gm powder + 30ml oil + 10 cello sheets + 2 piping bags + 10 pins | Ideal for: Beginners & Practice | Instruction card included",
                 "image_url": "/images/products/trial-kit.png",
             },
             {
                 "category_id": kits_cat.id if kits_cat else None,
-                "name": "Mehndi Artist Kit",
+                "name": "Artist Kit + FREE shipping",
                 "slug": "mehndi-artist-kit",
-                "price_minor": 39900,  # ₹399.00
-                "compare_at_price_minor": 59900,  # ₹599.00
+                "price_minor": 59900,  # ₹599.00
+                "compare_at_price_minor": 89900,  # ₹899.00
                 "sku": "MBD-KIT-ARTIST",
                 "stock_quantity": 100,
                 "weight_grams": 500,
-                "description": "All-in-one comprehensive kit for professional mehndi artists and bridal work. Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone.",
-                "specifications": "Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal",
+                "description": "All-in-one comprehensive kit for professional mehndi artists and bridal work with FREE doorstep shipping! Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone. Step-by-step masterclass instruction card included.",
+                "specifications": "Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal | Shipping: FREE | Instruction card included",
                 "image_url": "/images/products/mehndi-artist-kit.png",
             },
         ]
@@ -258,9 +271,13 @@ def seed_initial_products():
                 )
                 db.add(img)
             else:
+                existing.name = p_data["name"]
                 existing.price_minor = p_data["price_minor"]
                 existing.compare_at_price_minor = p_data["compare_at_price_minor"]
                 existing.category_id = p_data["category_id"]
+                existing.description = p_data["description"]
+                existing.specifications = p_data["specifications"]
+                existing.weight_grams = p_data["weight_grams"]
         db.commit()
         logger.info("Seeded initial store product catalogue.")
     except Exception as e:
@@ -270,7 +287,7 @@ def seed_initial_products():
 
 
 def ensure_order_tracking_columns():
-    """Ensures fulfillment and tracking columns exist on orders table across SQL dialects."""
+    """Ensures fulfillment, payment method, and tracking columns exist on orders table across SQL dialects."""
     try:
         from sqlalchemy import inspect, text
         insp = inspect(engine)
@@ -283,6 +300,8 @@ def ensure_order_tracking_columns():
             ("shipped_at", "TIMESTAMP"),
             ("delivered_at", "TIMESTAMP"),
             ("tracking_notes", "TEXT"),
+            ("payment_method", "VARCHAR(30) DEFAULT 'prepaid'"),
+            ("cod_fee_minor", "INTEGER DEFAULT 0"),
         ]
         with engine.connect() as conn:
             for col_name, col_type in new_cols:

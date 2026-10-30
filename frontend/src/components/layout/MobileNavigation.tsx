@@ -24,8 +24,6 @@ const NAV_LINKS: MobileNavLink[] = [
 
 const ACCOUNT_LINKS: MobileNavLink[] = [
   { label: 'My Account', href: '/account' },
-  { label: 'Wishlist', href: '/wishlist' },
-  { label: 'Compare', href: '/compare' },
 ]
 
 export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
