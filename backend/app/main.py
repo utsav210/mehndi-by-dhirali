@@ -22,7 +22,7 @@ logger = structlog.get_logger(__name__)
 
 
 def seed_initial_categories():
-    """Seeds default boutique categories if database is empty and cleans up removed categories."""
+    """Seeds default boutique categories and cleans up removed categories."""
     db = SessionLocal()
     try:
         # Clean up deprecated categories if present
@@ -35,32 +35,25 @@ def seed_initial_categories():
                 cat.is_active = False
         db.commit()
 
-        # Ensure Mehndi Oil category exists
-        oil_cat = db.query(Category).filter(Category.slug == "mehndi-oil").first()
-        if not oil_cat:
-            c = Category(
-                name="Mehndi Oil",
-                slug="mehndi-oil",
-                description="Pure eucalyptus and essential herbal oil blends",
-                sort_order=3,
-                is_active=True,
-            )
-            db.add(c)
-            db.commit()
-
-        if db.query(Category).count() == 0:
-            default_categories = [
-                {"name": "Mehndi Cones", "slug": "mehndi-cones", "description": "Freshly mixed organic henna cones", "sort_order": 1},
-                {"name": "Mehndi Powder", "slug": "mehndi-powder", "description": "Triple-sifted 100% natural Sojat henna powder", "sort_order": 2},
-                {"name": "Mehndi Oil", "slug": "mehndi-oil", "description": "Pure eucalyptus and essential herbal oil blends", "sort_order": 3},
-                {"name": "Mehndi Kits", "slug": "mehndi-kits", "description": "Complete bridal and professional student kits", "sort_order": 4},
-                {"name": "Accessories", "slug": "accessories", "description": "Sealant spray, cellophane sheets, pin tips", "sort_order": 5},
-            ]
-            for cat_data in default_categories:
+        default_categories = [
+            {"name": "Mehndi Cones", "slug": "mehndi-cones", "description": "Freshly mixed organic henna cones", "sort_order": 1},
+            {"name": "Mehndi Powder", "slug": "mehndi-powder", "description": "Triple-sifted 100% natural Sojat henna powder", "sort_order": 2},
+            {"name": "Mehndi Oil", "slug": "mehndi-oil", "description": "Pure eucalyptus and essential herbal oil blends", "sort_order": 3},
+            {"name": "Mehndi Kits", "slug": "mehndi-kits", "description": "Complete bridal and professional student kits", "sort_order": 4},
+            {"name": "Accessories", "slug": "accessories", "description": "Sealant spray, cellophane sheets, pin tips", "sort_order": 5},
+        ]
+        for cat_data in default_categories:
+            existing_cat = db.query(Category).filter(Category.slug == cat_data["slug"]).first()
+            if not existing_cat:
                 c = Category(**cat_data, is_active=True)
                 db.add(c)
-            db.commit()
-            logger.info("Seeded initial store categories.")
+            else:
+                existing_cat.name = cat_data["name"]
+                existing_cat.description = cat_data["description"]
+                existing_cat.sort_order = cat_data["sort_order"]
+                existing_cat.is_active = True
+        db.commit()
+        logger.info("Verified and updated store categories.")
     except Exception as e:
         logger.warning("Category seed check skipped or failed", error=str(e))
     finally:
@@ -291,14 +284,17 @@ def ensure_order_tracking_columns():
     try:
         from sqlalchemy import inspect, text
         insp = inspect(engine)
+        if "orders" not in insp.get_table_names():
+            return
         existing = [col["name"] for col in insp.get_columns("orders")]
+        is_sqlite = str(engine.url).startswith("sqlite")
         new_cols = [
             ("tracking_number", "VARCHAR(100)"),
             ("courier_partner", "VARCHAR(100)"),
             ("tracking_url", "VARCHAR(500)"),
             ("estimated_delivery", "VARCHAR(100)"),
-            ("shipped_at", "TIMESTAMP"),
-            ("delivered_at", "TIMESTAMP"),
+            ("shipped_at", "TIMESTAMP" if not is_sqlite else "DATETIME"),
+            ("delivered_at", "TIMESTAMP" if not is_sqlite else "DATETIME"),
             ("tracking_notes", "TEXT"),
             ("payment_method", "VARCHAR(30) DEFAULT 'prepaid'"),
             ("cod_fee_minor", "INTEGER DEFAULT 0"),
