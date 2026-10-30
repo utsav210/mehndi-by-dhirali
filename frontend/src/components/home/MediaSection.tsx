@@ -8,6 +8,7 @@ interface TutorialItem {
   duration: string
   tag: string
   url: string
+  thumbnail?: string
 }
 
 const DHIRALI_YOUTUBE_CHANNEL = 'https://www.youtube.com/channel/UCmJikx0yiVrpqzps213L-KA'
@@ -15,27 +16,30 @@ const DHIRALI_YOUTUBE_CHANNEL = 'https://www.youtube.com/channel/UCmJikx0yiVrpqz
 const TUTORIALS: TutorialItem[] = [
   {
     id: '1',
-    title: 'How to Hold and Control a Mehndi Cone for Fine Lines',
+    title: '40 days Latest Mehndi course',
     category: 'Technique',
-    duration: '6 mins',
+    duration: 'Playlist',
     tag: 'Beginner',
-    url: DHIRALI_YOUTUBE_CHANNEL,
+    url: 'https://youtube.com/playlist?list=PLXD_yOKWUDoOqzjCDSyuwyIO3ZhQvo5xP&si=O1waqAU9EDssyCEX',
+    thumbnail: 'https://i.ytimg.com/vi/nMa5RN1uIMg/hqdefault.jpg',
   },
   {
     id: '2',
-    title: 'Bridal Mandala Centerpiece Step-by-Step Tutorial',
+    title: 'Mixology Tips & Trick 🌟',
     category: 'Design',
-    duration: '14 mins',
+    duration: 'Playlist',
     tag: 'Intermediate',
-    url: DHIRALI_YOUTUBE_CHANNEL,
+    url: 'https://youtube.com/playlist?list=PLXD_yOKWUDoMLGNmxzMJwDFx4hEwR5OaB&si=IcWpjaLUe9bYDHJX',
+    thumbnail: 'https://i.ytimg.com/vi/89GxBeez7es/hqdefault.jpg',
   },
   {
     id: '3',
-    title: 'Secret Aftercare Routine for Deep Mahogany Stain',
+    title: 'Karwa Chauth Special Mehndi Designs 🌙',
     category: 'Stain Care',
-    duration: '5 mins',
+    duration: 'Playlist',
     tag: 'Essential',
-    url: DHIRALI_YOUTUBE_CHANNEL,
+    url: 'https://www.youtube.com/playlist?list=PLP0KyL2W8IFQ',
+    thumbnail: 'https://i.ytimg.com/vi/ftZprhDlvek/hqdefault.jpg',
   },
 ]
 
@@ -46,10 +50,10 @@ export default function MediaSection({ className }: { className?: string }) {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-1.5 text-antique-gold font-decorative text-sm uppercase tracking-wider mb-2">
             <Video className="h-4 w-4" />
-            <span>Learning & Demonstrations</span>
+            <span>Learning &amp; Demonstrations</span>
           </div>
           <h2 className="font-serif text-3xl font-bold text-bottle-green sm:text-4xl">
-            Mehndi Masterclasses & Tutorials
+            Mehndi Masterclasses &amp; Tutorials
           </h2>
           <div className="ornamental-divider my-4">
             <span className="text-antique-gold text-lg">✦</span>
@@ -70,14 +74,22 @@ export default function MediaSection({ className }: { className?: string }) {
             >
               {/* Media Thumbnail with Play button */}
               <div className="relative aspect-video bg-gradient-to-br from-forest-green to-bottle-green flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                {tutorial.thumbnail && (
+                  <img
+                    src={tutorial.thumbnail}
+                    alt={tutorial.title}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                )}
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/25 transition-colors" />
                 <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-antique-gold text-forest-green shadow-lg group-hover:scale-110 transition-transform">
                   <Play className="h-6 w-6 ml-1 fill-current" />
                 </div>
-                <div className="absolute bottom-3 right-3 rounded-md bg-black/60 px-2 py-1 text-xs text-white">
+                <div className="absolute bottom-3 right-3 rounded-md bg-black/70 px-2 py-1 text-xs text-white backdrop-blur-xs font-medium">
                   {tutorial.duration}
                 </div>
-                <div className="absolute top-3 left-3 rounded-full bg-bottle-green/80 backdrop-blur-xs px-2.5 py-0.5 text-xs text-antique-gold border border-antique-gold/30">
+                <div className="absolute top-3 left-3 rounded-full bg-bottle-green/90 backdrop-blur-xs px-2.5 py-0.5 text-xs text-antique-gold border border-antique-gold/30 font-medium">
                   {tutorial.tag}
                 </div>
               </div>
