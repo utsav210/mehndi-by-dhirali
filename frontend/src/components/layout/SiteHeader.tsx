@@ -21,6 +21,7 @@ export function SiteHeader() {
   const itemCount = useCartStore((s) => s.getItemCount())
   const openCart = useCartStore((s) => s.openCart)
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const user = useAuthStore((s) => s.user)
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -90,14 +91,17 @@ export function SiteHeader() {
 
           {/* ── Right: Action Icons ──────────────────────────────── */}
           <div className="flex items-center justify-end gap-1 sm:gap-2 lg:flex-1">
-            {/* Account (removed Wishlist & Compare as per user request) */}
+            {/* Account (man / sign-in icon + Login / Register text) */}
             <Link
               to={isAuthenticated ? '/account' : '/login'}
-              className="text-bottle-green hidden rounded-md p-2 transition-colors hover:bg-warm-ivory sm:inline-flex"
-              aria-label={isAuthenticated ? 'My account' : 'Sign in'}
-              title={isAuthenticated ? 'My Account' : 'Sign In'}
+              className="text-bottle-green group flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors hover:bg-warm-ivory cursor-pointer"
+              aria-label={isAuthenticated ? 'My account' : 'Login / Register'}
+              title={isAuthenticated ? 'My Account' : 'Login / Register'}
             >
-              <User className="h-5 w-5" />
+              <User className="h-5 w-5 text-bottle-green shrink-0 transition-transform group-hover:scale-105" />
+              <span className="hidden sm:inline font-medium text-primary-text group-hover:text-bottle-green tracking-tight whitespace-nowrap">
+                {isAuthenticated ? (user?.first_name ? `Hi, ${user.first_name}` : 'My Account') : 'Login / Register'}
+              </span>
             </Link>
 
             {/* Cart */}

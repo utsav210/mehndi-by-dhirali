@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Heart, ShoppingBag, User, X } from 'lucide-react'
+import { ShoppingBag, User, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useCartStore } from '@/lib/cart-store'
+import { useAuthStore } from '@/lib/auth-store'
 
 interface MobileNavigationProps {
   isOpen: boolean
@@ -22,10 +23,6 @@ const NAV_LINKS: MobileNavLink[] = [
   { label: 'Contact Us', href: '/contact' },
 ]
 
-const ACCOUNT_LINKS: MobileNavLink[] = [
-  { label: 'My Account', href: '/account' },
-]
-
 export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
   const { pathname } = useLocation()
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -33,6 +30,8 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
 
   const itemCount = useCartStore((s) => s.getItemCount())
   const openCart = useCartStore((s) => s.openCart)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const user = useAuthStore((s) => s.user)
 
   // Close when navigating
   useEffect(() => {
@@ -146,27 +145,16 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
 
           {/* Account / Utility Links */}
           <ul className="space-y-1">
-            {ACCOUNT_LINKS.map((link) => {
-              const Icon =
-                link.href === '/account'
-                  ? User
-                  : link.href === '/wishlist'
-                    ? Heart
-                    : User
-
-              return (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    onClick={onClose}
-                    className="text-primary-text flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-warm-ivory"
-                  >
-                    <Icon className="text-bottle-green h-4 w-4" />
-                    {link.label}
-                  </Link>
-                </li>
-              )
-            })}
+            <li>
+              <Link
+                to={isAuthenticated ? '/account' : '/login'}
+                onClick={onClose}
+                className="text-primary-text flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-warm-ivory"
+              >
+                <User className="text-bottle-green h-4 w-4" />
+                {isAuthenticated ? (user?.first_name ? `Hi, ${user.first_name}` : 'My Account') : 'Login / Register'}
+              </Link>
+            </li>
             <li>
               <button
                 type="button"

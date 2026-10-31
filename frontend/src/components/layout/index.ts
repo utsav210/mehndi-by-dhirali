@@ -1,4 +1,5 @@
 export { AnnouncementBar } from './AnnouncementBar'
+export { ContinuousRunningLine } from './ContinuousRunningLine'
 export { SiteHeader } from './SiteHeader'
 export { MainNavigation } from './MainNavigation'
 export { MobileNavigation } from './MobileNavigation'
