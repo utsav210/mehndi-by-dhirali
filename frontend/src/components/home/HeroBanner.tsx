@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import MandalaArt from './MandalaArt'
 
 interface CarouselSlide {
   id: string
@@ -149,12 +150,14 @@ export default function HeroBanner({ className }: { className?: string }) {
               </div>
 
               {/* Slide Content */}
-              <div className="mx-auto flex max-w-7xl w-full items-center">
-                <div className="max-w-2xl pl-2 sm:pl-6 md:pl-10">
-                  <p className="mb-2 sm:mb-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-antique-gold">
+              <div className="mx-auto flex max-w-7xl w-full items-center justify-between gap-6 lg:gap-12 relative z-10">
+                {/* Left: Typography & CTAs */}
+                <div className="max-w-xl lg:max-w-2xl pl-2 sm:pl-6 md:pl-10 z-10">
+                  <p className="mb-2 sm:mb-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-antique-gold flex items-center gap-2">
+                    <span className="h-px w-6 bg-antique-gold/70 inline-block" />
                     {slide.tagline}
                   </p>
-                  <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
+                  <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-sm">
                     {slide.title}
                   </h2>
                   <p className="mt-3 sm:mt-5 max-w-lg text-xs sm:text-base leading-relaxed text-warm-ivory/90 sm:text-lg">
@@ -163,7 +166,7 @@ export default function HeroBanner({ className }: { className?: string }) {
                   <div className="mt-5 sm:mt-8 flex flex-wrap gap-3 sm:gap-4">
                     <Link
                       to={slide.primaryCtaLink}
-                      className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-forest-green transition-all hover:bg-antique-gold/90 hover:scale-105 shadow-md"
+                      className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-forest-green transition-all hover:bg-antique-gold/90 hover:scale-105 shadow-md cursor-pointer"
                       tabIndex={isActive ? 0 : -1}
                     >
                       {slide.primaryCtaText}
@@ -171,12 +174,20 @@ export default function HeroBanner({ className }: { className?: string }) {
                     </Link>
                     <Link
                       to={slide.secondaryCtaLink}
-                      className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/60 px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/15 hover:scale-105"
+                      className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/60 px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/15 hover:scale-105 cursor-pointer"
                       tabIndex={isActive ? 0 : -1}
                     >
                       {slide.secondaryCtaText}
                     </Link>
                   </div>
+                </div>
+
+                {/* Right: Handcrafted Indian Henna Mandala Design */}
+                <div className="absolute -right-20 -top-8 sm:-right-8 sm:top-auto md:relative md:right-auto md:top-auto shrink-0 flex items-center justify-center pointer-events-none md:pointer-events-auto opacity-30 sm:opacity-50 md:opacity-100 pr-0 md:pr-4 lg:pr-8">
+                  <MandalaArt
+                    variant={index === 0 ? 'lotus' : 'bridal'}
+                    className="w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] md:w-[380px] md:h-[380px] lg:w-[440px] lg:h-[440px] xl:w-[480px] xl:h-[480px] transition-transform duration-700 hover:scale-105"
+                  />
                 </div>
               </div>
             </div>
