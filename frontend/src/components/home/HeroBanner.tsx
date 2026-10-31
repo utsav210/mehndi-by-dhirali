@@ -20,6 +20,14 @@ interface CarouselSlide {
 
 const SLIDES: CarouselSlide[] = [
   {
+    id: 'slide-bridal-hand',
+    type: 'image',
+    imageSrc: '/images/hero-banner-hand.jpg',
+    altText:
+      'Mehndi By Dhirali — Bridal Henna Hand, Fresh Organic Cones & Artisanal Mandala',
+    linkUrl: '/products',
+  },
+  {
     id: 'slide-natural-benefits',
     type: 'image',
     imageSrc: '/images/hero-banner-natural.png',
@@ -55,33 +63,48 @@ const SLIDES: CarouselSlide[] = [
   },
 ]
 
-const AUTO_PLAY_INTERVAL_MS = 5500
+const AUTO_PLAY_INTERVAL_MS = 4000
 
 export default function HeroBanner({ className }: { className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
 
   const touchStartX = useRef<number | null>(null)
   const touchEndX = useRef<number | null>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
+    timerRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % SLIDES.length)
+    }, AUTO_PLAY_INTERVAL_MS)
+  }, [])
 
   const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % SLIDES.length)
-  }, [])
+    resetTimer()
+  }, [resetTimer])
 
   const goToPrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length)
-  }, [])
+    resetTimer()
+  }, [resetTimer])
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index)
+    resetTimer()
   }
 
-  // Auto-play interval
+  // Set up auto-carouse on mount and keep running continuously
   useEffect(() => {
-    if (isPaused) return
-    const interval = setInterval(goToNext, AUTO_PLAY_INTERVAL_MS)
-    return () => clearInterval(interval)
-  }, [isPaused, goToNext])
+    resetTimer()
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [resetTimer])
 
   // Touch Swipe Handlers for mobile gestures
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -112,13 +135,11 @@ export default function HeroBanner({ className }: { className?: string }) {
       role="region"
       aria-roledescription="carousel"
       aria-label="Featured Promotions and Collections"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Carousel Track */}
+      {/* Carousel Track with smooth horizontal slide animation */}
       <div
         className="flex w-full transition-transform duration-700 ease-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -130,7 +151,7 @@ export default function HeroBanner({ className }: { className?: string }) {
             return (
               <div
                 key={slide.id}
-                className="w-full shrink-0 flex items-center justify-center bg-bottle-green"
+                className="w-full shrink-0 flex items-center justify-center bg-bottle-green overflow-hidden"
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`Slide ${index + 1} of ${SLIDES.length}`}
@@ -138,7 +159,7 @@ export default function HeroBanner({ className }: { className?: string }) {
               >
                 <Link
                   to={slide.linkUrl}
-                  className="group relative block w-full h-[240px] sm:h-[340px] md:h-[420px] lg:h-[480px] xl:h-[520px] overflow-hidden cursor-pointer"
+                  className="group relative block w-full h-[260px] sm:h-[360px] md:h-[440px] lg:h-[500px] xl:h-[540px] overflow-hidden cursor-pointer"
                   tabIndex={isActive ? 0 : -1}
                   aria-label={slide.altText}
                 >
@@ -157,7 +178,7 @@ export default function HeroBanner({ className }: { className?: string }) {
           return (
             <div
               key={slide.id}
-              className="relative isolate w-full shrink-0 flex items-center min-h-[360px] sm:min-h-[440px] md:min-h-[500px] overflow-hidden bg-bottle-green px-4 py-16 sm:px-6 md:py-24 lg:px-8"
+              className="relative isolate w-full shrink-0 flex items-center h-[260px] sm:h-[360px] md:h-[440px] lg:h-[500px] xl:h-[540px] overflow-hidden bg-bottle-green px-4 py-8 sm:px-6 md:py-16 lg:px-8"
               role="group"
               aria-roledescription="slide"
               aria-label={`Slide ${index + 1} of ${SLIDES.length}`}
@@ -182,20 +203,20 @@ export default function HeroBanner({ className }: { className?: string }) {
               {/* Slide Content */}
               <div className="mx-auto flex max-w-7xl w-full items-center">
                 <div className="max-w-2xl pl-2 sm:pl-6 md:pl-10">
-                  <p className="mb-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-antique-gold">
+                  <p className="mb-2 sm:mb-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-antique-gold">
                     {slide.tagline}
                   </p>
-                  <h2 className="font-serif text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                  <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
                     {slide.title}
                   </h2>
-                  <p className="mt-5 max-w-lg text-sm sm:text-base leading-relaxed text-warm-ivory/90 sm:text-lg">
+                  <p className="mt-3 sm:mt-5 max-w-lg text-xs sm:text-base leading-relaxed text-warm-ivory/90 sm:text-lg line-clamp-3 sm:line-clamp-none">
                     {slide.description}
                   </p>
-                  <div className="mt-8 flex flex-wrap gap-4">
+                  <div className="mt-5 sm:mt-8 flex flex-wrap gap-3 sm:gap-4">
                     {slide.primaryCtaText && slide.primaryCtaLink && (
                       <Link
                         to={slide.primaryCtaLink}
-                        className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-7 py-3 text-sm font-semibold text-forest-green transition-all hover:bg-antique-gold/90 hover:scale-105 shadow-md"
+                        className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-forest-green transition-all hover:bg-antique-gold/90 hover:scale-105 shadow-md"
                         tabIndex={isActive ? 0 : -1}
                       >
                         {slide.primaryCtaText}
@@ -205,7 +226,7 @@ export default function HeroBanner({ className }: { className?: string }) {
                     {slide.secondaryCtaText && slide.secondaryCtaLink && (
                       <Link
                         to={slide.secondaryCtaLink}
-                        className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/60 px-7 py-3 text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/15 hover:scale-105"
+                        className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/60 px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/15 hover:scale-105"
                         tabIndex={isActive ? 0 : -1}
                       >
                         {slide.secondaryCtaText}
