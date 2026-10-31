@@ -22,7 +22,7 @@ const SLIDES: CarouselSlide[] = [
   {
     id: 'slide-bridal-hand',
     type: 'image',
-    imageSrc: '/images/hero-banner-hand.jpg',
+    imageSrc: '/images/hero-banner-bridal.jpg',
     altText:
       'Mehndi By Dhirali — Bridal Henna Hand, Fresh Organic Cones & Artisanal Mandala',
     linkUrl: '/products',
