@@ -109,6 +109,9 @@ export default function ProductDetailPage() {
                   src={primaryImage.url}
                   alt={primaryImage.alt_text || productTitle}
                   className="h-full w-full object-cover"
+                  onError={(e) => {
+                    ;(e.currentTarget as HTMLImageElement).src = '/images/products/mehndi-cones.png'
+                  }}
                 />
               ) : (
                 <div className="text-center p-8">

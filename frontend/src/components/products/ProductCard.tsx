@@ -18,7 +18,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem)
   const openCart = useCartStore((s) => s.openCart)
 
-  const primaryImage = product.images.find((img) => img.is_primary) ?? product.images[0]
+  const primaryImage = product.images?.find((img) => img.is_primary) ?? product.images?.[0]
   const isOutOfStock = product.stock_quantity <= 0
   const isOnSale =
     product.compare_at_price_minor != null &&
@@ -73,6 +73,9 @@ export default function ProductCard({ product, className }: ProductCardProps) {
               isOutOfStock && 'opacity-60'
             )}
             loading="lazy"
+            onError={(e) => {
+              ;(e.currentTarget as HTMLImageElement).src = '/images/products/mehndi-cones.png'
+            }}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-secondary-text">
