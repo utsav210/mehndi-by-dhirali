@@ -132,13 +132,18 @@ export function SiteFooter() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand Column */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link to="/" className="inline-flex flex-col items-start">
-              <span className="font-serif text-xl font-semibold tracking-wide text-white">
-                Mehndi
-              </span>
-              <span className="text-antique-gold -mt-0.5 font-decorative text-[0.6rem] font-medium uppercase tracking-[0.25em]">
-                by Dhirali
-              </span>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-3 transition-opacity hover:opacity-90"
+              aria-label="Mehndi By Dhirali — Home"
+            >
+              <img
+                src="/images/logo-light.png"
+                alt="Mehndi By Dhirali"
+                className="h-16 w-auto object-contain"
+                width={825}
+                height={804}
+              />
             </Link>
             <p className="text-warm-ivory/70 mt-4 max-w-xs text-sm leading-relaxed">
               Crafting 100% pure organic Rajasthani Sojat henna cones, powders, oils, and bridal kits with artisanal dedication.

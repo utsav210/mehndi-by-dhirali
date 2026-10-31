@@ -88,15 +88,17 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
         <div className="border-subtle-border flex items-center justify-between border-b px-5 py-4">
           <Link
             to="/"
-            className="flex flex-col items-start"
+            className="flex items-center gap-2 transition-opacity hover:opacity-85"
             onClick={onClose}
+            aria-label="Mehndi By Dhirali — Home"
           >
-            <span className="text-bottle-green font-serif text-lg font-semibold tracking-wide">
-              Mehndi
-            </span>
-            <span className="text-antique-gold -mt-0.5 font-decorative text-[0.6rem] font-medium uppercase tracking-[0.25em]">
-              by Dhirali
-            </span>
+            <img
+              src="/images/logo.png"
+              alt="Mehndi By Dhirali"
+              className="h-12 w-auto object-contain"
+              width={825}
+              height={804}
+            />
           </Link>
           <button
             ref={closeButtonRef}

@@ -76,15 +76,16 @@ export function SiteHeader() {
           {/* ── Center: Brand Logo ───────────────────────────────── */}
           <Link
             to="/"
-            className="flex flex-col items-center gap-0 transition-opacity hover:opacity-80"
+            className="flex items-center justify-center transition-opacity hover:opacity-85 py-0.5"
             aria-label="Mehndi By Dhirali — Home"
           >
-            <span className="text-bottle-green font-serif text-xl font-semibold tracking-wide sm:text-2xl lg:text-[1.7rem]">
-              Mehndi
-            </span>
-            <span className="text-antique-gold -mt-1 font-decorative text-[0.65rem] font-medium uppercase tracking-[0.25em] sm:text-xs">
-              by Dhirali
-            </span>
+            <img
+              src="/images/logo.png"
+              alt="Mehndi By Dhirali"
+              className="h-16 w-auto object-contain sm:h-20 lg:h-24 transition-transform duration-300 hover:scale-[1.02]"
+              width={825}
+              height={804}
+            />
           </Link>
 
           {/* ── Right: Action Icons ──────────────────────────────── */}
