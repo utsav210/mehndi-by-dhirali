@@ -3,8 +3,8 @@ Public Product Catalogue routes.
 Provides paginated listings, category filtering, search, and detail lookup.
 """
 from typing import Optional, List
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
+from sqlalchemy.orm import Session, joinedload, selectinload
 from sqlalchemy import or_, desc, asc
 from app.db.session import get_db
 from app.models.product import Product
@@ -17,6 +17,7 @@ router = APIRouter(prefix="/products", tags=["Products"])
 
 @router.get("", response_model=PaginatedResponse[ProductResponse])
 def list_products(
+    response: Response,
     page: int = Query(1, ge=1),
     page_size: int = Query(12, ge=1, le=100),
     category_slug: Optional[str] = None,
@@ -24,7 +25,11 @@ def list_products(
     sort: Optional[str] = Query("featured", pattern="^(featured|price-asc|price-desc|newest)$"),
     db: Session = Depends(get_db),
 ):
-    query = db.query(Product).filter(Product.is_active == True)
+    query = (
+        db.query(Product)
+        .filter(Product.is_active == True)
+        .options(selectinload(Product.images), joinedload(Product.category))
+    )
 
     # Filter by category
     if category_slug and category_slug != "all":
@@ -60,10 +65,13 @@ def list_products(
     products = query.offset(offset).limit(page_size).all()
     total_pages = (total + page_size - 1) // page_size if total > 0 else 0
 
-    # Enrich product with category name/slug
+    # Cache for 60s in browser, 300s in Vercel Edge CDN, revalidate in background
+    response.headers["Cache-Control"] = "public, max-age=60, s-maxage=300, stale-while-revalidate=600"
+
+    # Enrich product with category name/slug (zero extra DB round-trips via joinedload)
     results = []
     for p in products:
-        cat = db.query(Category).filter(Category.id == p.category_id).first()
+        cat = p.category
         p_data = ProductResponse(
             id=p.id,
             name=p.name,
@@ -96,15 +104,23 @@ def list_products(
 
 
 @router.get("/{slug}", response_model=ProductResponse)
-def get_product(slug: str, db: Session = Depends(get_db)):
-    product = db.query(Product).filter(Product.slug == slug, Product.is_active == True).first()
+def get_product(slug: str, response: Response, db: Session = Depends(get_db)):
+    product = (
+        db.query(Product)
+        .options(selectinload(Product.images), joinedload(Product.category))
+        .filter(Product.slug == slug, Product.is_active == True)
+        .first()
+    )
     if not product:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Product '{slug}' not found.",
         )
 
-    cat = db.query(Category).filter(Category.id == product.category_id).first()
+    # Cache detail view
+    response.headers["Cache-Control"] = "public, max-age=120, s-maxage=600, stale-while-revalidate=1200"
+
+    cat = product.category
     return ProductResponse(
         id=product.id,
         name=product.name,

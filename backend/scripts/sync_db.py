@@ -92,7 +92,7 @@ PRODUCTS_CATALOGUE = [
         "weight_grams": 150,
         "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 5). Formulated with pure eucalyptus essential oil for a deep, rich mahogany stain. Ultra-smooth 0.38mm tip for intricate bridal and festive designs. Step-by-step instruction & stain care card included.",
         "specifications": "Quantity: 5 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
-        "image_url": "/images/products/mehndi-cones.png",
+        "image_url": "/images/products/pack-of-5-mehndi-cones.jpg",
     },
     {
         "category_slug": "mehndi-cones",
@@ -105,7 +105,7 @@ PRODUCTS_CATALOGUE = [
         "weight_grams": 240,
         "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 8). Hand-poured in small artisanal batches with natural eucalyptus oil for guaranteed dark stain. Step-by-step instruction & stain care card included.",
         "specifications": "Quantity: 8 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
-        "image_url": "/images/products/mehndi-cones.png",
+        "image_url": "/images/products/pack-of-8-mehndi-cones.jpg",
     },
     {
         "category_slug": "mehndi-cones",
@@ -118,7 +118,7 @@ PRODUCTS_CATALOGUE = [
         "weight_grams": 360,
         "description": "Complete 1-dozen pack of freshly rolled organic henna cones. Ideal for family celebrations, Karwa Chauth, Eid, and wedding festivities. Zero chemicals, 100% natural. Step-by-step instruction & stain care card included.",
         "specifications": "Quantity: 12 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
-        "image_url": "/images/products/mehndi-cones.png",
+        "image_url": "/images/products/pack-of-12-mehndi-cones.jpg",
     },
     {
         "category_slug": "mehndi-cones",
@@ -131,7 +131,7 @@ PRODUCTS_CATALOGUE = [
         "weight_grams": 480,
         "description": "Value bundle of 16 organic bridal henna cones. Crafted with triple-sifted micro-fine henna powder and pure essential oils for smooth flow and crisp line work. Step-by-step instruction & stain care card included.",
         "specifications": "Quantity: 16 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
-        "image_url": "/images/products/mehndi-cones.png",
+        "image_url": "/images/products/pack-of-16-mehndi-cones.jpg",
     },
     {
         "category_slug": "mehndi-cones",
@@ -144,7 +144,7 @@ PRODUCTS_CATALOGUE = [
         "weight_grams": 600,
         "description": "Studio pack of 20 fresh organic henna cones. Perfect for henna artists and large family occasions. Long-lasting, rich burgundy dye release. Step-by-step instruction & stain care card included.",
         "specifications": "Quantity: 20 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
-        "image_url": "/images/products/mehndi-cones.png",
+        "image_url": "/images/products/pack-of-20-mehndi-cones.jpg",
     },
     {
         "category_slug": "mehndi-cones",
@@ -157,7 +157,7 @@ PRODUCTS_CATALOGUE = [
         "weight_grams": 1500,
         "description": "Bulk artist master pack of 50 freshly rolled organic henna cones. Shipped in insulated packaging to maintain optimal freshness. The ultimate value for professional bridal bookings. Step-by-step instruction & stain care card included.",
         "specifications": "Quantity: 50 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
-        "image_url": "/images/products/mehndi-cones.png",
+        "image_url": "/images/products/pack-of-50-mehndi-cones.jpg",
     },
     # Mehndi Powder
     {

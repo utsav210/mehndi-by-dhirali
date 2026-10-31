@@ -22,7 +22,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-cone-5',
         product_id: 'cone-pack-5',
-        url: '/images/products/mehndi-cones.png',
+        url: '/images/products/pack-of-5-mehndi-cones.jpg',
         alt_text: 'Pack of 5 Mehndi Cones',
         sort_order: 1,
         is_primary: true,
@@ -52,7 +52,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-cone-8',
         product_id: 'cone-pack-8',
-        url: '/images/products/mehndi-cones.png',
+        url: '/images/products/pack-of-8-mehndi-cones.jpg',
         alt_text: 'Pack of 8 Mehndi Cones',
         sort_order: 1,
         is_primary: true,
@@ -82,7 +82,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-cone-12',
         product_id: 'cone-pack-12',
-        url: '/images/products/mehndi-cones.png',
+        url: '/images/products/pack-of-12-mehndi-cones.jpg',
         alt_text: 'Pack of 12 Mehndi Cones',
         sort_order: 1,
         is_primary: true,
@@ -112,7 +112,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-cone-16',
         product_id: 'cone-pack-16',
-        url: '/images/products/mehndi-cones.png',
+        url: '/images/products/pack-of-16-mehndi-cones.jpg',
         alt_text: 'Pack of 16 Mehndi Cones',
         sort_order: 1,
         is_primary: true,
@@ -142,7 +142,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-cone-20',
         product_id: 'cone-pack-20',
-        url: '/images/products/mehndi-cones.png',
+        url: '/images/products/pack-of-20-mehndi-cones.jpg',
         alt_text: 'Pack of 20 Mehndi Cones',
         sort_order: 1,
         is_primary: true,
@@ -172,7 +172,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-cone-50',
         product_id: 'cone-pack-50',
-        url: '/images/products/mehndi-cones.png',
+        url: '/images/products/pack-of-50-mehndi-cones.jpg',
         alt_text: 'Pack of 50 Mehndi Cones',
         sort_order: 1,
         is_primary: true,

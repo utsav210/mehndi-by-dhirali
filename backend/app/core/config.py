@@ -37,18 +37,21 @@ class Settings(BaseSettings):
             origins.append(f"https://{vercel_branch_url}")
         return list(dict.fromkeys(origins))
 
-    # Database (Defaults to SQLite for local development, uses Neon PostgreSQL in production)
+    # Database (Defaults to SQLite for local development, uses Neon PostgreSQL from .env in production)
     DATABASE_URL: str = "sqlite:///./mehndi_dev.db"
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def sanitize_database_url(cls, v: Union[str, None]) -> str:
-        # Check system environment explicitly
-        raw_val = v or os.environ.get("DATABASE_URL", "")
+        # Check system environment explicitly (allows pytest to override .env with in-memory SQLite)
+        raw_val = os.environ.get("DATABASE_URL") or v or ""
+        if (
+            os.environ.get("APP_ENV") == "testing"
+            or ":memory:" in str(raw_val)
+        ):
+            return "sqlite:///:memory:"
+
         if not raw_val or not str(raw_val).strip():
-            # If running on Vercel/serverless Linux, write to writable /tmp
-            if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or (os.name != "nt" and os.path.exists("/tmp")):
-                return "sqlite:////tmp/mehndi_dev.db"
             return "sqlite:///./mehndi_dev.db"
 
         clean_val = str(raw_val).strip().strip("'\"")
@@ -56,17 +59,6 @@ class Settings(BaseSettings):
         # Standardize postgres:// to postgresql:// for SQLAlchemy compatibility
         if clean_val.startswith("postgres://"):
             clean_val = "postgresql://" + clean_val[len("postgres://"):]
-
-        # If SQLite path is relative and running in a serverless environment (e.g. Vercel)
-        if (
-            clean_val.startswith("sqlite:///./")
-            or clean_val.startswith("sqlite://mehndi_dev.db")
-        ) and (
-            os.environ.get("VERCEL")
-            or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")
-            or (os.name != "nt" and os.path.exists("/tmp"))
-        ):
-            return "sqlite:////tmp/mehndi_dev.db"
 
         return clean_val
 

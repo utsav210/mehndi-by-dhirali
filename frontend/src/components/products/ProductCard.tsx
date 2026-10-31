@@ -11,9 +11,11 @@ interface ProductCardProps {
   product: Product
   /** Additional CSS classes */
   className?: string
+  /** Whether this card is rendered above the fold (optimizes LCP image loading) */
+  priority?: boolean
 }
 
-export default function ProductCard({ product, className }: ProductCardProps) {
+export default function ProductCard({ product, className, priority = false }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false)
   const addItem = useCartStore((s) => s.addItem)
   const openCart = useCartStore((s) => s.openCart)
@@ -72,9 +74,13 @@ export default function ProductCard({ product, className }: ProductCardProps) {
               'h-full w-full object-cover transition-transform duration-500 group-hover:scale-105',
               isOutOfStock && 'opacity-60'
             )}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
+            width={400}
+            height={533}
             onError={(e) => {
-              ;(e.currentTarget as HTMLImageElement).src = '/images/products/mehndi-cones.png'
+              ;(e.currentTarget as HTMLImageElement).src = '/images/products/pack-of-5-mehndi-cones.jpg'
             }}
           />
         ) : (

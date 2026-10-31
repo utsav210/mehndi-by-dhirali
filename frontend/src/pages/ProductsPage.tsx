@@ -8,6 +8,33 @@ import { Filter, SlidersHorizontal, Search, X } from 'lucide-react'
 import { INITIAL_PRODUCTS } from '@/data/initial-products'
 import { apiClient } from '@/lib/api-client'
 
+// Client-side cache to enable instant zero-latency filtering and navigation
+const productCache = new Map<string, { items: Product[]; timestamp: number }>()
+const CACHE_TTL_MS = 2 * 60 * 1000 // 2 minutes
+
+function getLocalFilteredProducts(category: string, sort: string, query: string): Product[] {
+  let list = [...INITIAL_PRODUCTS]
+  if (category && category !== 'all') {
+    list = list.filter((p) => p.category_slug === category)
+  }
+  if (query.trim()) {
+    const q = query.toLowerCase().trim()
+    list = list.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.category_name.toLowerCase().includes(q) ||
+        p.sku.toLowerCase().includes(q)
+    )
+  }
+  if (sort === 'price-asc') {
+    list.sort((a, b) => a.price_minor - b.price_minor)
+  } else if (sort === 'price-desc') {
+    list.sort((a, b) => b.price_minor - a.price_minor)
+  }
+  return list
+}
+
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { slug: routeCategorySlug } = useParams<{ slug?: string }>()
@@ -17,7 +44,12 @@ export default function ProductsPage() {
   const selectedCategory = routeCategorySlug || searchParams.get('category') || 'all'
   const sortBy = searchParams.get('sort') || 'featured'
 
-  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS)
+  const cacheKey = `${selectedCategory}|${sortBy}|${searchQuery}`
+  const initialData = productCache.has(cacheKey)
+    ? productCache.get(cacheKey)!.items
+    : getLocalFilteredProducts(selectedCategory, sortBy, searchQuery)
+
+  const [products, setProducts] = useState<Product[]>(initialData)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
@@ -27,8 +59,26 @@ export default function ProductsPage() {
 
     let isMounted = true
 
+    // Check if we have fresh cached items
+    const cached = productCache.get(cacheKey)
+    const isCacheFresh = cached && Date.now() - cached.timestamp < CACHE_TTL_MS
+
+    if (cached) {
+      setProducts(cached.items)
+      setIsLoading(false)
+      if (isCacheFresh) {
+        return
+      }
+    } else {
+      // Instantly show local filtered catalogue without flashing loading skeleton
+      const localItems = getLocalFilteredProducts(selectedCategory, sortBy, searchQuery)
+      setProducts(localItems)
+      if (localItems.length === 0) {
+        setIsLoading(true)
+      }
+    }
+
     async function fetchProducts() {
-      setIsLoading(true)
       try {
         const params: Record<string, string> = {}
         if (selectedCategory && selectedCategory !== 'all') {
@@ -53,37 +103,16 @@ export default function ProductsPage() {
                 p.sku.toLowerCase().includes(q)
             )
           }
+          productCache.set(cacheKey, { items: list, timestamp: Date.now() })
           setProducts(list)
           setIsLoading(false)
           return
         }
       } catch (err) {
-        console.warn('API product fetch failed, falling back to local catalog:', err)
+        console.warn('API product fetch failed, using local catalog:', err)
       }
 
       if (!isMounted) return
-
-      // Filter and sort INITIAL_PRODUCTS locally
-      let filtered = [...INITIAL_PRODUCTS]
-      if (selectedCategory && selectedCategory !== 'all') {
-        filtered = filtered.filter((p) => p.category_slug === selectedCategory)
-      }
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim()
-        filtered = filtered.filter(
-          (p) =>
-            p.name.toLowerCase().includes(q) ||
-            p.description.toLowerCase().includes(q) ||
-            p.category_name.toLowerCase().includes(q) ||
-            p.sku.toLowerCase().includes(q)
-        )
-      }
-      if (sortBy === 'price-asc') {
-        filtered.sort((a, b) => a.price_minor - b.price_minor)
-      } else if (sortBy === 'price-desc') {
-        filtered.sort((a, b) => b.price_minor - a.price_minor)
-      }
-      setProducts(filtered)
       setIsLoading(false)
     }
 
@@ -92,7 +121,7 @@ export default function ProductsPage() {
     return () => {
       isMounted = false
     }
-  }, [selectedCategory, sortBy, searchQuery])
+  }, [selectedCategory, sortBy, searchQuery, cacheKey])
 
   const categories = [
     { id: 'all', name: 'All Categories' },
