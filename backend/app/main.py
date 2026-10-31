@@ -163,7 +163,7 @@ def seed_initial_products():
                 "weight_grams": 100,
                 "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment. Detailed step-by-step instruction card included.",
                 "specifications": "Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
-                "image_url": "/images/products/mehndi-powder.png",
+                "image_url": "/images/products/100-gm-mehndi-powder.jpg",
             },
             {
                 "category_id": powder_cat.id if powder_cat else None,
@@ -176,7 +176,7 @@ def seed_initial_products():
                 "weight_grams": 200,
                 "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning. Detailed step-by-step instruction card included.",
                 "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
-                "image_url": "/images/products/mehndi-powder.png",
+                "image_url": "/images/products/200-gm-mehndi-powder.jpg",
             },
             {
                 "category_id": powder_cat.id if powder_cat else None,
@@ -189,7 +189,7 @@ def seed_initial_products():
                 "weight_grams": 50,
                 "description": "Specialized 50g organic anti-leakage formula powder. Mix with your henna paste to improve consistency, eliminate smudging, and prevent tip seepage for razor-sharp lines. Detailed step-by-step instruction card included.",
                 "specifications": "Weight: 50g | Purpose: Anti-leakage paste stabilizer | 100% Herbal & Organic | Instruction card included",
-                "image_url": "/images/products/anti-leakage-powder.png",
+                "image_url": "/images/products/50-gram-anti-leakage-powder.jpg",
             },
             # Mehndi Oil
             {
@@ -203,7 +203,7 @@ def seed_initial_products():
                 "weight_grams": 100,
                 "description": "Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil. Detailed step-by-step instruction card included.",
                 "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil | Instruction card included",
-                "image_url": "/images/products/mehndi-oil.png",
+                "image_url": "/images/products/mehndi-oil.jpg",
             },
             # Mehndi Kits
             {
@@ -217,7 +217,7 @@ def seed_initial_products():
                 "weight_grams": 250,
                 "description": "Complete beginner starter trial kit including 100gm organic Sojat mehndi powder, 30ml eucalyptus mehndi oil, 10 precut transparent cellophane sheets, 2 durable piping bags, and 10 precision plastic pins. Perfect for students and beginners to roll and mix fresh cones at home. Step-by-step instruction card included.",
                 "specifications": "Contents: 100gm powder + 30ml oil + 10 cello sheets + 2 piping bags + 10 pins | Ideal for: Beginners & Practice | Instruction card included",
-                "image_url": "/images/products/trial-kit.png",
+                "image_url": "/images/products/trial-kit.jpg",
             },
             {
                 "category_id": kits_cat.id if kits_cat else None,
@@ -230,7 +230,7 @@ def seed_initial_products():
                 "weight_grams": 500,
                 "description": "All-in-one comprehensive kit for professional mehndi artists and bridal work with FREE doorstep shipping! Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone. Step-by-step masterclass instruction card included.",
                 "specifications": "Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal | Shipping: FREE | Instruction card included",
-                "image_url": "/images/products/mehndi-artist-kit.png",
+                "image_url": "/images/products/mehndi-artist-kit.jpg",
             },
         ]
 
@@ -271,6 +271,18 @@ def seed_initial_products():
                 existing.description = p_data["description"]
                 existing.specifications = p_data["specifications"]
                 existing.weight_grams = p_data["weight_grams"]
+                existing_img = db.query(ProductImage).filter(ProductImage.product_id == existing.id, ProductImage.is_primary == True).first()
+                if existing_img:
+                    existing_img.url = p_data["image_url"]
+                else:
+                    new_img = ProductImage(
+                        product_id=existing.id,
+                        url=p_data["image_url"],
+                        alt_text=existing.name,
+                        sort_order=1,
+                        is_primary=True,
+                    )
+                    db.add(new_img)
         db.commit()
         logger.info("Seeded initial store product catalogue.")
     except Exception as e:

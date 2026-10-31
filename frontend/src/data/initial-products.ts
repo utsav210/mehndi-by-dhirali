@@ -202,7 +202,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-powder-100',
         product_id: 'powder-100g',
-        url: '/images/products/mehndi-powder.png',
+        url: '/images/products/100-gm-mehndi-powder.jpg',
         alt_text: '100 gm Organic Mehndi Powder',
         sort_order: 1,
         is_primary: true,
@@ -232,7 +232,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-powder-200',
         product_id: 'powder-200g',
-        url: '/images/products/mehndi-powder.png',
+        url: '/images/products/200-gm-mehndi-powder.jpg',
         alt_text: '200 gm Organic Mehndi Powder',
         sort_order: 1,
         is_primary: true,
@@ -262,7 +262,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-powder-anti-leak',
         product_id: 'powder-anti-leak-50g',
-        url: '/images/products/anti-leakage-powder.png',
+        url: '/images/products/50-gram-anti-leakage-powder.jpg',
         alt_text: '50 gram Anti leakage powder',
         sort_order: 1,
         is_primary: true,
@@ -292,7 +292,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-oil-100',
         product_id: 'oil-100ml',
-        url: '/images/products/mehndi-oil.png',
+        url: '/images/products/mehndi-oil.jpg',
         alt_text: '100ML Pure Mehndi Oil',
         sort_order: 1,
         is_primary: true,
@@ -323,7 +323,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-kit-trial',
         product_id: 'kit-trial',
-        url: '/images/products/trial-kit.png',
+        url: '/images/products/trial-kit.jpg',
         alt_text: 'Trial Kit (100gm Powder + 30ml Oil + 10 Sheets + 2 Bags + 10 Pins)',
         sort_order: 1,
         is_primary: true,
@@ -354,7 +354,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       {
         id: 'img-kit-artist',
         product_id: 'kit-artist',
-        url: '/images/products/mehndi-artist-kit.png',
+        url: '/images/products/mehndi-artist-kit.jpg',
         alt_text: 'Artist Kit + FREE shipping (200gm Powder + 100ml Oil + 5 Bags + Pins + Sheets + Cones)',
         sort_order: 1,
         is_primary: true,
