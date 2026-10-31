@@ -36,11 +36,41 @@ def seed_initial_categories():
         db.commit()
 
         default_categories = [
-            {"name": "Mehndi Cones", "slug": "mehndi-cones", "description": "Freshly mixed organic henna cones", "sort_order": 1},
-            {"name": "Mehndi Powder", "slug": "mehndi-powder", "description": "Triple-sifted 100% natural Sojat henna powder", "sort_order": 2},
-            {"name": "Mehndi Oil", "slug": "mehndi-oil", "description": "Pure eucalyptus and essential herbal oil blends", "sort_order": 3},
-            {"name": "Mehndi Kits", "slug": "mehndi-kits", "description": "Complete bridal and professional student kits", "sort_order": 4},
-            {"name": "Accessories", "slug": "accessories", "description": "Sealant spray, cellophane sheets, pin tips", "sort_order": 5},
+            {
+                "name": "Mehndi Cones",
+                "slug": "mehndi-cones",
+                "description": "Freshly mixed organic henna cones",
+                "image_url": "/images/products/pack-of-5-mehndi-cones.jpg",
+                "sort_order": 1,
+            },
+            {
+                "name": "Mehndi Powder",
+                "slug": "mehndi-powder",
+                "description": "Triple-sifted 100% natural Sojat henna powder",
+                "image_url": "/images/products/100-gm-mehndi-powder.jpg",
+                "sort_order": 2,
+            },
+            {
+                "name": "Mehndi Oil",
+                "slug": "mehndi-oil",
+                "description": "Pure eucalyptus and essential herbal oil blends",
+                "image_url": "/images/products/mehndi-oil.jpg",
+                "sort_order": 3,
+            },
+            {
+                "name": "Mehndi Kits",
+                "slug": "mehndi-kits",
+                "description": "Complete bridal and professional student kits",
+                "image_url": "/images/products/mehndi-artist-kit.jpg",
+                "sort_order": 4,
+            },
+            {
+                "name": "Accessories",
+                "slug": "accessories",
+                "description": "Sealant spray, cellophane sheets, pin tips",
+                "image_url": None,
+                "sort_order": 5,
+            },
         ]
         for cat_data in default_categories:
             existing_cat = db.query(Category).filter(Category.slug == cat_data["slug"]).first()
@@ -50,6 +80,7 @@ def seed_initial_categories():
             else:
                 existing_cat.name = cat_data["name"]
                 existing_cat.description = cat_data["description"]
+                existing_cat.image_url = cat_data["image_url"]
                 existing_cat.sort_order = cat_data["sort_order"]
                 existing_cat.is_active = True
         db.commit()

@@ -1,33 +1,73 @@
 import { Link } from 'react-router-dom'
 import type { Category } from '@/types'
 import { cn } from '@/lib/utils'
-import { Package } from 'lucide-react'
 
 interface CategoryGridProps {
-  /** Categories to display. Falls back to demo data when empty. */
+  /** Categories to display. Falls back to default data when empty. */
   categories: Category[]
   /** Additional CSS classes */
   className?: string
 }
 
-/**
- * DEMO DATA — used only when no real categories are provided.
- * Replace with live API data in production.
- */
-const DEMO_CATEGORIES: Category[] = [
-  { id: 'demo-1', name: 'Mehndi Cones', slug: 'mehndi-cones', description: null, image_url: null, sort_order: 1, is_active: true },
-  { id: 'demo-2', name: 'Mehndi Powder', slug: 'mehndi-powder', description: null, image_url: null, sort_order: 2, is_active: true },
-  { id: 'demo-3', name: 'Mehndi Oil', slug: 'mehndi-oil', description: null, image_url: null, sort_order: 3, is_active: true },
-  { id: 'demo-4', name: 'Mehndi Kits', slug: 'mehndi-kits', description: null, image_url: null, sort_order: 4, is_active: true },
-  { id: 'demo-5', name: 'Accessories', slug: 'accessories', description: null, image_url: null, sort_order: 5, is_active: true },
+const CATEGORY_IMAGE_MAP: Record<string, string> = {
+  'mehndi-cones': '/images/products/pack-of-5-mehndi-cones.jpg',
+  'mehndi-powder': '/images/products/100-gm-mehndi-powder.jpg',
+  'mehndi-oil': '/images/products/mehndi-oil.jpg',
+  'mehndi-kits': '/images/products/mehndi-artist-kit.jpg',
+}
+
+const DEFAULT_CATEGORIES: Category[] = [
+  {
+    id: 'cat-mehndi-cones',
+    name: 'Mehndi Cones',
+    slug: 'mehndi-cones',
+    description: 'Freshly mixed organic henna cones',
+    image_url: '/images/products/pack-of-5-mehndi-cones.jpg',
+    sort_order: 1,
+    is_active: true,
+  },
+  {
+    id: 'cat-mehndi-powder',
+    name: 'Mehndi Powder',
+    slug: 'mehndi-powder',
+    description: 'Triple-sifted 100% natural Sojat henna powder',
+    image_url: '/images/products/100-gm-mehndi-powder.jpg',
+    sort_order: 2,
+    is_active: true,
+  },
+  {
+    id: 'cat-mehndi-oil',
+    name: 'Mehndi Oil',
+    slug: 'mehndi-oil',
+    description: 'Pure eucalyptus and essential herbal oil blends',
+    image_url: '/images/products/mehndi-oil.jpg',
+    sort_order: 3,
+    is_active: true,
+  },
+  {
+    id: 'cat-mehndi-kits',
+    name: 'Mehndi Kits',
+    slug: 'mehndi-kits',
+    description: 'Complete bridal and professional student kits',
+    image_url: '/images/products/mehndi-artist-kit.jpg',
+    sort_order: 4,
+    is_active: true,
+  },
 ]
 
 export default function CategoryGrid({
   categories,
   className,
 }: CategoryGridProps) {
-  const displayCategories =
-    categories.length > 0 ? categories : DEMO_CATEGORIES
+  // Use passed categories if available, otherwise fallback to DEFAULT_CATEGORIES.
+  // Filter out accessories from Shop by Category section as requested.
+  const rawList = categories.length > 0 ? categories : DEFAULT_CATEGORIES
+  const displayCategories = rawList
+    .filter((cat) => cat.slug !== 'accessories')
+    .map((cat) => ({
+      ...cat,
+      image_url: cat.image_url || CATEGORY_IMAGE_MAP[cat.slug] || '',
+    }))
 
   return (
     <section className={cn('py-16 md:py-20', className)}>
@@ -41,40 +81,39 @@ export default function CategoryGrid({
           Find exactly what you need for your mehndi art
         </p>
 
-        {/* Grid */}
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {displayCategories.map((category) => (
-            <Link
-              key={category.id}
-              to={`/categories/${category.slug}`}
-              className="group relative flex aspect-square flex-col items-center justify-end overflow-hidden rounded-lg bg-warm-ivory transition-shadow hover:shadow-card-hover"
-            >
-              {/* Image or placeholder */}
-              {category.image_url ? (
+        {/* Grid - 4 Columns */}
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {displayCategories.map((category) => {
+            const imageUrl = category.image_url || CATEGORY_IMAGE_MAP[category.slug]
+            return (
+              <Link
+                key={category.id}
+                to={`/categories/${category.slug}`}
+                className="group relative flex aspect-square flex-col items-center justify-end overflow-hidden rounded-2xl bg-warm-ivory shadow-sm transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1"
+              >
+                {/* Image */}
                 <img
-                  src={category.image_url}
+                  src={imageUrl}
                   alt={category.name}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
+                  decoding="async"
+                  onError={(e) => {
+                    if (CATEGORY_IMAGE_MAP[category.slug]) {
+                      ;(e.currentTarget as HTMLImageElement).src = CATEGORY_IMAGE_MAP[category.slug]
+                    }
+                  }}
                 />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-sand-beige">
-                  <Package
-                    className="h-10 w-10 text-secondary-text/50 transition-colors group-hover:text-bottle-green/60"
-                    strokeWidth={1.2}
-                    aria-hidden="true"
-                  />
-                </div>
-              )}
 
-              {/* Name overlay */}
-              <div className="relative z-10 w-full bg-gradient-to-t from-forest-green/80 to-transparent px-3 pb-3 pt-8 transition-all group-hover:from-forest-green/90">
-                <span className="block text-center text-xs font-semibold uppercase tracking-wider text-white sm:text-sm">
-                  {category.name}
-                </span>
-              </div>
-            </Link>
-          ))}
+                {/* Subtle dark gradient overlay so category title is crisp and readable */}
+                <div className="relative z-10 w-full bg-gradient-to-t from-forest-green/85 via-forest-green/40 to-transparent px-3 pb-4 pt-12 transition-all duration-300 group-hover:from-forest-green/95">
+                  <span className="block text-center font-serif text-sm font-semibold tracking-wide text-white sm:text-base drop-shadow-sm">
+                    {category.name}
+                  </span>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </section>
