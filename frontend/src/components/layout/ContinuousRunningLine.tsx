@@ -21,7 +21,7 @@ export function ContinuousRunningLine({ className }: ContinuousRunningLineProps)
   return (
     <aside
       className={cn(
-        'bg-[#FAF5E8] overflow-hidden py-2 sm:py-2.5 border-y border-antique-gold/30 select-none shadow-2xs',
+        'bg-[#FAF5E8] overflow-hidden py-2 sm:py-2.5 border-b border-antique-gold/30 select-none shadow-2xs',
         className
       )}
       aria-label="Store highlights ticker"

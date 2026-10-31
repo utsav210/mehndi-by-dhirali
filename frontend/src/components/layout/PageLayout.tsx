@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ContinuousRunningLine } from './ContinuousRunningLine'
 import { SiteHeader } from './SiteHeader'
 import { MainNavigation } from './MainNavigation'
 import { SiteFooter } from './SiteFooter'
@@ -11,6 +12,7 @@ interface PageLayoutProps {
 export function PageLayout({ children }: PageLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-white">
+      <ContinuousRunningLine />
       <SiteHeader />
       <MainNavigation />
 
