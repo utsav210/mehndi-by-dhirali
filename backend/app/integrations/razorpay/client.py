@@ -13,9 +13,9 @@ logger = structlog.get_logger(__name__)
 
 class RazorpayClient:
     def __init__(self):
-        self.key_id = settings.RAZORPAY_KEY_ID
-        self.key_secret = settings.RAZORPAY_KEY_SECRET
-        self.webhook_secret = settings.RAZORPAY_WEBHOOK_SECRET
+        self.key_id = (settings.RAZORPAY_KEY_ID or "").strip().strip('"').strip("'")
+        self.key_secret = (settings.RAZORPAY_KEY_SECRET or "").strip().strip('"').strip("'")
+        self.webhook_secret = (settings.RAZORPAY_WEBHOOK_SECRET or "").strip().strip('"').strip("'")
 
     def create_order(
         self,
@@ -30,7 +30,9 @@ class RazorpayClient:
         """
         # If in placeholder or simulation test mode, return deterministic mock order
         if (
-            self.key_id.startswith("rzp_test_placeholder")
+            not self.key_id
+            or not self.key_secret
+            or self.key_id.startswith("rzp_test_placeholder")
             or "placeholder" in self.key_secret
             or "paste_your" in self.key_id
             or "paste_your" in self.key_secret
@@ -40,7 +42,7 @@ class RazorpayClient:
                 "id": f"order_mock_{receipt or 'mbd'}_{amount_minor}",
                 "amount": amount_minor,
                 "currency": currency,
-                "receipt": receipt,
+                "receipt": (receipt or "")[:40],
                 "status": "created",
             }
 
@@ -50,14 +52,14 @@ class RazorpayClient:
             payload = {
                 "amount": amount_minor,
                 "currency": currency,
-                "receipt": receipt or "",
+                "receipt": (receipt or "")[:40],
                 "notes": notes or {},
             }
             order = client.order.create(data=payload)
             return order
         except Exception as e:
-            logger.error("Failed to create Razorpay order", error=str(e))
-            raise RuntimeError(f"Payment gateway order creation failed: {str(e)}")
+            logger.error("Failed to create Razorpay order", error=str(e), key_prefix=self.key_id[:8] if self.key_id else "none")
+            raise RuntimeError(f"{str(e)}")
 
     def verify_payment_signature(
         self,

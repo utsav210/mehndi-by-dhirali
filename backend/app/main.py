@@ -303,6 +303,11 @@ def ensure_order_tracking_columns():
             for col_name, col_type in new_cols:
                 if col_name not in existing:
                     conn.execute(text(f"ALTER TABLE orders ADD COLUMN {col_name} {col_type};"))
+            if "addresses" in insp.get_table_names() and not is_sqlite:
+                try:
+                    conn.execute(text("ALTER TABLE addresses ALTER COLUMN user_id DROP NOT NULL;"))
+                except Exception:
+                    pass
             conn.commit()
     except Exception as e:
         logger.warning("Order tracking columns check skipped", error=str(e))
@@ -360,7 +365,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     logger.error("Unhandled server exception", path=request.url.path, error=str(exc))
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": "An internal server error occurred. Please contact support."},
+        content={"detail": f"Server Error: {str(exc)}"},
     )
 
 

@@ -2,6 +2,12 @@
 Pytest fixtures and test database setup.
 Uses an isolated in-memory or temporary SQLite database for testing.
 """
+import os
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+os.environ["APP_ENV"] = "testing"
+os.environ["RAZORPAY_KEY_ID"] = "rzp_test_placeholder"
+os.environ["RAZORPAY_KEY_SECRET"] = "placeholder_secret"
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine

@@ -45,10 +45,7 @@ def create_order(
 
     for item_req in data.items:
         product = db.query(Product).filter(
-            Product.id == item_req.product_id,
-            Product.is_active == True,
-        ).with_for_update().first() if not db.bind.url.drivername.startswith("sqlite") else db.query(Product).filter(
-            Product.id == item_req.product_id,
+            (Product.id == item_req.product_id) | (Product.slug == item_req.product_id),
             Product.is_active == True,
         ).first()
 
@@ -112,8 +109,8 @@ def create_order(
 
     # 4. Create or bind shipping address
     shipping_addr = Address(
-        user_id=current_user.id if current_user else "guest_" + uuid.uuid4().hex[:8],
-        label=data.shipping_address.label,
+        user_id=current_user.id if current_user else None,
+        label=data.shipping_address.label or "Home",
         full_name=data.shipping_address.full_name,
         phone=data.shipping_address.phone,
         address_line_1=data.shipping_address.address_line_1,
@@ -132,13 +129,20 @@ def create_order(
     # 6. Payment initiation (Prepaid generates Razorpay order, COD confirms immediately)
     rzp_order_id = None
     if not is_cod:
-        rzp_order = razorpay_client.create_order(
-            amount_minor=final_total_minor,
-            currency="INR",
-            receipt=order_number,
-        )
-        rzp_order_id = rzp_order.get("id")
-        initial_status = "pending_payment"
+        try:
+            rzp_order = razorpay_client.create_order(
+                amount_minor=final_total_minor,
+                currency="INR",
+                receipt=order_number[:40],
+            )
+            rzp_order_id = rzp_order.get("id")
+            initial_status = "pending_payment"
+        except Exception as rzp_err:
+            logger.error("Razorpay order creation failed", error=str(rzp_err))
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Payment Gateway Error: {str(rzp_err)}. Please verify your Razorpay API Key and Secret.",
+            )
     else:
         initial_status = "confirmed"
 

@@ -9,7 +9,7 @@ from app.db.base import Base, UUIDMixin, TimestampMixin
 class Address(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "addresses"
 
-    user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=True)  # Nullable for guest checkouts
     label = Column(String(50), default="Home", nullable=False)
     full_name = Column(String(100), nullable=False)
     phone = Column(String(20), nullable=False)
