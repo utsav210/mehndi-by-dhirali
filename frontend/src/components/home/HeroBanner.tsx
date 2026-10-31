@@ -5,39 +5,18 @@ import { cn } from '@/lib/utils'
 
 interface CarouselSlide {
   id: string
-  type: 'image' | 'content'
-  imageSrc?: string
-  altText?: string
-  linkUrl: string
-  tagline?: string
-  title?: string
-  description?: string
-  primaryCtaText?: string
-  primaryCtaLink?: string
-  secondaryCtaText?: string
-  secondaryCtaLink?: string
+  tagline: string
+  title: string
+  description: string
+  primaryCtaText: string
+  primaryCtaLink: string
+  secondaryCtaText: string
+  secondaryCtaLink: string
 }
 
 const SLIDES: CarouselSlide[] = [
   {
-    id: 'slide-bridal-hand',
-    type: 'image',
-    imageSrc: '/images/hero-banner-bridal.jpg',
-    altText:
-      'Mehndi By Dhirali — Bridal Henna Hand, Fresh Organic Cones & Artisanal Mandala',
-    linkUrl: '/products',
-  },
-  {
-    id: 'slide-natural-benefits',
-    type: 'image',
-    imageSrc: '/images/hero-banner-natural.png',
-    altText:
-      '100% Natural Henna, Handcrafted with Care, Express All-India Delivery, Safe & Skin Friendly — Mehndi By Dhirali',
-    linkUrl: '/products',
-  },
-  {
     id: 'slide-celebrate-tradition',
-    type: 'content',
     tagline: 'Premium Mehndi Collection',
     title: 'Celebrate Tradition with Natural Mehndi',
     description:
@@ -46,11 +25,9 @@ const SLIDES: CarouselSlide[] = [
     primaryCtaLink: '/products',
     secondaryCtaText: 'Explore Collections',
     secondaryCtaLink: '/products',
-    linkUrl: '/products',
   },
   {
     id: 'slide-bridal-kits',
-    type: 'content',
     tagline: 'Artisanal Rajasthani Sojat Henna',
     title: 'Fresh Cones & Bridal Master Kits',
     description:
@@ -59,7 +36,6 @@ const SLIDES: CarouselSlide[] = [
     primaryCtaLink: '/products?search=kit',
     secondaryCtaText: 'View Cones',
     secondaryCtaLink: '/products?search=cone',
-    linkUrl: '/products',
   },
 ]
 
@@ -147,38 +123,10 @@ export default function HeroBanner({ className }: { className?: string }) {
         {SLIDES.map((slide, index) => {
           const isActive = currentIndex === index
 
-          if (slide.type === 'image') {
-            return (
-              <div
-                key={slide.id}
-                className="w-full shrink-0 flex items-center justify-center bg-bottle-green overflow-hidden"
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`Slide ${index + 1} of ${SLIDES.length}`}
-                aria-hidden={!isActive}
-              >
-                <Link
-                  to={slide.linkUrl}
-                  className="group relative block w-full h-[260px] sm:h-[360px] md:h-[440px] lg:h-[500px] xl:h-[540px] overflow-hidden cursor-pointer"
-                  tabIndex={isActive ? 0 : -1}
-                  aria-label={slide.altText}
-                >
-                  <img
-                    src={slide.imageSrc}
-                    alt={slide.altText}
-                    className="h-full w-full object-cover sm:object-contain object-center transition-transform duration-700 group-hover:scale-[1.01]"
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                  />
-                  <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5 pointer-events-none" />
-                </Link>
-              </div>
-            )
-          }
-
           return (
             <div
               key={slide.id}
-              className="relative isolate w-full shrink-0 flex items-center h-[260px] sm:h-[360px] md:h-[440px] lg:h-[500px] xl:h-[540px] overflow-hidden bg-bottle-green px-4 py-8 sm:px-6 md:py-16 lg:px-8"
+              className="relative isolate w-full shrink-0 flex items-center min-h-[350px] sm:min-h-[420px] md:min-h-[480px] lg:min-h-[520px] overflow-hidden bg-bottle-green px-4 py-12 sm:px-8 md:py-20 lg:px-12"
               role="group"
               aria-roledescription="slide"
               aria-label={`Slide ${index + 1} of ${SLIDES.length}`}
@@ -209,29 +157,25 @@ export default function HeroBanner({ className }: { className?: string }) {
                   <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
                     {slide.title}
                   </h2>
-                  <p className="mt-3 sm:mt-5 max-w-lg text-xs sm:text-base leading-relaxed text-warm-ivory/90 sm:text-lg line-clamp-3 sm:line-clamp-none">
+                  <p className="mt-3 sm:mt-5 max-w-lg text-xs sm:text-base leading-relaxed text-warm-ivory/90 sm:text-lg">
                     {slide.description}
                   </p>
                   <div className="mt-5 sm:mt-8 flex flex-wrap gap-3 sm:gap-4">
-                    {slide.primaryCtaText && slide.primaryCtaLink && (
-                      <Link
-                        to={slide.primaryCtaLink}
-                        className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-forest-green transition-all hover:bg-antique-gold/90 hover:scale-105 shadow-md"
-                        tabIndex={isActive ? 0 : -1}
-                      >
-                        {slide.primaryCtaText}
-                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                      </Link>
-                    )}
-                    {slide.secondaryCtaText && slide.secondaryCtaLink && (
-                      <Link
-                        to={slide.secondaryCtaLink}
-                        className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/60 px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/15 hover:scale-105"
-                        tabIndex={isActive ? 0 : -1}
-                      >
-                        {slide.secondaryCtaText}
-                      </Link>
-                    )}
+                    <Link
+                      to={slide.primaryCtaLink}
+                      className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-forest-green transition-all hover:bg-antique-gold/90 hover:scale-105 shadow-md"
+                      tabIndex={isActive ? 0 : -1}
+                    >
+                      {slide.primaryCtaText}
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                    <Link
+                      to={slide.secondaryCtaLink}
+                      className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/60 px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/15 hover:scale-105"
+                      tabIndex={isActive ? 0 : -1}
+                    >
+                      {slide.secondaryCtaText}
+                    </Link>
                   </div>
                 </div>
               </div>
