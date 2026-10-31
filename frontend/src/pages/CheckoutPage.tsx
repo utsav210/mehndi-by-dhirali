@@ -117,7 +117,10 @@ export default function CheckoutPage() {
         return
       }
 
-      const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_placeholder'
+      const razorpayKey =
+        createdOrder.razorpay_key_id ||
+        import.meta.env.VITE_RAZORPAY_KEY_ID ||
+        'rzp_test_placeholder'
 
       const options = {
         key: razorpayKey,

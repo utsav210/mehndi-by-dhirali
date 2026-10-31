@@ -95,6 +95,7 @@ export interface Order {
   shipping_address: Address
   items: OrderItem[]
   razorpay_order_id: string | null
+  razorpay_key_id?: string | null
   tracking_number?: string | null
   courier_partner?: string | null
   tracking_url?: string | null

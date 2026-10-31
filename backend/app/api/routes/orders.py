@@ -13,6 +13,7 @@ from app.models.product import Product
 from app.models.address import Address
 from app.models.user import User
 from app.core.deps import get_optional_user, get_current_user
+from app.core.config import settings
 from app.schemas.order import (
     OrderCreateRequest,
     OrderResponse,
@@ -178,6 +179,7 @@ def create_order(
 
     db.commit()
     db.refresh(new_order)
+    setattr(new_order, "razorpay_key_id", (settings.RAZORPAY_KEY_ID or "").strip().strip('"').strip("'"))
 
     return new_order
 

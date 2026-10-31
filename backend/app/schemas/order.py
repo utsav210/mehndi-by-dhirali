@@ -59,6 +59,7 @@ class OrderResponse(BaseModel):
     currency: str
     payment_method: Optional[str] = "prepaid"
     razorpay_order_id: Optional[str] = None
+    razorpay_key_id: Optional[str] = None
     items: List[OrderItemResponse] = []
     created_at: datetime
     # Fulfillment & Tracking fields
