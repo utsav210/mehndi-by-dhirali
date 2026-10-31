@@ -109,9 +109,9 @@ export function SiteFooter() {
               href="https://chat.whatsapp.com/LVmXHBXQbzH35cg719kxy6"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 text-sm shadow-md transition-all hover:scale-105 shrink-0"
+              className="inline-flex items-center gap-2.5 rounded-full bg-[#FAF5E8] hover:bg-white text-bottle-green font-semibold px-6 py-3 text-sm shadow-md border border-antique-gold/40 transition-all hover:scale-105 hover:shadow-lg shrink-0 cursor-pointer"
             >
-              <WhatsAppIcon className="h-5 w-5" />
+              <WhatsAppIcon className="h-5 w-5 text-bottle-green" />
               <span>Join WhatsApp Community</span>
             </a>
           </div>
