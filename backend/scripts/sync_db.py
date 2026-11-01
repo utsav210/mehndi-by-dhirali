@@ -46,24 +46,24 @@ from app.models import (
 
 DEFAULT_CATEGORIES = [
     {
-        "name": "Mehndi Cones",
-        "slug": "mehndi-cones",
-        "description": "Freshly mixed organic henna cones",
-        "image_url": "/images/products/pack-of-5-mehndi-cones.jpg",
-        "sort_order": 1,
-    },
-    {
         "name": "Mehndi Powder",
         "slug": "mehndi-powder",
         "description": "Triple-sifted 100% natural Sojat henna powder",
         "image_url": "/images/products/100-gm-mehndi-powder.jpg",
-        "sort_order": 2,
+        "sort_order": 1,
     },
     {
         "name": "Mehndi Oil",
         "slug": "mehndi-oil",
         "description": "Pure eucalyptus and essential herbal oil blends",
         "image_url": "/images/products/mehndi-oil.jpg",
+        "sort_order": 2,
+    },
+    {
+        "name": "Mehndi Cones",
+        "slug": "mehndi-cones",
+        "description": "Freshly mixed organic henna cones",
+        "image_url": "/images/products/pack-of-5-mehndi-cones.jpg",
         "sort_order": 3,
     },
     {

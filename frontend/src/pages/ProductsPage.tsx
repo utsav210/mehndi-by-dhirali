@@ -103,6 +103,15 @@ export default function ProductsPage() {
                 p.sku.toLowerCase().includes(q)
             )
           }
+          if (sortBy === 'featured' && (!selectedCategory || selectedCategory === 'all')) {
+            const catOrder: Record<string, number> = {
+              'mehndi-powder': 1,
+              'mehndi-oil': 2,
+              'mehndi-cones': 3,
+              'mehndi-kits': 4,
+            }
+            list.sort((a, b) => (catOrder[a.category_slug] ?? 99) - (catOrder[b.category_slug] ?? 99))
+          }
           productCache.set(cacheKey, { items: list, timestamp: Date.now() })
           setProducts(list)
           setIsLoading(false)
@@ -125,9 +134,9 @@ export default function ProductsPage() {
 
   const categories = [
     { id: 'all', name: 'All Categories' },
-    { id: 'mehndi-cones', name: 'Mehndi Cones' },
     { id: 'mehndi-powder', name: 'Mehndi Powder' },
     { id: 'mehndi-oil', name: 'Mehndi Oil' },
+    { id: 'mehndi-cones', name: 'Mehndi Cones' },
     { id: 'mehndi-kits', name: 'Bridal & Student Kits' },
     { id: 'accessories', name: 'Accessories' },
   ]

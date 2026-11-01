@@ -25,7 +25,16 @@ export default function HomePage() {
           params: { sort: 'featured', page_size: 8 },
         })
         if (prodData?.items && prodData.items.length > 0) {
-          setProducts(prodData.items)
+          const catOrder: Record<string, number> = {
+            'mehndi-powder': 1,
+            'mehndi-oil': 2,
+            'mehndi-cones': 3,
+            'mehndi-kits': 4,
+          }
+          const sorted = [...prodData.items].sort(
+            (a, b) => (catOrder[a.category_slug] ?? 99) - (catOrder[b.category_slug] ?? 99)
+          )
+          setProducts(sorted)
         }
       } catch (err) {
         console.warn('Live products fetch failed, using default collection:', err)
@@ -59,7 +68,7 @@ export default function HomePage() {
       <SpecialOffers />
 
       {/* 5. Featured / Latest Products */}
-      <FeaturedProducts products={products} title="Featured Henna Cones, Powder & Kits" />
+      <FeaturedProducts products={products} title="Featured Henna Powder, Oil, Cones & Kits" />
 
       {/* 6. Media / Tutorials Section */}
       <MediaSection />

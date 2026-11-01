@@ -58,7 +58,7 @@ def list_products(
     elif sort == "newest":
         query = query.order_by(desc(Product.created_at))
     else:  # featured
-        query = query.order_by(desc(Product.is_featured), desc(Product.created_at))
+        query = query.join(Category).order_by(Category.sort_order.asc(), desc(Product.is_featured), desc(Product.created_at))
 
     total = query.count()
     offset = (page - 1) * page_size

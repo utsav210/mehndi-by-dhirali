@@ -1,6 +1,131 @@
 import type { Product } from '@/types'
 
 export const INITIAL_PRODUCTS: Product[] = [
+  // 1. Mehndi Powder
+  {
+    id: 'powder-100g',
+    name: '100 gm Mehndi Powder',
+    slug: '100-gm-mehndi-powder',
+    description:
+      '100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment. Detailed step-by-step instruction card included.',
+    specifications: 'Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included',
+    category_id: 'cat-mehndi-powder',
+    category_name: 'Mehndi Powder',
+    category_slug: 'mehndi-powder',
+    price_minor: 9900, // ₹99.00
+    compare_at_price_minor: 14900, // ₹149.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-POWDER-100',
+    weight_grams: 100,
+    images: [
+      {
+        id: 'img-powder-100',
+        product_id: 'powder-100g',
+        url: '/images/products/100-gm-mehndi-powder.jpg',
+        alt_text: '100 gm Organic Mehndi Powder',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'powder-200g',
+    name: '200 gm Mehndi Powder',
+    slug: '200-gm-mehndi-powder',
+    description:
+      '100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning. Detailed step-by-step instruction card included.',
+    specifications: 'Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included',
+    category_id: 'cat-mehndi-powder',
+    category_name: 'Mehndi Powder',
+    category_slug: 'mehndi-powder',
+    price_minor: 18900, // ₹189.00
+    compare_at_price_minor: 27900, // ₹279.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-POWDER-200',
+    weight_grams: 200,
+    images: [
+      {
+        id: 'img-powder-200',
+        product_id: 'powder-200g',
+        url: '/images/products/200-gm-mehndi-powder.jpg',
+        alt_text: '200 gm Organic Mehndi Powder',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+  {
+    id: 'powder-anti-leak-50g',
+    name: '50 gram Anti leakage powder',
+    slug: '50-gram-anti-leakage-powder',
+    description:
+      'Specialized 50g organic anti-leakage formula powder. Mix with your henna paste to improve consistency, eliminate smudging, and prevent tip seepage for razor-sharp lines. Detailed step-by-step instruction card included.',
+    specifications: 'Weight: 50g | Purpose: Anti-leakage paste stabilizer | 100% Herbal & Organic | Instruction card included',
+    category_id: 'cat-mehndi-powder',
+    category_name: 'Mehndi Powder',
+    category_slug: 'mehndi-powder',
+    price_minor: 4900, // ₹49.00
+    compare_at_price_minor: 7900, // ₹79.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-POWDER-ANTI-LEAK',
+    weight_grams: 50,
+    images: [
+      {
+        id: 'img-powder-anti-leak',
+        product_id: 'powder-anti-leak-50g',
+        url: '/images/products/50-gram-anti-leakage-powder.jpg',
+        alt_text: '50 gram Anti leakage powder',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-30T00:00:00Z',
+    updated_at: '2026-10-30T00:00:00Z',
+  },
+
+  // 2. Mehndi Oil
+  {
+    id: 'oil-100ml',
+    name: '100ML Mehndi oil',
+    slug: '100ml-mehndi-oil',
+    description:
+      'Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil. Detailed step-by-step instruction card included.',
+    specifications: 'Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil | Instruction card included',
+    category_id: 'cat-mehndi-oil',
+    category_name: 'Mehndi Oil',
+    category_slug: 'mehndi-oil',
+    price_minor: 24900, // ₹249.00
+    compare_at_price_minor: 34900, // ₹349.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-OIL-100',
+    weight_grams: 100,
+    images: [
+      {
+        id: 'img-oil-100',
+        product_id: 'oil-100ml',
+        url: '/images/products/mehndi-oil.jpg',
+        alt_text: '100ML Pure Mehndi Oil',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-10-26T00:00:00Z',
+    updated_at: '2026-10-26T00:00:00Z',
+  },
+
+  // 3. Mehndi Cones
   {
     id: 'cone-pack-5',
     name: 'Pack of 5 Mehndi Cones',
@@ -181,126 +306,8 @@ export const INITIAL_PRODUCTS: Product[] = [
     created_at: '2026-10-26T00:00:00Z',
     updated_at: '2026-10-26T00:00:00Z',
   },
-  {
-    id: 'powder-100g',
-    name: '100 gm Mehndi Powder',
-    slug: '100-gm-mehndi-powder',
-    description:
-      '100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment. Detailed step-by-step instruction card included.',
-    specifications: 'Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included',
-    category_id: 'cat-mehndi-powder',
-    category_name: 'Mehndi Powder',
-    category_slug: 'mehndi-powder',
-    price_minor: 9900, // ₹99.00
-    compare_at_price_minor: 14900, // ₹149.00
-    stock_quantity: 100,
-    is_active: true,
-    is_featured: true,
-    sku: 'MBD-POWDER-100',
-    weight_grams: 100,
-    images: [
-      {
-        id: 'img-powder-100',
-        product_id: 'powder-100g',
-        url: '/images/products/100-gm-mehndi-powder.jpg',
-        alt_text: '100 gm Organic Mehndi Powder',
-        sort_order: 1,
-        is_primary: true,
-      },
-    ],
-    created_at: '2026-10-26T00:00:00Z',
-    updated_at: '2026-10-26T00:00:00Z',
-  },
-  {
-    id: 'powder-200g',
-    name: '200 gm Mehndi Powder',
-    slug: '200-gm-mehndi-powder',
-    description:
-      '100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning. Detailed step-by-step instruction card included.',
-    specifications: 'Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included',
-    category_id: 'cat-mehndi-powder',
-    category_name: 'Mehndi Powder',
-    category_slug: 'mehndi-powder',
-    price_minor: 18900, // ₹189.00
-    compare_at_price_minor: 27900, // ₹279.00
-    stock_quantity: 100,
-    is_active: true,
-    is_featured: true,
-    sku: 'MBD-POWDER-200',
-    weight_grams: 200,
-    images: [
-      {
-        id: 'img-powder-200',
-        product_id: 'powder-200g',
-        url: '/images/products/200-gm-mehndi-powder.jpg',
-        alt_text: '200 gm Organic Mehndi Powder',
-        sort_order: 1,
-        is_primary: true,
-      },
-    ],
-    created_at: '2026-10-26T00:00:00Z',
-    updated_at: '2026-10-26T00:00:00Z',
-  },
-  {
-    id: 'powder-anti-leak-50g',
-    name: '50 gram Anti leakage powder',
-    slug: '50-gram-anti-leakage-powder',
-    description:
-      'Specialized 50g organic anti-leakage formula powder. Mix with your henna paste to improve consistency, eliminate smudging, and prevent tip seepage for razor-sharp lines. Detailed step-by-step instruction card included.',
-    specifications: 'Weight: 50g | Purpose: Anti-leakage paste stabilizer | 100% Herbal & Organic | Instruction card included',
-    category_id: 'cat-mehndi-powder',
-    category_name: 'Mehndi Powder',
-    category_slug: 'mehndi-powder',
-    price_minor: 4900, // ₹49.00
-    compare_at_price_minor: 7900, // ₹79.00
-    stock_quantity: 100,
-    is_active: true,
-    is_featured: true,
-    sku: 'MBD-POWDER-ANTI-LEAK',
-    weight_grams: 50,
-    images: [
-      {
-        id: 'img-powder-anti-leak',
-        product_id: 'powder-anti-leak-50g',
-        url: '/images/products/50-gram-anti-leakage-powder.jpg',
-        alt_text: '50 gram Anti leakage powder',
-        sort_order: 1,
-        is_primary: true,
-      },
-    ],
-    created_at: '2026-10-30T00:00:00Z',
-    updated_at: '2026-10-30T00:00:00Z',
-  },
-  {
-    id: 'oil-100ml',
-    name: '100ML Mehndi oil',
-    slug: '100ml-mehndi-oil',
-    description:
-      'Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil. Detailed step-by-step instruction card included.',
-    specifications: 'Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil | Instruction card included',
-    category_id: 'cat-mehndi-oil',
-    category_name: 'Mehndi Oil',
-    category_slug: 'mehndi-oil',
-    price_minor: 24900, // ₹249.00
-    compare_at_price_minor: 34900, // ₹349.00
-    stock_quantity: 100,
-    is_active: true,
-    is_featured: true,
-    sku: 'MBD-OIL-100',
-    weight_grams: 100,
-    images: [
-      {
-        id: 'img-oil-100',
-        product_id: 'oil-100ml',
-        url: '/images/products/mehndi-oil.jpg',
-        alt_text: '100ML Pure Mehndi Oil',
-        sort_order: 1,
-        is_primary: true,
-      },
-    ],
-    created_at: '2026-10-26T00:00:00Z',
-    updated_at: '2026-10-26T00:00:00Z',
-  },
+
+  // 4. Bridal & Student Kits
   {
     id: 'kit-trial',
     name: 'Trial Kit',

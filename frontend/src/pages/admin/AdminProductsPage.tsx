@@ -13,7 +13,7 @@ export default function AdminProductsPage() {
   // Form fields for new product
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
-  const [categorySlug, setCategorySlug] = useState('mehndi-cones')
+  const [categorySlug, setCategorySlug] = useState('mehndi-powder')
   const [priceRupees, setPriceRupees] = useState('')
   const [comparePriceRupees, setComparePriceRupees] = useState('')
   const [stock, setStock] = useState('100')
@@ -142,9 +142,9 @@ export default function AdminProductsPage() {
                   onChange={(e) => setCategorySlug(e.target.value)}
                   className="w-full rounded-xl border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none bg-white"
                 >
-                  <option value="mehndi-cones">Mehndi Cones</option>
                   <option value="mehndi-powder">Mehndi Powder</option>
                   <option value="mehndi-oil">Mehndi Oil</option>
+                  <option value="mehndi-cones">Mehndi Cones</option>
                   <option value="mehndi-kits">Bridal & Student Kits</option>
                   <option value="accessories">Accessories</option>
                 </select>

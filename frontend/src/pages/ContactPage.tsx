@@ -126,7 +126,7 @@ export default function ContactPage() {
                   className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-xs text-white hover:bg-emerald-800 transition"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  <span>Chat on WhatsApp (+91 81407 45001)</span>
+                  <span>Chat on WhatsApp</span>
                 </a>
               </div>
 

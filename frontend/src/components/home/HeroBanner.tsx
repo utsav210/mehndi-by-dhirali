@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import MandalaArt from './MandalaArt'
 
 interface CarouselSlide {
   id: string
@@ -13,6 +12,7 @@ interface CarouselSlide {
   primaryCtaLink: string
   secondaryCtaText: string
   secondaryCtaLink: string
+  bgImage: string
 }
 
 const SLIDES: CarouselSlide[] = [
@@ -26,6 +26,7 @@ const SLIDES: CarouselSlide[] = [
     primaryCtaLink: '/products',
     secondaryCtaText: 'Explore Collections',
     secondaryCtaLink: '/products',
+    bgImage: '/images/hero-banner-jharokha.png',
   },
   {
     id: 'slide-bridal-kits',
@@ -37,6 +38,7 @@ const SLIDES: CarouselSlide[] = [
     primaryCtaLink: '/products?search=kit',
     secondaryCtaText: 'View Cones',
     secondaryCtaLink: '/products?search=cone',
+    bgImage: '/images/hero-banner-henna-fields.png',
   },
 ]
 
@@ -133,20 +135,20 @@ export default function HeroBanner({ className }: { className?: string }) {
               aria-label={`Slide ${index + 1} of ${SLIDES.length}`}
               aria-hidden={!isActive}
             >
-              {/* Gradient background with subtle pattern */}
-              <div
-                className="absolute inset-0 -z-10 bg-gradient-to-br from-forest-green via-bottle-green to-forest-green"
-                aria-hidden="true"
-              />
-
-              {/* Decorative mandala-inspired pattern */}
-              <div className="absolute inset-0 -z-10 opacity-[0.06]" aria-hidden="true">
-                <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3">
-                  <div className="h-[600px] w-[600px] rounded-full border-[40px] border-white/30" />
-                  <div className="absolute inset-12 rounded-full border-[30px] border-white/20" />
-                  <div className="absolute inset-24 rounded-full border-[20px] border-white/10" />
-                </div>
-                <div className="absolute -top-20 -left-20 h-80 w-80 rounded-full border-[20px] border-white/20" />
+              {/* Distinct Background Banner Image per Slide */}
+              <div className="absolute inset-0 -z-10 overflow-hidden">
+                <img
+                  src={slide.bgImage}
+                  alt={slide.title}
+                  className="h-full w-full object-cover object-right sm:object-center"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+                {/* Soft gradient overlay on left for optimal text contrast */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-forest-green/90 via-forest-green/60 to-transparent sm:via-forest-green/40 md:via-forest-green/20"
+                  aria-hidden="true"
+                />
               </div>
 
               {/* Slide Content */}
@@ -180,14 +182,6 @@ export default function HeroBanner({ className }: { className?: string }) {
                       {slide.secondaryCtaText}
                     </Link>
                   </div>
-                </div>
-
-                {/* Right: Handcrafted Indian Henna Mandala Design */}
-                <div className="absolute -right-20 -top-8 sm:-right-8 sm:top-auto md:relative md:right-auto md:top-auto shrink-0 flex items-center justify-center pointer-events-none md:pointer-events-auto opacity-30 sm:opacity-50 md:opacity-100 pr-0 md:pr-4 lg:pr-8">
-                  <MandalaArt
-                    variant={index === 0 ? 'lotus' : 'bridal'}
-                    className="w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] md:w-[380px] md:h-[380px] lg:w-[440px] lg:h-[440px] xl:w-[480px] xl:h-[480px] transition-transform duration-700 hover:scale-105"
-                  />
                 </div>
               </div>
             </div>
