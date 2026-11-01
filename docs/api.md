@@ -66,7 +66,7 @@ Creates a pending local order and initiates an authorized Razorpay order.
     "email": "customer@example.com",
     "phone": "+919876543210",
     "shipping_address": {
-      "full_name": "Dhirali Gandhi",
+      "full_name": "John Doe",
       "phone": "+919876543210",
       "address_line_1": "123 Boutique Street",
       "city": "Ahmedabad",

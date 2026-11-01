@@ -3,17 +3,17 @@ Authentication endpoint tests.
 """
 def test_register_success(client):
     payload = {
-        "email": "dhirali@example.com",
+        "email": "john.doe@example.com",
         "password": "SecurePassword123!",
-        "first_name": "Dhirali",
-        "last_name": "Gandhi",
+        "first_name": "John",
+        "last_name": "Doe",
         "phone": "+919876543210",
     }
     response = client.post("/api/auth/register", json=payload)
     assert response.status_code == 201
     data = response.json()
-    assert data["email"] == "dhirali@example.com"
-    assert data["first_name"] == "Dhirali"
+    assert data["email"] == "john.doe@example.com"
+    assert data["first_name"] == "John"
     assert "password_hash" not in data  # Never expose password hash in response
     assert "access_token" in response.cookies
 

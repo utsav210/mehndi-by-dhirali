@@ -103,7 +103,7 @@ export default function RegisterPage() {
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="Dhirali"
+                    placeholder="John"
                     className="w-full rounded-xl border border-subtle-border pl-10 pr-4 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
                   />
                 </div>
@@ -118,7 +118,7 @@ export default function RegisterPage() {
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Gandhi"
+                  placeholder="Doe"
                   className="w-full rounded-xl border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
                 />
               </div>
