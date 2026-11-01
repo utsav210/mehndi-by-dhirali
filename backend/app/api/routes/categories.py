@@ -14,6 +14,13 @@ router = APIRouter(prefix="/categories", tags=["Categories"])
 @router.get("", response_model=List[CategoryResponse])
 def list_categories(db: Session = Depends(get_db)):
     categories = db.query(Category).filter(Category.is_active == True).order_by(Category.sort_order).all()
+    if not categories:
+        try:
+            from app.main import seed_initial_categories
+            seed_initial_categories()
+            categories = db.query(Category).filter(Category.is_active == True).order_by(Category.sort_order).all()
+        except Exception:
+            pass
     return categories
 
 

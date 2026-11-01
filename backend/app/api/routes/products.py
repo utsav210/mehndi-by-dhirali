@@ -61,6 +61,15 @@ def list_products(
         query = query.join(Category).order_by(Category.sort_order.asc(), desc(Product.is_featured), desc(Product.created_at))
 
     total = query.count()
+    if total == 0 and not search and (not category_slug or category_slug == "all"):
+        try:
+            from app.main import seed_initial_products, seed_initial_categories
+            seed_initial_categories()
+            seed_initial_products()
+            total = query.count()
+        except Exception:
+            pass
+
     offset = (page - 1) * page_size
     products = query.offset(offset).limit(page_size).all()
     total_pages = (total + page_size - 1) // page_size if total > 0 else 0

@@ -58,18 +58,25 @@ class Settings(BaseSettings):
         ):
             return "sqlite:///:memory:"
 
-        is_serverless = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
-
-        if not raw_val or not str(raw_val).strip():
-            if is_serverless:
-                return "sqlite:////tmp/mehndi_dev.db"
-            return "sqlite:///./mehndi_dev.db"
+        is_serverless = bool(
+            os.environ.get("VERCEL")
+            or os.environ.get("VERCEL_ENV")
+            or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")
+            or os.environ.get("LAMBDA_TASK_ROOT")
+            or os.path.exists("/var/task")
+            or not os.access(".", os.W_OK)
+        )
 
         clean_val = str(raw_val).strip().strip("'\"")
 
-        # In serverless environments, local relative SQLite files cannot be written outside /tmp
-        if clean_val.startswith("sqlite:///.") and is_serverless:
+        # In serverless environments, SQLite files must be located in /tmp
+        if "sqlite" in clean_val and is_serverless:
             return "sqlite:////tmp/mehndi_dev.db"
+
+        if not clean_val:
+            if is_serverless:
+                return "sqlite:////tmp/mehndi_dev.db"
+            return "sqlite:///./mehndi_dev.db"
 
         # Standardize postgres:// to postgresql:// for SQLAlchemy compatibility
         if clean_val.startswith("postgres://"):
