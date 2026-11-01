@@ -31,12 +31,12 @@ def test_create_order_pricing_calculated_by_server(client, admin_headers):
         "email": "bride@example.com",
         "phone": "+919876543210",
         "shipping_address": {
-            "full_name": "Pooja Patel",
+            "full_name": "John Doe",
             "phone": "+919876543210",
             "address_line_1": "123 Heritage Lane",
-            "city": "Ahmedabad",
-            "state": "Gujarat",
-            "postal_code": "380015",
+            "city": "Jaipur",
+            "state": "Rajasthan",
+            "postal_code": "302001",
             "country": "India",
         },
     }
@@ -83,12 +83,12 @@ def test_create_order_cash_on_delivery(client, admin_headers):
         "phone": "+919876543210",
         "payment_method": "cod",
         "shipping_address": {
-            "full_name": "Kavita Rao",
+            "full_name": "John Doe",
             "phone": "+919876543210",
-            "address_line_1": "Sector 14, Ring Road",
-            "city": "Ahmedabad",
-            "state": "Gujarat",
-            "postal_code": "380015",
+            "address_line_1": "Flat 402, Lotus Residency",
+            "city": "Jaipur",
+            "state": "Rajasthan",
+            "postal_code": "302001",
             "country": "India",
         },
     }
@@ -173,7 +173,7 @@ def test_order_tracking_lifecycle(client, admin_headers):
             "email": "bride.tracking@example.com",
             "phone": "+919988776655",
             "shipping_address": {
-                "full_name": "Riya Sharma",
+                "full_name": "John Doe",
                 "phone": "+919988776655",
                 "address_line_1": "Flat 4B, Lotus Apartments",
                 "city": "Jaipur",
@@ -216,7 +216,7 @@ def test_order_tracking_lifecycle(client, admin_headers):
     assert track_data["tracking_number"] == "DEL123456789"
     assert track_data["courier_partner"] == "Delhivery Express"
     assert track_data["status"] == "shipped"
-    assert track_data["recipient_name"] == "Riya Sharma"
+    assert track_data["recipient_name"] == "John Doe"
     assert track_data["destination_city"] == "Jaipur"
     assert len(track_data["timeline"]) == 6
     # Shipped stage should be marked as completed/current

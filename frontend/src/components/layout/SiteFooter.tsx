@@ -75,8 +75,8 @@ const SOCIAL_LINKS: SocialLink[] = [
     icon: YoutubeIcon,
   },
   {
-    label: 'WhatsApp Support (+91 81407 45001)',
-    href: 'https://wa.me/918140745001',
+    label: 'WhatsApp Support',
+    href: 'https://wa.me/919876543210',
     icon: WhatsAppIcon,
   },
 ]
@@ -196,32 +196,32 @@ export function SiteFooter() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="mailto:dhiralidarji2103@gmail.com"
+                  href="mailto:support@mehndibydhirali.com"
                   className="text-warm-ivory/80 flex items-start gap-2.5 text-xs transition-colors hover:text-white"
                 >
                   <Mail className="mt-0.5 h-4 w-4 shrink-0 text-antique-gold" />
-                  <span>dhiralidarji2103@gmail.com</span>
+                  <span>support@mehndibydhirali.com</span>
                 </a>
               </li>
               <li>
                 <div className="text-warm-ivory/80 flex items-start gap-2.5 text-xs">
                   <Phone className="mt-0.5 h-4 w-4 shrink-0 text-antique-gold" />
                   <div className="flex flex-col">
-                    <a href="tel:+918140745001" className="hover:text-white">+91 81407 45001</a>
-                    <a href="tel:+919662746292" className="hover:text-white">+91 96627 46292</a>
+                    <a href="tel:+919876543210" className="hover:text-white">+91 98765 43210</a>
+                    <a href="tel:+919876500000" className="hover:text-white">+91 98765 00000</a>
                   </div>
                 </div>
               </li>
               <li>
                 <a
-                  href="https://share.google/00ZRrLHQcSv6uUyWW"
+                  href="https://maps.google.com"
                   target="_blank"
                   rel="noreferrer"
                   className="text-warm-ivory/80 flex items-start gap-2.5 text-xs transition-colors hover:text-white group"
                 >
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-antique-gold" />
                   <span>
-                    Mehndi By Dhirali, Ambalalpark Society, 38, near Uma Hospital, Nava Naroda, Ahmedabad, Gujarat 382330
+                    Mehndi By Dhirali, 123 Heritage Lane, Near Central Park, Jaipur, Rajasthan 302001
                   </span>
                 </a>
               </li>
@@ -264,7 +264,7 @@ export function SiteFooter() {
           </p>
 
           <p className="text-warm-ivory/40 text-xs">
-            Crafted with passion in Ahmedabad, Gujarat
+            Crafted with passion in Rajasthan, India
           </p>
         </div>
       </div>

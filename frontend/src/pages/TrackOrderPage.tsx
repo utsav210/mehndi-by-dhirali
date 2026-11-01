@@ -176,7 +176,7 @@ export default function TrackOrderPage() {
                     type="text"
                     value={contactQuery}
                     onChange={(e) => setContactQuery(e.target.value)}
-                    placeholder="e.g. bride@example.com or 9876543210"
+                    placeholder="e.g. john.doe@example.com or 9876543210"
                     className="w-full rounded-xl border border-subtle-border bg-warm-ivory/30 px-4 py-3 pl-10 text-sm text-charcoal placeholder:text-secondary-text/60 focus:border-bottle-green focus:bg-white focus:outline-hidden transition"
                   />
                   <ShieldCheck className="h-4 w-4 text-secondary-text absolute left-3.5 top-3.5" />
@@ -446,7 +446,7 @@ export default function TrackOrderPage() {
                   Contact Support
                 </Link>
                 <a
-                  href="https://wa.me/918140745001"
+                  href="https://wa.me/919876543210"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-bottle-green/30 bg-white px-4 py-2 text-xs font-medium text-bottle-green hover:bg-warm-ivory transition"

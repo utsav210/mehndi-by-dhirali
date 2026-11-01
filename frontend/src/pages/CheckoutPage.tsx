@@ -23,7 +23,7 @@ export default function CheckoutPage() {
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
   const [city, setCity] = useState('')
-  const [stateName, setStateName] = useState('Gujarat')
+  const [stateName, setStateName] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'prepaid'>('cod')
   const [isProcessing, setIsProcessing] = useState(false)
@@ -223,7 +223,7 @@ export default function CheckoutPage() {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Riya Sharma"
+                    placeholder="John Doe"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
@@ -237,7 +237,7 @@ export default function CheckoutPage() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 81407 45001"
+                    placeholder="+91 98765 43210"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
@@ -251,7 +251,7 @@ export default function CheckoutPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
+                    placeholder="john.doe@example.com"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
@@ -265,7 +265,7 @@ export default function CheckoutPage() {
                     required
                     value={addressLine1}
                     onChange={(e) => setAddressLine1(e.target.value)}
-                    placeholder="Flat 101, Shanti Heights"
+                    placeholder="Flat 402, Lotus Residency"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
@@ -278,7 +278,7 @@ export default function CheckoutPage() {
                     type="text"
                     value={addressLine2}
                     onChange={(e) => setAddressLine2(e.target.value)}
-                    placeholder="Near Uma Hospital"
+                    placeholder="Near Central Park"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
@@ -292,7 +292,7 @@ export default function CheckoutPage() {
                     required
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    placeholder="Ahmedabad"
+                    placeholder="Jaipur"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
@@ -306,7 +306,7 @@ export default function CheckoutPage() {
                     required
                     value={stateName}
                     onChange={(e) => setStateName(e.target.value)}
-                    placeholder="Gujarat"
+                    placeholder="Rajasthan"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>
@@ -320,7 +320,7 @@ export default function CheckoutPage() {
                     required
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    placeholder="382330"
+                    placeholder="302001"
                     className="w-full rounded-lg border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-hidden"
                   />
                 </div>

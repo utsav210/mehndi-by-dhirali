@@ -68,10 +68,10 @@ Creates a pending local order and initiates an authorized Razorpay order.
     "shipping_address": {
       "full_name": "John Doe",
       "phone": "+919876543210",
-      "address_line_1": "123 Boutique Street",
-      "city": "Ahmedabad",
-      "state": "Gujarat",
-      "postal_code": "380015",
+      "address_line_1": "Flat 402, Lotus Residency",
+      "city": "Jaipur",
+      "state": "Rajasthan",
+      "postal_code": "302001",
       "country": "India"
     }
   }

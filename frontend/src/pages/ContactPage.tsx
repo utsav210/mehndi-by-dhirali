@@ -78,8 +78,8 @@ export default function ContactPage() {
                 <Mail className="h-5 w-5 text-antique-gold shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-semibold text-warm-ivory">Email Us</span>
-                  <a href="mailto:dhiralidarji2103@gmail.com" className="text-warm-ivory/80 hover:underline">
-                    dhiralidarji2103@gmail.com
+                  <a href="mailto:support@mehndibydhirali.com" className="text-warm-ivory/80 hover:underline">
+                    support@mehndibydhirali.com
                   </a>
                 </div>
               </div>
@@ -89,8 +89,8 @@ export default function ContactPage() {
                 <div>
                   <span className="block font-semibold text-warm-ivory">Customer Care</span>
                   <p className="text-warm-ivory/80">
-                    <a href="tel:+918140745001" className="hover:underline">+91 81407 45001</a>,{' '}
-                    <a href="tel:+919662746292" className="hover:underline">+91 96627 46292</a>
+                    <a href="tel:+919876543210" className="hover:underline">+91 98765 43210</a>,{' '}
+                    <a href="tel:+919876500000" className="hover:underline">+91 98765 00000</a>
                   </p>
                   <p className="text-[11px] text-warm-ivory/60 mt-0.5">Mon–Sat, 10am – 7pm IST</p>
                 </div>
@@ -101,10 +101,10 @@ export default function ContactPage() {
                 <div>
                   <span className="block font-semibold text-warm-ivory">Address</span>
                   <p className="text-warm-ivory/80">
-                    Mehndi By Dhirali, Ambalalpark Society, 38, near Uma Hospital, Nava Naroda, Ahmedabad, Gujarat 382330
+                    Mehndi By Dhirali, 123 Heritage Lane, Near Central Park, Jaipur, Rajasthan 302001
                   </p>
                   <a
-                    href="https://share.google/00ZRrLHQcSv6uUyWW"
+                    href="https://maps.google.com"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 text-[11px] text-antique-gold hover:underline mt-1 font-medium"
@@ -120,7 +120,7 @@ export default function ContactPage() {
               <div>
                 <span className="text-xs text-antique-gold block font-semibold mb-2">WhatsApp Support</span>
                 <a
-                  href="https://wa.me/918140745001"
+                  href="https://wa.me/919876543210"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-xs text-white hover:bg-emerald-800 transition"
@@ -186,7 +186,7 @@ export default function ContactPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
+                    placeholder="john.doe@example.com"
                     className="w-full rounded-xl border border-subtle-border px-3.5 py-2 text-sm text-primary-text focus:border-bottle-green focus:outline-none"
                   />
                 </div>

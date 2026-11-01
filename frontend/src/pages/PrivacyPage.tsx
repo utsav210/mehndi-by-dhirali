@@ -85,9 +85,9 @@ export default function PrivacyPage() {
               In accordance with Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011, for any queries or privacy requests, contact:
             </p>
             <p className="font-medium text-bottle-green">
-              Grievance Officer: Dhirali Darji<br />
+              Grievance Officer: Customer Support Desk<br />
               Email: privacy@mehndibydhirali.com<br />
-              Gujarat, India
+              Jaipur, Rajasthan, India
             </p>
           </section>
         </div>
