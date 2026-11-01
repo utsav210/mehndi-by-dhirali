@@ -43,18 +43,33 @@ class Settings(BaseSettings):
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def sanitize_database_url(cls, v: Union[str, None]) -> str:
-        # Check system environment explicitly (allows pytest to override .env with in-memory SQLite)
-        raw_val = os.environ.get("DATABASE_URL") or v or ""
+        # Check system environment explicitly (including Vercel Neon integrations POSTGRES_URL)
+        raw_val = (
+            os.environ.get("DATABASE_URL")
+            or os.environ.get("POSTGRES_URL")
+            or os.environ.get("POSTGRES_PRISMA_URL")
+            or os.environ.get("NEON_DATABASE_URL")
+            or v
+            or ""
+        )
         if (
             os.environ.get("APP_ENV") == "testing"
             or ":memory:" in str(raw_val)
         ):
             return "sqlite:///:memory:"
 
+        is_serverless = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+
         if not raw_val or not str(raw_val).strip():
+            if is_serverless:
+                return "sqlite:////tmp/mehndi_dev.db"
             return "sqlite:///./mehndi_dev.db"
 
         clean_val = str(raw_val).strip().strip("'\"")
+
+        # In serverless environments, local relative SQLite files cannot be written outside /tmp
+        if clean_val.startswith("sqlite:///.") and is_serverless:
+            return "sqlite:////tmp/mehndi_dev.db"
 
         # Standardize postgres:// to postgresql:// for SQLAlchemy compatibility
         if clean_val.startswith("postgres://"):

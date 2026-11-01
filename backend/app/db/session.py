@@ -31,8 +31,19 @@ SessionLocal = sessionmaker(
 )
 
 
+_schema_initialized = False
+
+
 def get_db():
     """Dependency that yields a database session and safely closes it."""
+    global _schema_initialized
+    if not _schema_initialized:
+        try:
+            from app.db.base import Base
+            Base.metadata.create_all(bind=engine)
+            _schema_initialized = True
+        except Exception:
+            pass
     db = SessionLocal()
     try:
         yield db
