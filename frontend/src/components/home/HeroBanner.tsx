@@ -144,9 +144,9 @@ export default function HeroBanner({ className }: { className?: string }) {
                   loading={index === 0 ? 'eager' : 'lazy'}
                   decoding="async"
                 />
-                {/* Soft gradient overlay on left for optimal text contrast */}
+                {/* Subtle scrim only on small mobile screens to preserve text readability over illustration */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-r from-forest-green/90 via-forest-green/60 to-transparent sm:via-forest-green/40 md:via-forest-green/20"
+                  className="absolute inset-0 bg-forest-green/40 sm:hidden"
                   aria-hidden="true"
                 />
               </div>
@@ -155,14 +155,14 @@ export default function HeroBanner({ className }: { className?: string }) {
               <div className="mx-auto flex max-w-7xl w-full items-center justify-between gap-6 lg:gap-12 relative z-10">
                 {/* Left: Typography & CTAs */}
                 <div className="max-w-xl lg:max-w-2xl pl-2 sm:pl-6 md:pl-10 z-10">
-                  <p className="mb-2 sm:mb-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-antique-gold flex items-center gap-2">
+                  <p className="mb-2 sm:mb-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-antique-gold flex items-center gap-2 drop-shadow-sm">
                     <span className="h-px w-6 bg-antique-gold/70 inline-block" />
                     {slide.tagline}
                   </p>
-                  <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-sm">
+                  <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-md">
                     {slide.title}
                   </h2>
-                  <p className="mt-3 sm:mt-5 max-w-lg text-xs sm:text-base leading-relaxed text-warm-ivory/90 sm:text-lg">
+                  <p className="mt-3 sm:mt-5 max-w-lg text-xs sm:text-base leading-relaxed text-warm-ivory drop-shadow-sm sm:text-lg">
                     {slide.description}
                   </p>
                   <div className="mt-5 sm:mt-8 flex flex-wrap gap-3 sm:gap-4">
@@ -176,7 +176,7 @@ export default function HeroBanner({ className }: { className?: string }) {
                     </Link>
                     <Link
                       to={slide.secondaryCtaLink}
-                      className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/60 px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/15 hover:scale-105 cursor-pointer"
+                      className="inline-flex items-center gap-2 rounded-full border-2 border-antique-gold/70 px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold text-antique-gold transition-all hover:border-antique-gold hover:bg-antique-gold/20 hover:scale-105 cursor-pointer backdrop-blur-xs"
                       tabIndex={isActive ? 0 : -1}
                     >
                       {slide.secondaryCtaText}
@@ -226,12 +226,6 @@ export default function HeroBanner({ className }: { className?: string }) {
           />
         ))}
       </div>
-
-      {/* Bottom Ornamental Gold Border */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-antique-gold to-transparent z-10 pointer-events-none"
-        aria-hidden="true"
-      />
     </section>
   )
 }
