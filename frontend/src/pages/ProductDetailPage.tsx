@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import PageLayout from '@/components/layout/PageLayout'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import PriceDisplay from '@/components/products/PriceDisplay'
+import ProductImageGallery from '@/components/products/ProductImageGallery'
 import { useCartStore } from '@/lib/cart-store'
 import { toast } from 'sonner'
 import { INITIAL_PRODUCTS } from '@/data/initial-products'
@@ -13,7 +14,6 @@ import {
   ShoppingBag,
   Truck,
   ShieldCheck,
-  Sparkles,
   Minus,
   Plus,
   Check,
@@ -101,30 +101,13 @@ export default function ProductDetailPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Left: Product Image Gallery */}
+          {/* Left: Product Image Gallery (Amazon-Style Showcase & Zoom) */}
           <div>
-            <div className="aspect-square w-full rounded-2xl border border-subtle-border bg-warm-ivory/40 flex items-center justify-center overflow-hidden relative shadow-xs">
-              {primaryImage?.url ? (
-                <img
-                  src={primaryImage.url}
-                  alt={primaryImage.alt_text || productTitle}
-                  className="h-full w-full object-cover"
-                  onError={(e) => {
-                    ;(e.currentTarget as HTMLImageElement).src = '/images/products/mehndi-cones.png'
-                  }}
-                />
-              ) : (
-                <div className="text-center p-8">
-                  <Sparkles className="h-16 w-16 text-antique-gold mx-auto mb-3 opacity-60" />
-                  <p className="font-serif text-lg font-semibold text-bottle-green">
-                    {productTitle}
-                  </p>
-                </div>
-              )}
-              <div className="absolute top-4 left-4 rounded-full bg-antique-gold px-3 py-1 text-xs font-semibold text-forest-green shadow-xs">
-                Fresh Batch
-              </div>
-            </div>
+            <ProductImageGallery
+              images={product?.images || []}
+              productTitle={productTitle}
+              badgeText={product?.category_name === 'Accessories' ? 'Authentic Tool' : 'Fresh Batch'}
+            />
           </div>
 
           {/* Right: Product Details */}

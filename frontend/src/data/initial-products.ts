@@ -370,4 +370,84 @@ export const INITIAL_PRODUCTS: Product[] = [
     created_at: '2026-10-26T00:00:00Z',
     updated_at: '2026-10-26T00:00:00Z',
   },
+
+  // 5. Accessories
+  {
+    id: 'acc-pink-bowl',
+    name: 'Pink Bowl',
+    slug: 'pink-bowl',
+    description:
+      'Ergonomic, lightweight durable pink mixing bowl specially designed for smooth, lump-free henna paste preparation and easy stirring. Stain-resistant, non-reactive food-grade plastic safe for essential oils and lemon-sugar mixes.',
+    specifications:
+      'Material: BPA-free Non-reactive Polypropylene | Diameter: ~15cm | Color: Vibrant Pink | Safe for: Henna paste mixing & aftercare prep',
+    category_id: 'cat-accessories',
+    category_name: 'Accessories',
+    category_slug: 'accessories',
+    price_minor: 4900, // ₹49.00
+    compare_at_price_minor: 7900, // ₹79.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-ACC-BOWL',
+    weight_grams: 60,
+    images: [
+      {
+        id: 'img-pink-bowl-1',
+        product_id: 'acc-pink-bowl',
+        url: '/images/products/pink-bowl-1.jpg',
+        alt_text: 'Pink Bowl - Side View',
+        sort_order: 1,
+        is_primary: true,
+      },
+      {
+        id: 'img-pink-bowl-2',
+        product_id: 'acc-pink-bowl',
+        url: '/images/products/pink-bowl-2.jpg',
+        alt_text: 'Pink Bowl - Top View Inside',
+        sort_order: 2,
+        is_primary: false,
+      },
+    ],
+    created_at: '2026-11-03T00:00:00Z',
+    updated_at: '2026-11-03T00:00:00Z',
+  },
+  {
+    id: 'acc-clip-piping-bag',
+    name: 'Clip for Piping Bag',
+    slug: 'clip-for-piping-bag',
+    description:
+      'Pack of heavy-duty sealing clips for henna piping bags and carrot bags. Tight snap-lock clamp ensures an airtight seal, preventing paste from drying out, leaking, or pushing backwards while rolling and filling henna cones.',
+    specifications:
+      'Quantity: Pack of 6 Clamping Clips | Material: High-durability food-grade polymer | Colors: Multi-color assortment | Use: Airtight seal for henna carrot & piping bags',
+    category_id: 'cat-accessories',
+    category_name: 'Accessories',
+    category_slug: 'accessories',
+    price_minor: 4900, // ₹49.00
+    compare_at_price_minor: 6900, // ₹69.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-ACC-CLIP',
+    weight_grams: 40,
+    images: [
+      {
+        id: 'img-clip-piping-bag-1',
+        product_id: 'acc-clip-piping-bag',
+        url: '/images/products/clip-for-piping-bag-1.jpg',
+        alt_text: 'Clip for Piping Bag - Pack of 6',
+        sort_order: 1,
+        is_primary: true,
+      },
+      {
+        id: 'img-clip-piping-bag-2',
+        product_id: 'acc-clip-piping-bag',
+        url: '/images/products/clip-for-piping-bag-2.jpg',
+        alt_text: 'Clip for Piping Bag - In Hand',
+        sort_order: 2,
+        is_primary: false,
+      },
+    ],
+    created_at: '2026-11-03T00:00:00Z',
+    updated_at: '2026-11-03T00:00:00Z',
+  },
 ]

@@ -76,8 +76,8 @@ DEFAULT_CATEGORIES = [
     {
         "name": "Accessories",
         "slug": "accessories",
-        "description": "Sealant spray, cellophane sheets, pin tips",
-        "image_url": None,
+        "description": "Essential mixing bowls, sealing clips & tools",
+        "image_url": "/images/products/pink-bowl-1.jpg",
         "sort_order": 5,
     },
 ]
@@ -244,6 +244,49 @@ PRODUCTS_CATALOGUE = [
         "description": "All-in-one comprehensive kit for professional mehndi artists and bridal work with FREE doorstep shipping! Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone. Step-by-step masterclass instruction card included.",
         "specifications": "Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal | Shipping: FREE | Instruction card included",
         "image_url": "/images/products/mehndi-artist-kit.png",
+    },
+    # Accessories
+    {
+        "category_slug": "accessories",
+        "name": "Pink Bowl",
+        "slug": "pink-bowl",
+        "price_minor": 4900,
+        "compare_at_price_minor": 7900,
+        "sku": "MBD-ACC-BOWL",
+        "stock_quantity": 100,
+        "weight_grams": 60,
+        "description": "Ergonomic, lightweight durable pink mixing bowl specially designed for smooth, lump-free henna paste preparation and easy stirring. Stain-resistant, non-reactive food-grade plastic safe for essential oils and lemon-sugar mixes.",
+        "specifications": "Material: BPA-free Non-reactive Polypropylene | Diameter: ~15cm | Color: Vibrant Pink | Safe for: Henna paste mixing & aftercare prep",
+        "image_url": "/images/products/pink-bowl-1.jpg",
+        "gallery_images": [
+            {
+                "url": "/images/products/pink-bowl-2.jpg",
+                "alt_text": "Pink Bowl - Top View Inside",
+                "sort_order": 2,
+                "is_primary": False,
+            }
+        ],
+    },
+    {
+        "category_slug": "accessories",
+        "name": "Clip for Piping Bag",
+        "slug": "clip-for-piping-bag",
+        "price_minor": 4900,
+        "compare_at_price_minor": 6900,
+        "sku": "MBD-ACC-CLIP",
+        "stock_quantity": 100,
+        "weight_grams": 40,
+        "description": "Pack of heavy-duty sealing clips for henna piping bags and carrot bags. Tight snap-lock clamp ensures an airtight seal, preventing paste from drying out, leaking, or pushing backwards while rolling and filling henna cones.",
+        "specifications": "Quantity: Pack of 6 Clamping Clips | Material: High-durability food-grade polymer | Colors: Multi-color assortment | Use: Airtight seal for henna carrot & piping bags",
+        "image_url": "/images/products/clip-for-piping-bag-1.jpg",
+        "gallery_images": [
+            {
+                "url": "/images/products/clip-for-piping-bag-2.jpg",
+                "alt_text": "Clip for Piping Bag - In Hand",
+                "sort_order": 2,
+                "is_primary": False,
+            }
+        ],
     },
 ]
 
@@ -424,6 +467,26 @@ def sync_database(db_url: str, db_label: str) -> bool:
                 else:
                     primary_img.url = p_data["image_url"]
                     primary_img.alt_text = prod.name
+
+                # Verify gallery images if specified
+                if "gallery_images" in p_data:
+                    for g_img in p_data["gallery_images"]:
+                        existing_g = (
+                            db.query(ProductImage)
+                            .filter(ProductImage.product_id == prod.id, ProductImage.url == g_img["url"])
+                            .first()
+                        )
+                        if not existing_g:
+                            db.add(
+                                ProductImage(
+                                    product_id=prod.id,
+                                    url=g_img["url"],
+                                    alt_text=g_img.get("alt_text", prod.name),
+                                    sort_order=g_img.get("sort_order", 2),
+                                    is_primary=g_img.get("is_primary", False),
+                                )
+                            )
+                            print(f"    + Added gallery image: {g_img['url']}")
 
                 synced_count += 1
 

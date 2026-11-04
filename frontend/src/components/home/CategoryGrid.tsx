@@ -14,6 +14,7 @@ const CATEGORY_IMAGE_MAP: Record<string, string> = {
   'mehndi-powder': '/images/products/100-gm-mehndi-powder.jpg',
   'mehndi-oil': '/images/products/mehndi-oil.jpg',
   'mehndi-kits': '/images/products/mehndi-artist-kit.jpg',
+  'accessories': '/images/products/pink-bowl-1.jpg',
 }
 
 const CATEGORY_ORDER: Record<string, number> = {
@@ -21,6 +22,7 @@ const CATEGORY_ORDER: Record<string, number> = {
   'mehndi-oil': 2,
   'mehndi-cones': 3,
   'mehndi-kits': 4,
+  'accessories': 5,
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
@@ -60,6 +62,15 @@ const DEFAULT_CATEGORIES: Category[] = [
     sort_order: 4,
     is_active: true,
   },
+  {
+    id: 'cat-accessories',
+    name: 'Accessories',
+    slug: 'accessories',
+    description: 'Essential mixing bowls, sealing clips & tools',
+    image_url: '/images/products/pink-bowl-1.jpg',
+    sort_order: 5,
+    is_active: true,
+  },
 ]
 
 export default function CategoryGrid({
@@ -67,10 +78,9 @@ export default function CategoryGrid({
   className,
 }: CategoryGridProps) {
   // Use passed categories if available, otherwise fallback to DEFAULT_CATEGORIES.
-  // Filter out accessories from Shop by Category section as requested.
+  // Accessories is placed at the end of all categories.
   const rawList = categories.length > 0 ? categories : DEFAULT_CATEGORIES
   const displayCategories = rawList
-    .filter((cat) => cat.slug !== 'accessories')
     .map((cat) => ({
       ...cat,
       image_url: cat.image_url || CATEGORY_IMAGE_MAP[cat.slug] || '',
@@ -89,8 +99,8 @@ export default function CategoryGrid({
           Find exactly what you need for your mehndi art
         </p>
 
-        {/* Grid - 4 Columns */}
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Grid - 5 Columns with Accessories at the end */}
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {displayCategories.map((category) => {
             const imageUrl = category.image_url || CATEGORY_IMAGE_MAP[category.slug]
             return (

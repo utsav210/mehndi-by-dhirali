@@ -109,6 +109,7 @@ export default function ProductsPage() {
               'mehndi-oil': 2,
               'mehndi-cones': 3,
               'mehndi-kits': 4,
+              'accessories': 5,
             }
             list.sort((a, b) => (catOrder[a.category_slug] ?? 99) - (catOrder[b.category_slug] ?? 99))
           }

@@ -30,6 +30,7 @@ export default function HomePage() {
             'mehndi-oil': 2,
             'mehndi-cones': 3,
             'mehndi-kits': 4,
+            'accessories': 5,
           }
           const sorted = [...prodData.items].sort(
             (a, b) => (catOrder[a.category_slug] ?? 99) - (catOrder[b.category_slug] ?? 99)
@@ -68,7 +69,7 @@ export default function HomePage() {
       <SpecialOffers />
 
       {/* 5. Featured / Latest Products */}
-      <FeaturedProducts products={products} title="Featured Henna Powder, Oil, Cones & Kits" />
+      <FeaturedProducts products={products} title="Featured Henna Powder, Oil, Cones, Kits & Accessories" />
 
       {/* 6. Media / Tutorials Section */}
       <MediaSection />
