@@ -22,7 +22,7 @@ export default function HomePage() {
     async function loadData() {
       try {
         const prodData = await apiClient.get<{ items: Product[] }>('/products', {
-          params: { sort: 'featured', page_size: 8 },
+          params: { sort: 'featured', page_size: 100 },
         })
         if (prodData?.items && prodData.items.length > 0) {
           const catOrder: Record<string, number> = {

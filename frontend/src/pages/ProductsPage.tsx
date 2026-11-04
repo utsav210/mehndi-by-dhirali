@@ -3,6 +3,8 @@ import { useSearchParams, useParams, useNavigate } from 'react-router-dom'
 import PageLayout from '@/components/layout/PageLayout'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import ProductGrid from '@/components/products/ProductGrid'
+import CategoryShowcase from '@/components/products/CategoryShowcase'
+import Pagination from '@/components/ui/Pagination'
 import type { Product } from '@/types'
 import { Filter, SlidersHorizontal, Search, X } from 'lucide-react'
 import { INITIAL_PRODUCTS } from '@/data/initial-products'
@@ -80,7 +82,7 @@ export default function ProductsPage() {
 
     async function fetchProducts() {
       try {
-        const params: Record<string, string> = {}
+        const params: Record<string, string> = { page_size: '100' }
         if (selectedCategory && selectedCategory !== 'all') {
           params.category_slug = selectedCategory
         }
@@ -142,6 +144,27 @@ export default function ProductsPage() {
     { id: 'accessories', name: 'Accessories' },
   ]
 
+  const pageParam = parseInt(searchParams.get('page') || '1', 10)
+  const currentPage = isNaN(pageParam) || pageParam < 1 ? 1 : pageParam
+  const PAGE_SIZE = 9
+  const totalPages = Math.ceil(products.length / PAGE_SIZE)
+
+  const paginatedProducts = products.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  )
+
+  const handlePageChange = (newPage: number) => {
+    const newParams = new URLSearchParams(searchParams)
+    if (newPage <= 1) {
+      newParams.delete('page')
+    } else {
+      newParams.set('page', String(newPage))
+    }
+    setSearchParams(newParams)
+    window.scrollTo({ top: 180, behavior: 'smooth' })
+  }
+
   const handleCategoryChange = (catId: string) => {
     if (routeCategorySlug) {
       if (catId === 'all') {
@@ -152,6 +175,7 @@ export default function ProductsPage() {
       return
     }
     const newParams = new URLSearchParams(searchParams)
+    newParams.delete('page')
     if (catId === 'all') {
       newParams.delete('category')
     } else {
@@ -162,6 +186,7 @@ export default function ProductsPage() {
 
   const handleSortChange = (newSort: string) => {
     const newParams = new URLSearchParams(searchParams)
+    newParams.delete('page')
     if (newSort === 'featured') {
       newParams.delete('sort')
     } else {
@@ -172,6 +197,7 @@ export default function ProductsPage() {
 
   const handleClearSearch = () => {
     const newParams = new URLSearchParams(searchParams)
+    newParams.delete('page')
     newParams.delete('search')
     newParams.delete('q')
     setSearchParams(newParams)
@@ -194,6 +220,14 @@ export default function ProductsPage() {
               : []),
           ]}
           className="mb-6"
+        />
+
+        {/* Category Showcase: Visual header rail of all 5 store collections */}
+        <CategoryShowcase
+          selectedCategory={selectedCategory}
+          onSelectCategory={handleCategoryChange}
+          className="mb-8"
+          title="Explore Collections"
         />
 
         {/* Search status notification banner if active */}
@@ -281,7 +315,7 @@ export default function ProductsPage() {
           {/* Products Grid */}
           <div className="lg:col-span-3">
             <ProductGrid
-              products={products}
+              products={paginatedProducts}
               isLoading={isLoading}
               columns={3}
               showEmptyState={true}
@@ -290,6 +324,16 @@ export default function ProductsPage() {
                   ? `No products found matching "${searchQuery}". Try another keyword or browse all categories.`
                   : "Products will be added here shortly."
               }
+            />
+
+            {/* Pagination Controls */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              totalItems={products.length}
+              pageSize={PAGE_SIZE}
+              itemName="products"
             />
           </div>
         </div>
