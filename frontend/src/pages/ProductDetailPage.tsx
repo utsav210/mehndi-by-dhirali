@@ -127,9 +127,9 @@ export default function ProductDetailPage() {
 
             {/* Description */}
             {product?.description && (
-              <p className="mt-4 text-sm leading-relaxed text-secondary-text">
+              <div className="mt-4 text-sm leading-relaxed text-secondary-text whitespace-pre-line space-y-2">
                 {product.description}
-              </p>
+              </div>
             )}
 
             {/* Highlights */}

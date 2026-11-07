@@ -115,17 +115,55 @@ def seed_initial_products():
         db.commit()
 
         products_data = [
-            # Mehndi Cones
+            {
+                "category_id": powder_cat.id if powder_cat else None,
+                "name": "100 Gram 5 filter Mehndi Powder (Five Filter Super smooth & stringy)",
+                "slug": "100-gm-mehndi-powder",
+                "price_minor": 9900,
+                "compare_at_price_minor": 14900,
+                "sku": "MBD-POWDER-100",
+                "stock_quantity": 100,
+                "weight_grams": 100,
+                "description": "Experience the smoothness and quality of premium Mehndi Powder by Mehndi By Dhirali.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nStorage Instructions:\n\u2022 Store in an airtight container.\n\u2022 Keep away from direct sunlight and moisture.\n\u2022 Store in a cool and dry place.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
+                "specifications": "Weight: 100g | Five Filter (Super Smooth & Stringy) | Origin: Sojat, Rajasthan | 100% Organic Henna Powder",
+                "image_url": "/images/products/100-gm-mehndi-powder.jpg",
+            },
+            {
+                "category_id": powder_cat.id if powder_cat else None,
+                "name": "200 Gram 5 filter Mehndi Powder (Five Filter Super smooth & stringy)",
+                "slug": "200-gm-mehndi-powder",
+                "price_minor": 18900,
+                "compare_at_price_minor": 27900,
+                "sku": "MBD-POWDER-200",
+                "stock_quantity": 100,
+                "weight_grams": 200,
+                "description": "Experience the smoothness and quality of premium Mehndi Powder by Mehndi By Dhirali.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nStorage Instructions:\n\u2022 Store in an airtight container.\n\u2022 Keep away from direct sunlight and moisture.\n\u2022 Store in a cool and dry place.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
+                "specifications": "Weight: 200g | Five Filter (Super Smooth & Stringy) | Origin: Sojat, Rajasthan | 100% Organic Henna Powder",
+                "image_url": "/images/products/200-gm-mehndi-powder.jpg",
+            },
+            {
+                "category_id": oil_cat.id if oil_cat else None,
+                "name": "100ML Mehndi oil",
+                "slug": "100ml-mehndi-oil",
+                "price_minor": 24900,
+                "compare_at_price_minor": 34900,
+                "sku": "MBD-OIL-100",
+                "stock_quantity": 100,
+                "weight_grams": 100,
+                "description": "Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil. Detailed step-by-step instruction card included.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nStorage Instructions:\n\u2022 Store in a cool and dry place away from direct sunlight.\n\u2022 Keep bottle tightly closed when not in use.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
+                "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil | Instruction card included",
+                "image_url": "/images/products/mehndi-oil.jpg",
+            },
             {
                 "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 5 Mehndi Cones",
                 "slug": "pack-of-5-mehndi-cones",
-                "price_minor": 9900,  # ₹99.00
-                "compare_at_price_minor": 14900,  # ₹149.00
+                "price_minor": 9900,
+                "compare_at_price_minor": 14900,
                 "sku": "MBD-CONE-05",
                 "stock_quantity": 100,
                 "weight_grams": 150,
-                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 5). Formulated with pure eucalyptus essential oil for a deep, rich mahogany stain. Ultra-smooth 0.38mm tip for intricate bridal and festive designs. Step-by-step instruction & stain care card included.",
+                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 5). Formulated with pure eucalyptus essential oil for a deep, rich mahogany stain. Ultra-smooth 0.38mm tip for intricate bridal and festive designs. Step-by-step instruction & stain care card included.\n\n\u2022 Dispatch will be done after 2-3 days of placed order (freshly rolled per batch)\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India in insulated packaging.\n\nStorage Instructions:\n\u2022 Store in deep freezer (-18\u00b0C) immediately upon arrival.\n\u2022 Thaw at room temperature for 15-20 minutes before application.\n\u2022 Never microwave or heat cones.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Quantity: 5 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/pack-of-5-mehndi-cones.jpg",
             },
@@ -133,12 +171,12 @@ def seed_initial_products():
                 "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 8 Mehndi Cones",
                 "slug": "pack-of-8-mehndi-cones",
-                "price_minor": 15900,  # ₹159.00
-                "compare_at_price_minor": 22900,  # ₹229.00
+                "price_minor": 15900,
+                "compare_at_price_minor": 22900,
                 "sku": "MBD-CONE-08",
                 "stock_quantity": 100,
                 "weight_grams": 240,
-                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 8). Hand-poured in small artisanal batches with natural eucalyptus oil for guaranteed dark stain. Step-by-step instruction & stain care card included.",
+                "description": "Freshly rolled 100% organic Rajasthani Sojat henna cones (pack of 8). Hand-poured in small artisanal batches with natural eucalyptus oil for guaranteed dark stain. Step-by-step instruction & stain care card included.\n\n\u2022 Dispatch will be done after 2-3 days of placed order (freshly rolled per batch)\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India in insulated packaging.\n\nStorage Instructions:\n\u2022 Store in deep freezer (-18\u00b0C) immediately upon arrival.\n\u2022 Thaw at room temperature for 15-20 minutes before application.\n\u2022 Never microwave or heat cones.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Quantity: 8 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/pack-of-8-mehndi-cones.jpg",
             },
@@ -146,12 +184,12 @@ def seed_initial_products():
                 "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 12 Mehndi Cones",
                 "slug": "pack-of-12-mehndi-cones",
-                "price_minor": 23900,  # ₹239.00
-                "compare_at_price_minor": 34900,  # ₹349.00
+                "price_minor": 23900,
+                "compare_at_price_minor": 34900,
                 "sku": "MBD-CONE-12",
                 "stock_quantity": 100,
                 "weight_grams": 360,
-                "description": "Complete 1-dozen pack of freshly rolled organic henna cones. Ideal for family celebrations, Karwa Chauth, Eid, and wedding festivities. Zero chemicals, 100% natural. Step-by-step instruction & stain care card included.",
+                "description": "Complete 1-dozen pack of freshly rolled organic henna cones. Ideal for family celebrations, Karwa Chauth, Eid, and wedding festivities. Zero chemicals, 100% natural. Step-by-step instruction & stain care card included.\n\n\u2022 Dispatch will be done after 2-3 days of placed order (freshly rolled per batch)\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India in insulated packaging.\n\nStorage Instructions:\n\u2022 Store in deep freezer (-18\u00b0C) immediately upon arrival.\n\u2022 Thaw at room temperature for 15-20 minutes before application.\n\u2022 Never microwave or heat cones.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Quantity: 12 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/pack-of-12-mehndi-cones.jpg",
             },
@@ -159,12 +197,12 @@ def seed_initial_products():
                 "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 16 Mehndi Cones",
                 "slug": "pack-of-16-mehndi-cones",
-                "price_minor": 31900,  # ₹319.00
-                "compare_at_price_minor": 45900,  # ₹459.00
+                "price_minor": 31900,
+                "compare_at_price_minor": 45900,
                 "sku": "MBD-CONE-16",
                 "stock_quantity": 100,
                 "weight_grams": 480,
-                "description": "Value bundle of 16 organic bridal henna cones. Crafted with triple-sifted micro-fine henna powder and pure essential oils for smooth flow and crisp line work. Step-by-step instruction & stain care card included.",
+                "description": "Value bundle of 16 organic bridal henna cones. Crafted with triple-sifted micro-fine henna powder and pure essential oils for smooth flow and crisp line work. Step-by-step instruction & stain care card included.\n\n\u2022 Dispatch will be done after 2-3 days of placed order (freshly rolled per batch)\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India in insulated packaging.\n\nStorage Instructions:\n\u2022 Store in deep freezer (-18\u00b0C) immediately upon arrival.\n\u2022 Thaw at room temperature for 15-20 minutes before application.\n\u2022 Never microwave or heat cones.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Quantity: 16 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/pack-of-16-mehndi-cones.jpg",
             },
@@ -172,12 +210,12 @@ def seed_initial_products():
                 "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 20 Mehndi Cones",
                 "slug": "pack-of-20-mehndi-cones",
-                "price_minor": 39900,  # ₹399.00
-                "compare_at_price_minor": 59900,  # ₹599.00
+                "price_minor": 39900,
+                "compare_at_price_minor": 59900,
                 "sku": "MBD-CONE-20",
                 "stock_quantity": 100,
                 "weight_grams": 600,
-                "description": "Studio pack of 20 fresh organic henna cones. Perfect for henna artists and large family occasions. Long-lasting, rich burgundy dye release. Step-by-step instruction & stain care card included.",
+                "description": "Studio pack of 20 fresh organic henna cones. Perfect for henna artists and large family occasions. Long-lasting, rich burgundy dye release. Step-by-step instruction & stain care card included.\n\n\u2022 Dispatch will be done after 2-3 days of placed order (freshly rolled per batch)\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India in insulated packaging.\n\nStorage Instructions:\n\u2022 Store in deep freezer (-18\u00b0C) immediately upon arrival.\n\u2022 Thaw at room temperature for 15-20 minutes before application.\n\u2022 Never microwave or heat cones.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Quantity: 20 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/pack-of-20-mehndi-cones.jpg",
             },
@@ -185,80 +223,38 @@ def seed_initial_products():
                 "category_id": cones_cat.id if cones_cat else None,
                 "name": "Pack of 50 Mehndi Cones",
                 "slug": "pack-of-50-mehndi-cones",
-                "price_minor": 99900,  # ₹999.00
-                "compare_at_price_minor": 149900,  # ₹1,499.00
+                "price_minor": 99900,
+                "compare_at_price_minor": 149900,
                 "sku": "MBD-CONE-50",
                 "stock_quantity": 100,
                 "weight_grams": 1500,
-                "description": "Bulk artist master pack of 50 freshly rolled organic henna cones. Shipped in insulated packaging to maintain optimal freshness. The ultimate value for professional bridal bookings. Step-by-step instruction & stain care card included.",
+                "description": "Bulk artist master pack of 50 freshly rolled organic henna cones. Shipped in insulated packaging to maintain optimal freshness. The ultimate value for professional bridal bookings. Step-by-step instruction & stain care card included.\n\n\u2022 Dispatch will be done after 2-3 days of placed order (freshly rolled per batch)\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India in insulated packaging.\n\nStorage Instructions:\n\u2022 Store in deep freezer (-18\u00b0C) immediately upon arrival.\n\u2022 Thaw at room temperature for 15-20 minutes before application.\n\u2022 Never microwave or heat cones.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Quantity: 50 Cones | Weight: ~30g each | Tip: 0.38mm | Shelf life: 6 months frozen | Instruction card included",
                 "image_url": "/images/products/pack-of-50-mehndi-cones.jpg",
             },
-            # Mehndi Powder
-            {
-                "category_id": powder_cat.id if powder_cat else None,
-                "name": "100 gm Mehndi Powder",
-                "slug": "100-gm-mehndi-powder",
-                "price_minor": 9900,  # ₹99.00
-                "compare_at_price_minor": 14900,  # ₹149.00
-                "sku": "MBD-POWDER-100",
-                "stock_quantity": 100,
-                "weight_grams": 100,
-                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (100g). Rich dye content (Lawsone 2.8%+) providing rich, deep mahogany stain for professional henna paste preparation and natural hair treatment. Detailed step-by-step instruction card included.",
-                "specifications": "Weight: 100g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
-                "image_url": "/images/products/100-gm-mehndi-powder.jpg",
-            },
-            {
-                "category_id": powder_cat.id if powder_cat else None,
-                "name": "200 gm Mehndi Powder",
-                "slug": "200-gm-mehndi-powder",
-                "price_minor": 18900,  # ₹189.00
-                "compare_at_price_minor": 27900,  # ₹279.00
-                "sku": "MBD-POWDER-200",
-                "stock_quantity": 100,
-                "weight_grams": 200,
-                "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning. Detailed step-by-step instruction card included.",
-                "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
-                "image_url": "/images/products/200-gm-mehndi-powder.jpg",
-            },
-            # Mehndi Oil
-            {
-                "category_id": oil_cat.id if oil_cat else None,
-                "name": "100ML Mehndi oil",
-                "slug": "100ml-mehndi-oil",
-                "price_minor": 24900,  # ₹249.00
-                "compare_at_price_minor": 34900,  # ₹349.00
-                "sku": "MBD-OIL-100",
-                "stock_quantity": 100,
-                "weight_grams": 100,
-                "description": "Pure 100% natural eucalyptus and terpene essential oil blend (100ml). Specially formulated to enhance Lawsone dye penetration into skin pores for deep, rich mahogany to dark burgundy henna stains. Free from synthetic fragrances and mineral oil. Detailed step-by-step instruction card included.",
-                "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil | Instruction card included",
-                "image_url": "/images/products/mehndi-oil.jpg",
-            },
-            # Mehndi Kits (Only the 3 requested DIY kits)
             {
                 "category_id": kits_cat.id if kits_cat else None,
                 "name": "Business DIY Kit",
                 "slug": "business-diy-kit",
-                "price_minor": 19900,  # ₹199.00
-                "compare_at_price_minor": 29900,  # ₹299.00
+                "price_minor": 19900,
+                "compare_at_price_minor": 29900,
                 "sku": "MBD-KIT-BIZ-DIY",
                 "stock_quantity": 100,
                 "weight_grams": 250,
-                "description": "100 gram mehndi powder, 30 ml oil, 0.38mm Plastic pin, Piping big bag, stocking, Anti leakage powder, Golden cone sheets, pre rolled White flower cones, Instruction card (notes for mixology) with upto 5 kg measurement.",
+                "description": "100 gram mehndi powder, 30 ml oil, 0.38mm Plastic pin, Piping big bag, stocking, Anti leakage powder, Golden cone sheets, pre rolled White flower cones, Instruction card (notes for mixology) with upto 5 kg measurement.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nStorage Instructions:\n\u2022 Store powder and oil in a cool, dry place away from moisture and sunlight.\n\u2022 Keep all accessory sheets, pins, and cones safely stored in the kit box.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "100g Henna Powder, 30ml Oil, 0.38mm Plastic Pin, Piping Big Bag, Stocking, Anti-leakage Powder, Golden Cone Sheets, Pre-rolled White Flower Cones, Mixology Guide (Up to 5kg)",
-                "image_url": "/images/products/mehndi-artist-kit.jpg",
+                "image_url": "/images/products/trial-kit.jpg",
             },
             {
                 "category_id": kits_cat.id if kits_cat else None,
                 "name": "Duo Business DIY Kit + FREE shipping",
                 "slug": "duo-business-diy-kit",
-                "price_minor": 39900,  # ₹399.00
-                "compare_at_price_minor": 59900,  # ₹599.00
+                "price_minor": 39900,
+                "compare_at_price_minor": 59900,
                 "sku": "MBD-KIT-DUO-BIZ",
                 "stock_quantity": 100,
                 "weight_grams": 500,
-                "description": "200 gram mehndi powder, 100 ml oil, 0.38mm Plastic pin, Piping big bag, stocking, Anti leakage powder - 50gram, Golden cone sheets - 20 piece, pre rolled White flower cones, Instruction card (notes for mixology) with upto 5 kg measurement.",
+                "description": "200 gram mehndi powder, 100 ml oil, 0.38mm Plastic pin, Piping big bag, stocking, Anti leakage powder - 50gram, Golden cone sheets - 20 piece, pre rolled White flower cones, Instruction card (notes for mixology) with upto 5 kg measurement.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India with FREE Delivery!\n\nStorage Instructions:\n\u2022 Store powder and oil in a cool, dry place away from moisture and sunlight.\n\u2022 Keep all accessory sheets, pins, and cones safely stored in the kit box.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "200g Henna Powder, 100ml Oil, 0.38mm Plastic Pin, Piping Big Bag, Stocking, 50g Anti-leakage Powder, 20x Golden Sheets, Pre-rolled White Flower Cones, Mixology Guide (Up to 5kg) | FREE shipping",
                 "image_url": "/images/products/mehndi-artist-kit.jpg",
             },
@@ -266,99 +262,98 @@ def seed_initial_products():
                 "category_id": kits_cat.id if kits_cat else None,
                 "name": "Bridal DIY kit + FREE shipping",
                 "slug": "bridal-diy-kit",
-                "price_minor": 44900,  # ₹449.00
-                "compare_at_price_minor": 64900,  # ₹649.00
+                "price_minor": 44900,
+                "compare_at_price_minor": 64900,
                 "sku": "MBD-KIT-BRIDAL-DIY",
                 "stock_quantity": 100,
                 "weight_grams": 550,
-                "description": "200 gram mehndi powder, 100ml dark stain oil, 0.38mm - 2 pin, Piping bag - small 2, Transperant 20 micron sheet- 20 piece, Pre rolled cones - 2, stocking - 1, Instruction card (or bridal mehndi paste making).",
+                "description": "200 gram mehndi powder, 100ml dark stain oil, 0.38mm - 2 pin, Piping bag - small 2, Transperant 20 micron sheet- 20 piece, Pre rolled cones - 2, stocking - 1, Instruction card (or bridal mehndi paste making).\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India with FREE Delivery!\n\nStorage Instructions:\n\u2022 Store powder and dark stain oil in a cool, dry place away from moisture and sunlight.\n\u2022 Keep all tools and rolling sheets in the protective bridal kit box.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "200g Henna Powder, 100ml Dark Stain Oil, 2x 0.38mm Pins, 2x Small Piping Bags, 20x Transparent 20 Micron Sheets, 2x Pre-rolled Cones, 1x Stocking, Bridal Paste Guide | FREE shipping",
                 "image_url": "/images/products/mehndi-artist-kit.jpg",
             },
-            # Accessories
             {
                 "category_id": acc_cat.id if acc_cat else None,
                 "name": "Pink Bowl",
                 "slug": "pink-bowl",
-                "price_minor": 4900,  # ₹49.00
-                "compare_at_price_minor": 7900,  # ₹79.00
+                "price_minor": 4900,
+                "compare_at_price_minor": 7900,
                 "sku": "MBD-ACC-BOWL",
                 "stock_quantity": 100,
                 "weight_grams": 60,
-                "description": "Ergonomic, lightweight durable pink mixing bowl specially designed for smooth, lump-free henna paste preparation and easy stirring. Stain-resistant, non-reactive food-grade plastic safe for essential oils and lemon-sugar mixes.",
+                "description": "Ergonomic, lightweight durable pink mixing bowl specially designed for smooth, lump-free henna paste preparation and easy stirring. Stain-resistant, non-reactive food-grade plastic safe for essential oils and lemon-sugar mixes.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nCare Instructions:\n\u2022 Wash and dry thoroughly after each henna mixing session.\n\u2022 Store in a cool and dry place.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Material: BPA-free Non-reactive Polypropylene | Diameter: ~15cm | Color: Vibrant Pink | Safe for: Henna paste mixing & aftercare prep",
                 "image_url": "/images/products/pink-bowl-1.jpg",
                 "gallery_images": [
                     {
-                        "url": "/images/products/pink-bowl-2.jpg",
-                        "alt_text": "Pink Bowl - Top View Inside",
-                        "sort_order": 2,
-                        "is_primary": False,
+                                        "url": "/images/products/pink-bowl-2.jpg",
+                                        "alt_text": "Pink Bowl - Top View Inside",
+                                        "sort_order": 2,
+                                        "is_primary": false
                     }
-                ],
+],
             },
             {
                 "category_id": acc_cat.id if acc_cat else None,
                 "name": "Clip for Piping Bag",
                 "slug": "clip-for-piping-bag",
-                "price_minor": 4900,  # ₹49.00
-                "compare_at_price_minor": 6900,  # ₹69.00
+                "price_minor": 4900,
+                "compare_at_price_minor": 6900,
                 "sku": "MBD-ACC-CLIP",
                 "stock_quantity": 100,
                 "weight_grams": 40,
-                "description": "Pack of heavy-duty sealing clips for henna piping bags and carrot bags. Tight snap-lock clamp ensures an airtight seal, preventing paste from drying out, leaking, or pushing backwards while rolling and filling henna cones.",
+                "description": "Pack of heavy-duty sealing clips for henna piping bags and carrot bags. Tight snap-lock clamp ensures an airtight seal, preventing paste from drying out, leaking, or pushing backwards while rolling and filling henna cones.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nCare Instructions:\n\u2022 Rinse with lukewarm water and wipe clean.\n\u2022 Store in a cool, dry place.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Quantity: Pack of 6 Clamping Clips | Material: High-durability food-grade polymer | Colors: Multi-color assortment | Use: Airtight seal for henna carrot & piping bags",
                 "image_url": "/images/products/clip-for-piping-bag-1.jpg",
                 "gallery_images": [
                     {
-                        "url": "/images/products/clip-for-piping-bag-2.jpg",
-                        "alt_text": "Clip for Piping Bag - In Hand",
-                        "sort_order": 2,
-                        "is_primary": False,
+                                        "url": "/images/products/clip-for-piping-bag-2.jpg",
+                                        "alt_text": "Clip for Piping Bag - In Hand",
+                                        "sort_order": 2,
+                                        "is_primary": false
                     }
-                ],
+],
             },
             {
                 "category_id": acc_cat.id if acc_cat else None,
                 "name": "0.38 mm pin (pack of 5 pin)",
                 "slug": "0-38-mm-pin-pack-of-5",
-                "price_minor": 3500,  # ₹35.00
-                "compare_at_price_minor": 5000,  # ₹50.00
+                "price_minor": 3500,
+                "compare_at_price_minor": 5000,
                 "sku": "MBD-ACC-PIN-038",
                 "stock_quantity": 100,
                 "weight_grams": 20,
-                "description": "0.38 mm pin (pack of 5 pin) for henna cone clogging prevention and tip sealing. Essential precision tool for smooth henna paste flow.",
+                "description": "0.38 mm pin (pack of 5 pin) for henna cone clogging prevention and tip sealing. Essential precision tool for smooth henna paste flow.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nStorage Instructions:\n\u2022 Keep pins in a protective case to avoid bending.\n\u2022 Store in a clean and dry place.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "0.38 mm tip caliber, pack of 5 durable plastic sealing pins",
                 "image_url": "/images/products/0-38-mm-pin.jpg",
                 "gallery_images": [
                     {
-                        "url": "/images/products/0-38-mm-pin-1.jpg",
-                        "alt_text": "0.38 mm pin (pack of 5 pin) detail",
-                        "sort_order": 2,
-                        "is_primary": False,
+                                        "url": "/images/products/0-38-mm-pin-1.jpg",
+                                        "alt_text": "0.38 mm pin (pack of 5 pin) detail",
+                                        "sort_order": 2,
+                                        "is_primary": false
                     }
-                ],
+],
             },
             {
                 "category_id": acc_cat.id if acc_cat else None,
                 "name": "Stocking (Set of 2)",
                 "slug": "stocking-set-of-2",
-                "price_minor": 2500,  # ₹25.00
-                "compare_at_price_minor": 4000,  # ₹40.00
+                "price_minor": 2500,
+                "compare_at_price_minor": 4000,
                 "sku": "MBD-ACC-STOCKING-2",
                 "stock_quantity": 100,
                 "weight_grams": 30,
-                "description": "High-grade fine mesh stocking strainers for silky-smooth, lump-free henna paste filtration. Set of 2 durable nylon stockings.",
+                "description": "High-grade fine mesh stocking strainers for silky-smooth, lump-free henna paste filtration. Set of 2 durable nylon stockings.\n\n\u2022 Dispatch will be done after 2-3 days of placed order\n\u2022 Delivery takes 5-6 days max after dispatch\n\u2022 COD available\n\u2022 Quick, reliable shipping to any location of India.\n\nCare Instructions:\n\u2022 Hand-wash under running water immediately after paste filtration. Air dry before storing.\n\u2022 Store in a clean and dry place.\n\nOrder now and experience the quality of Mehndi By Dhirali!",
                 "specifications": "Ultra-fine nylon mesh, stretchable elastic fit, Set of 2 strainers",
                 "image_url": "/images/products/stocking-set-of-2.jpg",
                 "gallery_images": [
                     {
-                        "url": "/images/products/stocking-set-of-2-1.jpg",
-                        "alt_text": "Stocking (Set of 2) detail",
-                        "sort_order": 2,
-                        "is_primary": False,
+                                        "url": "/images/products/stocking-set-of-2-1.jpg",
+                                        "alt_text": "Stocking (Set of 2) detail",
+                                        "sort_order": 2,
+                                        "is_primary": false
                     }
-                ],
+],
             },
         ]
 
