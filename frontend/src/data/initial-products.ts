@@ -309,66 +309,97 @@ export const INITIAL_PRODUCTS: Product[] = [
 
   // 4. Bridal & Student Kits
   {
-    id: 'kit-trial',
-    name: 'Trial Kit',
-    slug: 'trial-kit',
+    id: 'kit-business-diy',
+    name: 'Business DIY Kit',
+    slug: 'business-diy-kit',
     description:
-      'Complete beginner starter trial kit including 100gm organic Sojat mehndi powder, 30ml eucalyptus mehndi oil, 10 precut transparent cellophane sheets, 2 durable piping bags, and 10 precision plastic pins. Perfect for students and beginners to roll and mix fresh cones at home. Step-by-step mixing and cone-rolling instruction card included.',
+      '100 gram mehndi powder ,30 ml oil , 0.38mm Plastic pin  Piping big bag  stocking  Anti leakage powder  Golden cone sheets pre rolled White flower cones Instruction card (notes for mixology) with upto 5 kg measurement.',
     specifications:
-      'Contents: 100gm powder + 30ml oil + 10 cello sheets + 2 piping bags + 10 pins | Ideal for: Beginners & Practice | Instruction card included',
+      '100g Henna Powder, 30ml Oil, 0.38mm Plastic Pin, Piping Big Bag, Stocking, Anti-leakage Powder, Golden Cone Sheets, Pre-rolled White Flower Cones, Mixology Guide (Up to 5kg)',
     category_id: 'cat-mehndi-kits',
     category_name: 'Bridal & Student Kits',
     category_slug: 'mehndi-kits',
-    price_minor: 17900, // ₹179.00
-    compare_at_price_minor: 24900, // ₹249.00
+    price_minor: 19900, // ₹199.00
+    compare_at_price_minor: 29900, // ₹299.00
     stock_quantity: 100,
     is_active: true,
     is_featured: true,
-    sku: 'MBD-KIT-TRIAL',
+    sku: 'MBD-KIT-BIZ-DIY',
     weight_grams: 250,
     images: [
       {
-        id: 'img-kit-trial',
-        product_id: 'kit-trial',
+        id: 'img-kit-biz-1',
+        product_id: 'kit-business-diy',
         url: '/images/products/trial-kit.jpg',
-        alt_text: 'Trial Kit (100gm Powder + 30ml Oil + 10 Sheets + 2 Bags + 10 Pins)',
+        alt_text: 'Business DIY Kit (100g Powder, 30ml Oil, 0.38mm Pin, Piping Bag, Stocking, Sheets & Cones)',
         sort_order: 1,
         is_primary: true,
       },
     ],
-    created_at: '2026-10-26T00:00:00Z',
-    updated_at: '2026-10-26T00:00:00Z',
+    created_at: '2026-11-07T00:00:00Z',
+    updated_at: '2026-11-07T00:00:00Z',
   },
   {
-    id: 'kit-artist',
-    name: 'Artist Kit + FREE shipping',
-    slug: 'mehndi-artist-kit',
+    id: 'kit-duo-business-diy',
+    name: 'Duo Business DIY Kit + FREE shipping',
+    slug: 'duo-business-diy-kit',
     description:
-      'All-in-one comprehensive kit for professional mehndi artists and bridal work with FREE doorstep shipping! Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone. Step-by-step masterclass instruction card included.',
+      '200 gram mehndi powder, 100 ml oil, 0.38mm Plastic pin, Piping big bag, stocking, Anti leakage powder - 50gram , Golden cone sheets - 20 piece , pre rolled White flower cones, Instruction card (notes for mixology) with upto 5 kg measurement.',
     specifications:
-      'Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal | Shipping: FREE | Instruction card included',
+      '200g Henna Powder, 100ml Oil, 0.38mm Plastic Pin, Piping Big Bag, Stocking, 50g Anti-leakage Powder, 20x Golden Cone Sheets, Pre-rolled White Flower Cones, Mixology Guide (Up to 5kg) | FREE shipping',
     category_id: 'cat-mehndi-kits',
     category_name: 'Bridal & Student Kits',
     category_slug: 'mehndi-kits',
-    price_minor: 59900, // ₹599.00
-    compare_at_price_minor: 89900, // ₹899.00
+    price_minor: 39900, // ₹399.00
+    compare_at_price_minor: 59900, // ₹599.00
     stock_quantity: 100,
     is_active: true,
     is_featured: true,
-    sku: 'MBD-KIT-ARTIST',
+    sku: 'MBD-KIT-DUO-BIZ',
     weight_grams: 500,
     images: [
       {
-        id: 'img-kit-artist',
-        product_id: 'kit-artist',
+        id: 'img-kit-duo-1',
+        product_id: 'kit-duo-business-diy',
         url: '/images/products/mehndi-artist-kit.jpg',
-        alt_text: 'Artist Kit + FREE shipping (200gm Powder + 100ml Oil + 5 Bags + Pins + Sheets + Cones)',
+        alt_text: 'Duo Business DIY Kit + FREE shipping (200g Powder, 100ml Oil, Pin, Piping Bag, 50g Anti-leak, Sheets, Cones)',
         sort_order: 1,
         is_primary: true,
       },
     ],
-    created_at: '2026-10-26T00:00:00Z',
-    updated_at: '2026-10-26T00:00:00Z',
+    created_at: '2026-11-07T00:00:00Z',
+    updated_at: '2026-11-07T00:00:00Z',
+  },
+  {
+    id: 'kit-bridal-diy',
+    name: 'Bridal DIY kit + FREE shipping',
+    slug: 'bridal-diy-kit',
+    description:
+      '200 gram mehndi powder, 100ml dark stain oil, 0.38mm - 2 pin, Piping bag - small 2,Transperant 20 micron sheet- 20 piece, Pre rolled cones - 2, stocking - 1, Instruction card (or bridal mehndi paste making).',
+    specifications:
+      '200g Henna Powder, 100ml Dark Stain Oil, 2x 0.38mm Pins, 2x Small Piping Bags, 20x Transparent 20 Micron Sheets, 2x Pre-rolled Cones, 1x Stocking, Bridal Paste Guide | FREE shipping',
+    category_id: 'cat-mehndi-kits',
+    category_name: 'Bridal & Student Kits',
+    category_slug: 'mehndi-kits',
+    price_minor: 44900, // ₹449.00
+    compare_at_price_minor: 64900, // ₹649.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-KIT-BRIDAL-DIY',
+    weight_grams: 550,
+    images: [
+      {
+        id: 'img-kit-bridal-1',
+        product_id: 'kit-bridal-diy',
+        url: '/images/products/mehndi-artist-kit.jpg',
+        alt_text: 'Bridal DIY kit + FREE shipping (200g Powder, 100ml Oil, 2 Pins, 2 Bags, 20 Sheets, 2 Cones, Stocking)',
+        sort_order: 1,
+        is_primary: true,
+      },
+    ],
+    created_at: '2026-11-07T00:00:00Z',
+    updated_at: '2026-11-07T00:00:00Z',
   },
 
   // 5. Accessories
@@ -449,5 +480,81 @@ export const INITIAL_PRODUCTS: Product[] = [
     ],
     created_at: '2026-11-03T00:00:00Z',
     updated_at: '2026-11-03T00:00:00Z',
+  },
+  {
+    id: 'acc-038-pin',
+    name: '0.38 mm pin (pack of 5 pin)',
+    slug: '0-38-mm-pin-pack-of-5',
+    description:
+      '0.38 mm pin (pack of 5 pin) for henna cone clogging prevention and tip sealing. Essential precision tool for smooth henna paste flow.',
+    specifications: '0.38 mm tip caliber, pack of 5 durable plastic sealing pins',
+    category_id: 'cat-accessories',
+    category_name: 'Accessories',
+    category_slug: 'accessories',
+    price_minor: 3500, // ₹35.00
+    compare_at_price_minor: 5000, // ₹50.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-ACC-PIN-038',
+    weight_grams: 20,
+    images: [
+      {
+        id: 'img-038-pin-1',
+        product_id: 'acc-038-pin',
+        url: '/images/products/0-38-mm-pin.jpg',
+        alt_text: '0.38 mm pin (pack of 5 pin)',
+        sort_order: 1,
+        is_primary: true,
+      },
+      {
+        id: 'img-038-pin-2',
+        product_id: 'acc-038-pin',
+        url: '/images/products/0-38-mm-pin-1.jpg',
+        alt_text: '0.38 mm pin (pack of 5 pin) detail view',
+        sort_order: 2,
+        is_primary: false,
+      },
+    ],
+    created_at: '2026-11-07T00:00:00Z',
+    updated_at: '2026-11-07T00:00:00Z',
+  },
+  {
+    id: 'acc-stocking-set',
+    name: 'Stocking (Set of 2)',
+    slug: 'stocking-set-of-2',
+    description:
+      'High-grade fine mesh stocking strainers for silky-smooth, lump-free henna paste filtration. Set of 2 durable nylon stockings.',
+    specifications: 'Ultra-fine nylon mesh, stretchable elastic fit, Set of 2 strainers',
+    category_id: 'cat-accessories',
+    category_name: 'Accessories',
+    category_slug: 'accessories',
+    price_minor: 2500, // ₹25.00
+    compare_at_price_minor: 4000, // ₹40.00
+    stock_quantity: 100,
+    is_active: true,
+    is_featured: true,
+    sku: 'MBD-ACC-STOCKING-2',
+    weight_grams: 30,
+    images: [
+      {
+        id: 'img-stocking-1',
+        product_id: 'acc-stocking-set',
+        url: '/images/products/stocking-set-of-2.jpg',
+        alt_text: 'Stocking (Set of 2)',
+        sort_order: 1,
+        is_primary: true,
+      },
+      {
+        id: 'img-stocking-2',
+        product_id: 'acc-stocking-set',
+        url: '/images/products/stocking-set-of-2-1.jpg',
+        alt_text: 'Stocking (Set of 2) detail view',
+        sort_order: 2,
+        is_primary: false,
+      },
+    ],
+    created_at: '2026-11-07T00:00:00Z',
+    updated_at: '2026-11-07T00:00:00Z',
   },
 ]

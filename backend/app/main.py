@@ -16,6 +16,8 @@ from app.db.base import Base
 from app.db.session import engine
 from app.models.category import Category
 from app.models.product import Product, ProductImage
+from app.models.user import User
+from app.core.security import hash_password
 from app.db.session import SessionLocal
 
 logger = structlog.get_logger(__name__)
@@ -102,6 +104,15 @@ def seed_initial_products():
         acc_cat = db.query(Category).filter(Category.slug == "accessories").first()
         if not cones_cat and not powder_cat and not oil_cat and not kits_cat and not acc_cat:
             return
+
+        # Deactivate old kits if present
+        old_kit_slugs = ["trial-kit", "mehndi-artist-kit"]
+        for old_slug in old_kit_slugs:
+            old_prod = db.query(Product).filter(Product.slug == old_slug).first()
+            if old_prod:
+                old_prod.is_active = False
+                old_prod.is_featured = False
+        db.commit()
 
         products_data = [
             # Mehndi Cones
@@ -237,31 +248,44 @@ def seed_initial_products():
                 "specifications": "Volume: 100ml | Key Ingredients: Pure Eucalyptus Globulus & Herbal Terpenes | 100% Pure Essential Oil | Instruction card included",
                 "image_url": "/images/products/mehndi-oil.jpg",
             },
-            # Mehndi Kits
+            # Mehndi Kits (Only the 3 requested DIY kits)
             {
                 "category_id": kits_cat.id if kits_cat else None,
-                "name": "Trial Kit",
-                "slug": "trial-kit",
-                "price_minor": 17900,  # ₹179.00
-                "compare_at_price_minor": 24900,  # ₹249.00
-                "sku": "MBD-KIT-TRIAL",
+                "name": "Business DIY Kit",
+                "slug": "business-diy-kit",
+                "price_minor": 19900,  # ₹199.00
+                "compare_at_price_minor": 29900,  # ₹299.00
+                "sku": "MBD-KIT-BIZ-DIY",
                 "stock_quantity": 100,
                 "weight_grams": 250,
-                "description": "Complete beginner starter trial kit including 100gm organic Sojat mehndi powder, 30ml eucalyptus mehndi oil, 10 precut transparent cellophane sheets, 2 durable piping bags, and 10 precision plastic pins. Perfect for students and beginners to roll and mix fresh cones at home. Step-by-step instruction card included.",
-                "specifications": "Contents: 100gm powder + 30ml oil + 10 cello sheets + 2 piping bags + 10 pins | Ideal for: Beginners & Practice | Instruction card included",
-                "image_url": "/images/products/trial-kit.jpg",
+                "description": "100 gram mehndi powder, 30 ml oil, 0.38mm Plastic pin, Piping big bag, stocking, Anti leakage powder, Golden cone sheets, pre rolled White flower cones, Instruction card (notes for mixology) with upto 5 kg measurement.",
+                "specifications": "100g Henna Powder, 30ml Oil, 0.38mm Plastic Pin, Piping Big Bag, Stocking, Anti-leakage Powder, Golden Cone Sheets, Pre-rolled White Flower Cones, Mixology Guide (Up to 5kg)",
+                "image_url": "/images/products/mehndi-artist-kit.jpg",
             },
             {
                 "category_id": kits_cat.id if kits_cat else None,
-                "name": "Artist Kit + FREE shipping",
-                "slug": "mehndi-artist-kit",
-                "price_minor": 59900,  # ₹599.00
-                "compare_at_price_minor": 89900,  # ₹899.00
-                "sku": "MBD-KIT-ARTIST",
+                "name": "Duo Business DIY Kit + FREE shipping",
+                "slug": "duo-business-diy-kit",
+                "price_minor": 39900,  # ₹399.00
+                "compare_at_price_minor": 59900,  # ₹599.00
+                "sku": "MBD-KIT-DUO-BIZ",
                 "stock_quantity": 100,
                 "weight_grams": 500,
-                "description": "All-in-one comprehensive kit for professional mehndi artists and bridal work with FREE doorstep shipping! Includes 200gm triple-sifted Sojat mehndi powder, 100ml pure eucalyptus mehndi oil, 5 heavy-duty piping bags, 0.38mm precision pin tips, 25 high-grade cellophane rolling sheets, 5 pre-rolled pencil empty cones, and 1 fresh dark stain bridal cone. Step-by-step masterclass instruction card included.",
-                "specifications": "Contents: 200gm powder, 100ml oil, 5 piping bags, 0.38mm pins, 25 cone sheets, 5 pre-rolled empty cones, 1 dark stain cone | Level: Professional & Bridal | Shipping: FREE | Instruction card included",
+                "description": "200 gram mehndi powder, 100 ml oil, 0.38mm Plastic pin, Piping big bag, stocking, Anti leakage powder - 50gram, Golden cone sheets - 20 piece, pre rolled White flower cones, Instruction card (notes for mixology) with upto 5 kg measurement.",
+                "specifications": "200g Henna Powder, 100ml Oil, 0.38mm Plastic Pin, Piping Big Bag, Stocking, 50g Anti-leakage Powder, 20x Golden Sheets, Pre-rolled White Flower Cones, Mixology Guide (Up to 5kg) | FREE shipping",
+                "image_url": "/images/products/mehndi-artist-kit.jpg",
+            },
+            {
+                "category_id": kits_cat.id if kits_cat else None,
+                "name": "Bridal DIY kit + FREE shipping",
+                "slug": "bridal-diy-kit",
+                "price_minor": 44900,  # ₹449.00
+                "compare_at_price_minor": 64900,  # ₹649.00
+                "sku": "MBD-KIT-BRIDAL-DIY",
+                "stock_quantity": 100,
+                "weight_grams": 550,
+                "description": "200 gram mehndi powder, 100ml dark stain oil, 0.38mm - 2 pin, Piping bag - small 2, Transperant 20 micron sheet- 20 piece, Pre rolled cones - 2, stocking - 1, Instruction card (or bridal mehndi paste making).",
+                "specifications": "200g Henna Powder, 100ml Dark Stain Oil, 2x 0.38mm Pins, 2x Small Piping Bags, 20x Transparent 20 Micron Sheets, 2x Pre-rolled Cones, 1x Stocking, Bridal Paste Guide | FREE shipping",
                 "image_url": "/images/products/mehndi-artist-kit.jpg",
             },
             # Accessories
@@ -302,6 +326,48 @@ def seed_initial_products():
                     {
                         "url": "/images/products/clip-for-piping-bag-2.jpg",
                         "alt_text": "Clip for Piping Bag - In Hand",
+                        "sort_order": 2,
+                        "is_primary": False,
+                    }
+                ],
+            },
+            {
+                "category_id": acc_cat.id if acc_cat else None,
+                "name": "0.38 mm pin (pack of 5 pin)",
+                "slug": "0-38-mm-pin-pack-of-5",
+                "price_minor": 3500,  # ₹35.00
+                "compare_at_price_minor": 5000,  # ₹50.00
+                "sku": "MBD-ACC-PIN-038",
+                "stock_quantity": 100,
+                "weight_grams": 20,
+                "description": "0.38 mm pin (pack of 5 pin) for henna cone clogging prevention and tip sealing. Essential precision tool for smooth henna paste flow.",
+                "specifications": "0.38 mm tip caliber, pack of 5 durable plastic sealing pins",
+                "image_url": "/images/products/0-38-mm-pin.jpg",
+                "gallery_images": [
+                    {
+                        "url": "/images/products/0-38-mm-pin-1.jpg",
+                        "alt_text": "0.38 mm pin (pack of 5 pin) detail",
+                        "sort_order": 2,
+                        "is_primary": False,
+                    }
+                ],
+            },
+            {
+                "category_id": acc_cat.id if acc_cat else None,
+                "name": "Stocking (Set of 2)",
+                "slug": "stocking-set-of-2",
+                "price_minor": 2500,  # ₹25.00
+                "compare_at_price_minor": 4000,  # ₹40.00
+                "sku": "MBD-ACC-STOCKING-2",
+                "stock_quantity": 100,
+                "weight_grams": 30,
+                "description": "High-grade fine mesh stocking strainers for silky-smooth, lump-free henna paste filtration. Set of 2 durable nylon stockings.",
+                "specifications": "Ultra-fine nylon mesh, stretchable elastic fit, Set of 2 strainers",
+                "image_url": "/images/products/stocking-set-of-2.jpg",
+                "gallery_images": [
+                    {
+                        "url": "/images/products/stocking-set-of-2-1.jpg",
+                        "alt_text": "Stocking (Set of 2) detail",
                         "sort_order": 2,
                         "is_primary": False,
                     }
@@ -419,6 +485,38 @@ def ensure_order_tracking_columns():
         logger.warning("Order tracking columns check skipped", error=str(e))
 
 
+def seed_initial_admin():
+    """Seeds default boutique admin user if not present or ensures admin role is active."""
+    db = SessionLocal()
+    try:
+        admin_email = (settings.ADMIN_EMAIL or "admin@mehndibydhirali.com").lower().strip()
+        existing = db.query(User).filter(User.email == admin_email).first()
+        admin_pw = settings.ADMIN_PASSWORD or os.environ.get("ADMIN_PASSWORD")
+        if not existing and admin_pw:
+            admin_user = User(
+                email=admin_email,
+                password_hash=hash_password(admin_pw),
+                first_name=settings.ADMIN_FIRST_NAME or "Admin",
+                last_name=settings.ADMIN_LAST_NAME or "Doe",
+                phone="+919876543210",
+                role="admin",
+                is_active=True,
+            )
+            db.add(admin_user)
+            db.commit()
+            logger.info("Default store administrator account created", email=admin_email)
+        elif existing:
+            if existing.role != "admin" or not existing.is_active:
+                existing.role = "admin"
+                existing.is_active = True
+                db.commit()
+                logger.info("Elevated existing user to administrator", email=admin_email)
+    except Exception as e:
+        logger.warning("Admin seeding skipped or failed", error=str(e))
+    finally:
+        db.close()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: Ensure tables exist
@@ -427,6 +525,7 @@ async def lifespan(app: FastAPI):
         ensure_order_tracking_columns()
         seed_initial_categories()
         seed_initial_products()
+        seed_initial_admin()
         logger.info("Database schema verified.")
     except Exception as e:
         logger.error("Database connection initialization failed", error=str(e))

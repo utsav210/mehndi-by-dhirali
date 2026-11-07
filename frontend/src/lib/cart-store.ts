@@ -104,9 +104,11 @@ export const useCartStore = create<CartState>()(
         const items = get().items
         if (items.length === 0) return 0
 
-        // Check if any product has free shipping (Artist Kit + FREE shipping)
+        // Check if any product has free shipping (Duo Business DIY Kit, Bridal DIY Kit, or title contains 'FREE shipping')
         const hasFreeShipping = items.some(
           (i) =>
+            i.product_slug === 'duo-business-diy-kit' ||
+            i.product_slug === 'bridal-diy-kit' ||
             i.product_slug === 'mehndi-artist-kit' ||
             i.product_name.toLowerCase().includes('free shipping')
         )

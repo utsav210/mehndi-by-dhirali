@@ -41,7 +41,7 @@ export const STORE_CATEGORIES: CategoryShowcaseItem[] = [
     name: 'Bridal & Student Kits',
     slug: 'mehndi-kits',
     image: '/images/products/mehndi-artist-kit.jpg',
-    itemCount: 2,
+    itemCount: 3,
     description: 'Complete bridal artist & practice kits',
   },
   {
@@ -49,8 +49,8 @@ export const STORE_CATEGORIES: CategoryShowcaseItem[] = [
     name: 'Accessories',
     slug: 'accessories',
     image: '/images/products/pink-bowl-1.jpg',
-    itemCount: 2,
-    description: 'Essential mixing bowls, sealing clips & tools',
+    itemCount: 4,
+    description: 'Essential mixing bowls, clips, pins & stockings',
   },
 ]
 
@@ -82,7 +82,7 @@ export default function CategoryShowcase({
     name: 'All Categories',
     slug: 'all',
     image: '/images/products/pack-of-5-mehndi-cones.jpg',
-    itemCount: 14,
+    itemCount: 17,
     description: 'Explore our entire handcrafted henna collection',
   }
 

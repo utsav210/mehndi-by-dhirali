@@ -4,6 +4,7 @@ Strictly restricted to users with role='admin'.
 Hiding buttons on frontend is not security — backend authorization enforced for all operations.
 """
 import uuid
+import re
 from typing import List, Optional
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
@@ -82,23 +83,68 @@ def admin_list_products(
     return results
 
 
+@router.get("/products/{id}", response_model=ProductResponse)
+def admin_get_product(
+    id: str,
+    admin: User = Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    product = db.query(Product).filter(Product.id == id).first()
+    if not product:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found.")
+    cat = db.query(Category).filter(Category.id == product.category_id).first()
+    return ProductResponse(
+        id=product.id,
+        name=product.name,
+        slug=product.slug,
+        category_id=product.category_id,
+        category_name=cat.name if cat else "General",
+        category_slug=cat.slug if cat else "general",
+        description=product.description,
+        specifications=product.specifications,
+        price_minor=product.price_minor,
+        compare_at_price_minor=product.compare_at_price_minor,
+        stock_quantity=product.stock_quantity,
+        is_active=product.is_active,
+        is_featured=product.is_featured,
+        sku=product.sku,
+        weight_grams=product.weight_grams,
+        images=product.images,
+        created_at=product.created_at,
+        updated_at=product.updated_at,
+    )
+
+
 @router.post("/products", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 def admin_create_product(
     data: ProductCreate,
     admin: User = Depends(get_admin_user),
     db: Session = Depends(get_db),
 ):
-    # Ensure SKU uniqueness
-    existing_sku = db.query(Product).filter(Product.sku == data.sku).first()
-    if existing_sku:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"SKU '{data.sku}' already exists.")
+    # Resolve category by ID or by slug
+    category = db.query(Category).filter(
+        (Category.id == data.category_id) | (Category.slug == data.category_id)
+    ).first()
+    if not category:
+        category = db.query(Category).first()
+    category_id = category.id if category else data.category_id
 
-    slug = data.slug or data.name.lower().replace(" ", "-")
+    # Auto-generate SKU if omitted or ensure uniqueness
+    sku = data.sku or f"MBD-{uuid.uuid4().hex[:6].upper()}"
+    existing_sku = db.query(Product).filter(Product.sku == sku).first()
+    if existing_sku:
+        sku = f"{sku}-{uuid.uuid4().hex[:4].upper()}"
+
+    # Auto-generate slug if omitted
+    slug = data.slug or re.sub(r"[^a-z0-9]+", "-", data.name.lower()).strip("-")
+    existing_slug = db.query(Product).filter(Product.slug == slug).first()
+    if existing_slug:
+        slug = f"{slug}-{uuid.uuid4().hex[:4]}"
 
     product = Product(
         name=data.name,
         slug=slug,
-        category_id=data.category_id,
+        category_id=category_id,
         description=data.description,
         specifications=data.specifications,
         price_minor=data.price_minor,
@@ -106,10 +152,25 @@ def admin_create_product(
         stock_quantity=data.stock_quantity,
         is_active=data.is_active,
         is_featured=data.is_featured,
-        sku=data.sku,
-        weight_grams=data.weight_grams,
+        sku=sku,
+        weight_grams=data.weight_grams or 50,
     )
     db.add(product)
+    db.flush()
+
+    # Attach images if provided
+    if data.image_urls:
+        for idx, img_url in enumerate(data.image_urls):
+            clean_url = img_url.strip()
+            if clean_url:
+                p_img = ProductImage(
+                    product_id=product.id,
+                    url=clean_url,
+                    alt_text=f"{product.name} photo {idx + 1}",
+                    sort_order=idx,
+                    is_primary=(idx == 0),
+                )
+                db.add(p_img)
 
     # Audit log
     audit = AuditLog(
@@ -117,7 +178,7 @@ def admin_create_product(
         action="product.create",
         resource_type="product",
         resource_id=product.id,
-        details=f"Created product '{data.name}' with SKU '{data.sku}'",
+        details=f"Created product '{data.name}' with SKU '{sku}'",
     )
     db.add(audit)
 
@@ -141,7 +202,7 @@ def admin_create_product(
         is_featured=product.is_featured,
         sku=product.sku,
         weight_grams=product.weight_grams,
-        images=[],
+        images=product.images,
         created_at=product.created_at,
         updated_at=product.updated_at,
     )
@@ -159,18 +220,138 @@ def admin_update_product(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found.")
 
     update_dict = data.model_dump(exclude_unset=True)
+    image_urls = update_dict.pop("image_urls", None)
+
+    # Resolve category if provided
+    if "category_id" in update_dict and update_dict["category_id"]:
+        cat = db.query(Category).filter(
+            (Category.id == update_dict["category_id"]) | (Category.slug == update_dict["category_id"])
+        ).first()
+        if cat:
+            update_dict["category_id"] = cat.id
+
     for field, val in update_dict.items():
         setattr(product, field, val)
+
+    # Update images if an array was explicitly passed
+    if image_urls is not None:
+        # Delete existing images
+        db.query(ProductImage).filter(ProductImage.product_id == product.id).delete()
+        for idx, img_url in enumerate(image_urls):
+            clean_url = img_url.strip()
+            if clean_url:
+                p_img = ProductImage(
+                    product_id=product.id,
+                    url=clean_url,
+                    alt_text=f"{product.name} photo {idx + 1}",
+                    sort_order=idx,
+                    is_primary=(idx == 0),
+                )
+                db.add(p_img)
 
     audit = AuditLog(
         user_id=admin.id,
         action="product.update",
         resource_type="product",
         resource_id=product.id,
-        details=f"Updated fields: {list(update_dict.keys())}",
+        details=f"Updated product '{product.name}' fields: {list(update_dict.keys())}",
     )
     db.add(audit)
 
+    db.commit()
+    db.refresh(product)
+
+    cat = db.query(Category).filter(Category.id == product.category_id).first()
+    return ProductResponse(
+        id=product.id,
+        name=product.name,
+        slug=product.slug,
+        category_id=product.category_id,
+        category_name=cat.name if cat else "General",
+        category_slug=cat.slug if cat else "general",
+        description=product.description,
+        specifications=product.specifications,
+        price_minor=product.price_minor,
+        compare_at_price_minor=product.compare_at_price_minor,
+        stock_quantity=product.stock_quantity,
+        is_active=product.is_active,
+        is_featured=product.is_featured,
+        sku=product.sku,
+        weight_grams=product.weight_grams,
+        images=product.images,
+        created_at=product.created_at,
+        updated_at=product.updated_at,
+    )
+
+
+@router.delete("/products/{id}")
+def admin_delete_product(
+    id: str,
+    admin: User = Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    product = db.query(Product).filter(Product.id == id).first()
+    if not product:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found.")
+
+    # Check for order references
+    if product.order_items and len(product.order_items) > 0:
+        product.is_active = False
+        audit = AuditLog(
+            user_id=admin.id,
+            action="product.deactivate",
+            resource_type="product",
+            resource_id=product.id,
+            details=f"Deactivated product '{product.name}' (preserved due to historical orders)",
+        )
+        db.add(audit)
+        db.commit()
+        return {
+            "success": True,
+            "message": f"Product '{product.name}' has historical customer orders. It has been archived (set inactive) to protect order records.",
+            "archived": True,
+        }
+
+    prod_name = product.name
+    audit = AuditLog(
+        user_id=admin.id,
+        action="product.delete",
+        resource_type="product",
+        resource_id=product.id,
+        details=f"Permanently deleted product '{prod_name}'",
+    )
+    db.add(audit)
+    db.delete(product)
+    db.commit()
+    return {
+        "success": True,
+        "message": f"Product '{prod_name}' was permanently deleted from catalog.",
+        "deleted": True,
+    }
+
+
+@router.patch("/products/{id}/toggle-status", response_model=ProductResponse)
+def admin_toggle_product_status(
+    id: str,
+    field: str = Query("is_active", pattern="^(is_active|is_featured)$"),
+    admin: User = Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    product = db.query(Product).filter(Product.id == id).first()
+    if not product:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found.")
+
+    curr_val = bool(getattr(product, field))
+    setattr(product, field, not curr_val)
+
+    audit = AuditLog(
+        user_id=admin.id,
+        action=f"product.toggle_{field}",
+        resource_type="product",
+        resource_id=product.id,
+        details=f"Toggled {field} from {curr_val} to {not curr_val}",
+    )
+    db.add(audit)
     db.commit()
     db.refresh(product)
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PageLayout from '@/components/layout/PageLayout'
 import {
@@ -9,12 +9,46 @@ import {
   ArrowRight,
   Shield,
   Layers,
+  RefreshCw,
 } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
+import { apiClient } from '@/lib/api-client'
+
+interface DashboardStats {
+  total_revenue_minor: number
+  total_orders: number
+  paid_orders: number
+  total_products: number
+  total_categories: number
+}
 
 export default function AdminDashboardPage() {
+  const [stats, setStats] = useState<DashboardStats>({
+    total_revenue_minor: 0,
+    total_orders: 0,
+    paid_orders: 0,
+    total_products: 14,
+    total_categories: 5,
+  })
+  const [isLoading, setIsLoading] = useState(false)
+
+  const fetchStats = async () => {
+    setIsLoading(true)
+    try {
+      const data = await apiClient.get<DashboardStats>('/admin/dashboard')
+      if (data) {
+        setStats(data)
+      }
+    } catch {
+      // Keep existing default counts
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
     document.title = 'Admin Portal — Mehndi By Dhirali'
+    fetchStats()
   }, [])
 
   return (
@@ -36,6 +70,15 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={fetchStats}
+              disabled={isLoading}
+              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition text-warm-ivory cursor-pointer"
+              title="Refresh Stats"
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            </button>
             <Link
               to="/admin/products"
               className="inline-flex items-center gap-1.5 rounded-full bg-antique-gold px-4 py-2 text-xs font-semibold text-forest-green hover:bg-antique-gold/90 transition shadow-xs"
@@ -56,10 +99,10 @@ export default function AdminDashboardPage() {
               <DollarSign className="h-4 w-4 text-antique-gold" />
             </div>
             <p className="font-serif text-2xl font-bold text-bottle-green mt-2">
-              {formatPrice(0)}
+              {formatPrice(stats.total_revenue_minor || 0)}
             </p>
             <span className="text-[10px] text-secondary-text mt-1 block">
-              Store ready for launch
+              {stats.paid_orders} paid transactions
             </span>
           </div>
 
@@ -68,20 +111,20 @@ export default function AdminDashboardPage() {
               <span className="text-xs font-medium text-secondary-text">Total Orders</span>
               <ShoppingCart className="h-4 w-4 text-bottle-green" />
             </div>
-            <p className="font-serif text-2xl font-bold text-bottle-green mt-2">0</p>
+            <p className="font-serif text-2xl font-bold text-bottle-green mt-2">{stats.total_orders}</p>
             <span className="text-[10px] text-secondary-text mt-1 block">
-              0 orders pending fulfillment
+              {stats.total_orders - stats.paid_orders} pending fulfillment
             </span>
           </div>
 
           <div className="rounded-2xl border border-subtle-border p-5 bg-white shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-secondary-text">Active Products</span>
+              <span className="text-xs font-medium text-secondary-text">Total Products</span>
               <Package className="h-4 w-4 text-henna-brown" />
             </div>
-            <p className="font-serif text-2xl font-bold text-bottle-green mt-2">0</p>
+            <p className="font-serif text-2xl font-bold text-bottle-green mt-2">{stats.total_products}</p>
             <span className="text-[10px] text-secondary-text mt-1 block">
-              Ready for catalog publishing
+              Active across boutique collections
             </span>
           </div>
 
@@ -90,9 +133,9 @@ export default function AdminDashboardPage() {
               <span className="text-xs font-medium text-secondary-text">Categories</span>
               <Layers className="h-4 w-4 text-antique-gold" />
             </div>
-            <p className="font-serif text-2xl font-bold text-bottle-green mt-2">6</p>
+            <p className="font-serif text-2xl font-bold text-bottle-green mt-2">{stats.total_categories}</p>
             <span className="text-[10px] text-secondary-text mt-1 block">
-              Pre-configured boutique sections
+              Configured store collections
             </span>
           </div>
         </div>

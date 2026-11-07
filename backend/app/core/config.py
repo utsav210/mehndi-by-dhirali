@@ -95,10 +95,16 @@ class Settings(BaseSettings):
         raw = v or os.environ.get("JWT_SECRET_KEY") or "insecure-development-secret-key-change-in-production-min-32-chars"
         return str(raw).strip().strip("'\"")
 
-    # Razorpay (Test / Production Mode)
-    RAZORPAY_KEY_ID: str = "rzp_test_placeholder"
-    RAZORPAY_KEY_SECRET: str = "placeholder_secret"
-    RAZORPAY_WEBHOOK_SECRET: str = "placeholder_webhook_secret"
+    # Admin Credentials (configured via environment / .env)
+    ADMIN_EMAIL: str = "admin@mehndibydhirali.com"
+    ADMIN_PASSWORD: str = ""
+    ADMIN_FIRST_NAME: str = "Admin"
+    ADMIN_LAST_NAME: str = "Doe"
+
+    # Razorpay (Test / Production Mode - configured via environment / .env)
+    RAZORPAY_KEY_ID: str = ""
+    RAZORPAY_KEY_SECRET: str = ""
+    RAZORPAY_WEBHOOK_SECRET: str = ""
 
     @field_validator("RAZORPAY_KEY_ID", "RAZORPAY_KEY_SECRET", "RAZORPAY_WEBHOOK_SECRET", mode="before")
     @classmethod

@@ -67,7 +67,10 @@ def create_order(
 
         prod_weight = product.weight_grams or 100
         total_weight_grams += prod_weight * item_req.quantity
-        if product.slug == "mehndi-artist-kit" or "free shipping" in product.name.lower():
+        if (
+            product.slug in ("duo-business-diy-kit", "bridal-diy-kit", "mehndi-artist-kit")
+            or "free shipping" in product.name.lower()
+        ):
             has_free_shipping_item = True
 
         # Primary image URL

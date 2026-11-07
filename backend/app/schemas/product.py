@@ -75,8 +75,9 @@ class ProductCreate(BaseModel):
     stock_quantity: int = Field(ge=0, default=0)
     is_active: bool = True
     is_featured: bool = False
-    sku: str = Field(min_length=2, max_length=50)
+    sku: Optional[str] = None
     weight_grams: Optional[int] = None
+    image_urls: Optional[List[str]] = None
 
 
 class ProductUpdate(BaseModel):
@@ -92,3 +93,4 @@ class ProductUpdate(BaseModel):
     is_featured: Optional[bool] = None
     sku: Optional[str] = None
     weight_grams: Optional[int] = None
+    image_urls: Optional[List[str]] = None

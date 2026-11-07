@@ -28,6 +28,7 @@ import FaqPage from '@/pages/FaqPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 // Admin Pages
+import AdminRoute from '@/components/auth/AdminRoute'
 import AdminDashboardPage from '@/pages/admin/AdminDashboardPage'
 import AdminProductsPage from '@/pages/admin/AdminProductsPage'
 import AdminOrdersPage from '@/pages/admin/AdminOrdersPage'
@@ -82,11 +83,39 @@ export default function App() {
           <Route path="/cancellation" element={<CancellationPage />} />
           <Route path="/faq" element={<FaqPage />} />
 
-          {/* Admin Management Routes */}
-          <Route path="/admin" element={<AdminDashboardPage />} />
-          <Route path="/admin/products" element={<AdminProductsPage />} />
-          <Route path="/admin/orders" element={<AdminOrdersPage />} />
-          <Route path="/admin/categories" element={<AdminCategoriesPage />} />
+          {/* Admin Management Routes (Protected by Role) */}
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboardPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/products"
+            element={
+              <AdminRoute>
+                <AdminProductsPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <AdminRoute>
+                <AdminOrdersPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/categories"
+            element={
+              <AdminRoute>
+                <AdminCategoriesPage />
+              </AdminRoute>
+            }
+          />
 
           {/* 404 Fallback */}
           <Route path="*" element={<NotFoundPage />} />

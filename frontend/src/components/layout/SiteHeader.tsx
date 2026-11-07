@@ -5,6 +5,7 @@ import {
   Search,
   ShoppingBag,
   User,
+  Shield,
   X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -91,6 +92,18 @@ export function SiteHeader() {
 
           {/* ── Right: Action Icons ──────────────────────────────── */}
           <div className="flex items-center justify-end gap-1 sm:gap-2 lg:flex-1">
+            {/* Admin Badge if authenticated as admin */}
+            {user?.role === 'admin' && (
+              <Link
+                to="/admin"
+                className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-bottle-green/10 border border-bottle-green/20 px-3 py-1.5 text-xs font-semibold text-bottle-green hover:bg-bottle-green hover:text-white transition-colors cursor-pointer"
+                title="Go to Admin Console"
+              >
+                <Shield className="h-3.5 w-3.5 text-antique-gold" />
+                <span>Admin Console</span>
+              </Link>
+            )}
+
             {/* Account (man / sign-in icon + Login / Register text) */}
             <Link
               to={isAuthenticated ? '/account' : '/login'}

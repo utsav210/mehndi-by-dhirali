@@ -14,21 +14,21 @@ export default function SpecialOffers({ className }: { className?: string }) {
               <span>Festive Bridal Special</span>
             </div>
             <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-              Complete Bridal Mehndi Studio Kit
+              Bridal DIY Kit + FREE Shipping
             </h2>
             <p className="mt-4 text-warm-ivory/90 text-sm sm:text-base leading-relaxed">
-              Curated especially for professional artists and brides. Includes 200gm triple-sifted henna powder, 100ml essential oil, piping bags, 0.38mm pins, cellophane rolling sheets, pencil cones, and dark stain cone.
+              Curated especially for brides and boutique artists. Includes 200g triple-sifted henna powder, 100ml dark stain essential oil, 2x 0.38mm precision pins, 2 small piping bags, 20 transparent 20-micron sheets, 2 pre-rolled cones, stocking strainer, and bridal paste instruction card.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
-                to="/products/mehndi-artist-kit"
+                to="/products/bridal-diy-kit"
                 className="inline-flex items-center gap-2 rounded-full bg-antique-gold px-6 py-3 text-sm font-semibold text-forest-green shadow-xs hover:bg-antique-gold/90 transition-colors"
               >
-                <span>Explore Artist Kit (₹399)</span>
+                <span>Explore Bridal DIY Kit (₹449)</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <span className="text-xs text-warm-ivory/80">
-                Freshly packed per order • Guaranteed rich stain
+                Freshly packed per order • Guaranteed rich stain • FREE Delivery
               </span>
             </div>
           </div>
