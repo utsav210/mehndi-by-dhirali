@@ -62,36 +62,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     created_at: '2026-10-26T00:00:00Z',
     updated_at: '2026-10-26T00:00:00Z',
   },
-  {
-    id: 'powder-anti-leak-50g',
-    name: '50 gram Anti leakage powder',
-    slug: '50-gram-anti-leakage-powder',
-    description:
-      'Specialized 50g organic anti-leakage formula powder. Mix with your henna paste to improve consistency, eliminate smudging, and prevent tip seepage for razor-sharp lines. Detailed step-by-step instruction card included.',
-    specifications: 'Weight: 50g | Purpose: Anti-leakage paste stabilizer | 100% Herbal & Organic | Instruction card included',
-    category_id: 'cat-mehndi-powder',
-    category_name: 'Mehndi Powder',
-    category_slug: 'mehndi-powder',
-    price_minor: 4900, // ₹49.00
-    compare_at_price_minor: 7900, // ₹79.00
-    stock_quantity: 100,
-    is_active: true,
-    is_featured: true,
-    sku: 'MBD-POWDER-ANTI-LEAK',
-    weight_grams: 50,
-    images: [
-      {
-        id: 'img-powder-anti-leak',
-        product_id: 'powder-anti-leak-50g',
-        url: '/images/products/50-gram-anti-leakage-powder.jpg',
-        alt_text: '50 gram Anti leakage powder',
-        sort_order: 1,
-        is_primary: true,
-      },
-    ],
-    created_at: '2026-10-30T00:00:00Z',
-    updated_at: '2026-10-30T00:00:00Z',
-  },
 
   // 2. Mehndi Oil
   {

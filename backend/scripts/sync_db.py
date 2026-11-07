@@ -191,19 +191,6 @@ PRODUCTS_CATALOGUE = [
         "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
         "image_url": "/images/products/mehndi-powder.png",
     },
-    {
-        "category_slug": "mehndi-powder",
-        "name": "50 gram Anti leakage powder",
-        "slug": "50-gram-anti-leakage-powder",
-        "price_minor": 4900,
-        "compare_at_price_minor": 7900,
-        "sku": "MBD-POWDER-ANTI-LEAK",
-        "stock_quantity": 100,
-        "weight_grams": 50,
-        "description": "Specialized 50g organic anti-leakage formula powder. Mix with your henna paste to improve consistency, eliminate smudging, and prevent tip seepage for razor-sharp lines. Detailed step-by-step instruction card included.",
-        "specifications": "Weight: 50g | Purpose: Anti-leakage paste stabilizer | 100% Herbal & Organic | Instruction card included",
-        "image_url": "/images/products/anti-leakage-powder.png",
-    },
     # Mehndi Oil
     {
         "category_slug": "mehndi-oil",
@@ -463,14 +450,14 @@ def sync_database(db_url: str, db_label: str) -> bool:
             # Build category slug map
             category_map = {c.slug: c for c in db.query(Category).all()}
 
-            # Deactivate removed old kits
-            deprecated_kits = ["trial-kit", "mehndi-artist-kit"]
-            for d_slug in deprecated_kits:
+            # Deactivate removed products (old kits & removed 50g anti leakage powder)
+            deprecated_products = ["trial-kit", "mehndi-artist-kit", "50-gram-anti-leakage-powder"]
+            for d_slug in deprecated_products:
                 old_k = db.query(Product).filter(Product.slug == d_slug).first()
                 if old_k:
                     old_k.is_active = False
                     old_k.is_featured = False
-                    print(f"  - Deactivated deprecated kit: {old_k.name} ({d_slug})")
+                    print(f"  - Deactivated product: {old_k.name} ({d_slug})")
             db.commit()
 
             synced_count = 0

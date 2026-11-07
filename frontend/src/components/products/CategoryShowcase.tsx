@@ -17,7 +17,7 @@ export const STORE_CATEGORIES: CategoryShowcaseItem[] = [
     name: 'Mehndi Powder',
     slug: 'mehndi-powder',
     image: '/images/products/100-gm-mehndi-powder.jpg',
-    itemCount: 3,
+    itemCount: 2,
     description: 'Triple-sifted organic Rajasthani Sojat powder',
   },
   {
@@ -82,7 +82,7 @@ export default function CategoryShowcase({
     name: 'All Categories',
     slug: 'all',
     image: '/images/products/pack-of-5-mehndi-cones.jpg',
-    itemCount: 17,
+    itemCount: 16,
     description: 'Explore our entire handcrafted henna collection',
   }
 

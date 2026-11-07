@@ -105,9 +105,9 @@ def seed_initial_products():
         if not cones_cat and not powder_cat and not oil_cat and not kits_cat and not acc_cat:
             return
 
-        # Deactivate old kits if present
-        old_kit_slugs = ["trial-kit", "mehndi-artist-kit"]
-        for old_slug in old_kit_slugs:
+        # Deactivate removed products if present
+        deactivated_slugs = ["trial-kit", "mehndi-artist-kit", "50-gram-anti-leakage-powder"]
+        for old_slug in deactivated_slugs:
             old_prod = db.query(Product).filter(Product.slug == old_slug).first()
             if old_prod:
                 old_prod.is_active = False
@@ -220,19 +220,6 @@ def seed_initial_products():
                 "description": "100% natural, triple-cloth sifted micro-fine organic Rajasthani Sojat henna powder (200g). High-potency Lawsonia inermis powder ideal for mixing silky, elastic bridal henna paste or full herbal hair conditioning. Detailed step-by-step instruction card included.",
                 "specifications": "Weight: 200g | Origin: Sojat, Rajasthan | Grade: Triple-cloth sifted (Micro-fine) | 100% Organic | Instruction card included",
                 "image_url": "/images/products/200-gm-mehndi-powder.jpg",
-            },
-            {
-                "category_id": powder_cat.id if powder_cat else None,
-                "name": "50 gram Anti leakage powder",
-                "slug": "50-gram-anti-leakage-powder",
-                "price_minor": 4900,  # ₹49.00
-                "compare_at_price_minor": 7900,  # ₹79.00
-                "sku": "MBD-POWDER-ANTI-LEAK",
-                "stock_quantity": 100,
-                "weight_grams": 50,
-                "description": "Specialized 50g organic anti-leakage formula powder. Mix with your henna paste to improve consistency, eliminate smudging, and prevent tip seepage for razor-sharp lines. Detailed step-by-step instruction card included.",
-                "specifications": "Weight: 50g | Purpose: Anti-leakage paste stabilizer | 100% Herbal & Organic | Instruction card included",
-                "image_url": "/images/products/50-gram-anti-leakage-powder.jpg",
             },
             # Mehndi Oil
             {

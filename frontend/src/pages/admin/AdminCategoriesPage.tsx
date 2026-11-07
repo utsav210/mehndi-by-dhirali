@@ -12,7 +12,7 @@ interface CategoryItem {
 }
 
 const DEFAULT_CATEGORIES: CategoryItem[] = [
-  { id: '1', name: 'Mehndi Powder', slug: 'mehndi-powder', description: 'Triple-sifted 100% natural Sojat henna powder', itemsCount: 3 },
+  { id: '1', name: 'Mehndi Powder', slug: 'mehndi-powder', description: 'Triple-sifted 100% natural Sojat henna powder', itemsCount: 2 },
   { id: '2', name: 'Mehndi Oil', slug: 'mehndi-oil', description: 'Pure eucalyptus and essential herbal oil blends', itemsCount: 1 },
   { id: '3', name: 'Mehndi Cones', slug: 'mehndi-cones', description: 'Freshly mixed organic henna cones', itemsCount: 6 },
   { id: '4', name: 'Bridal & Student Kits', slug: 'mehndi-kits', description: 'Complete bridal and professional student DIY kits', itemsCount: 3 },
