@@ -1,17 +1,13 @@
 import { cn } from '@/lib/utils'
 
-const RUNNING_ITEMS = [
-  'For Every Occasion, Make It Special',
-  'Finest Quality Mehndi Cones',
-  'Natural Ingredients',
-  'Hygienic & Skin Friendly',
-  'Made with Love',
-  'Trusted by Mehndi Lovers',
-  '100% Organic Rajasthani Sojat Henna',
-  'Chemical, Ammonia & PPD Free',
-  'Rich Dark Mahogany Stain Guarantee',
-  'Doorstep Dispatch Across India',
+const BASE_ITEMS = [
+  'FREE GIFT ON EVERY PURCHASE',
+  'FIRST 12 CUSTOMERS ONLY',
+  'SHOP NOW & GET A SURPRISE!',
 ]
+
+// Repeat to ensure continuous seamless loop across all viewport widths
+const RUNNING_ITEMS = [...BASE_ITEMS, ...BASE_ITEMS, ...BASE_ITEMS, ...BASE_ITEMS]
 
 interface ContinuousRunningLineProps {
   className?: string
