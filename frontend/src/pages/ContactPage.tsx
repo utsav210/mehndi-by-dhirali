@@ -101,10 +101,10 @@ export default function ContactPage() {
                 <div>
                   <span className="block font-semibold text-warm-ivory">Address</span>
                   <p className="text-warm-ivory/80">
-                    Mehndi By Dhirali, 123 Heritage Lane, Near Central Park, Jaipur, Rajasthan 302001
+                    Mehndi By Dhirali, 38, Ambalalpark Society, near Uma Hospital, Nava Naroda, Ahmedabad, Gujarat, India - 382330
                   </p>
                   <a
-                    href="https://maps.google.com"
+                    href="https://maps.google.com/?q=38,+Ambalalpark+Society,+near+Uma+Hospital,+Nava+Naroda,+Ahmedabad,+Gujarat+382330"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 text-[11px] text-antique-gold hover:underline mt-1 font-medium"

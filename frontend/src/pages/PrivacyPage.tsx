@@ -87,7 +87,7 @@ export default function PrivacyPage() {
             <p className="font-medium text-bottle-green">
               Grievance Officer: Customer Support Desk<br />
               Email: privacy@mehndibydhirali.com<br />
-              Jaipur, Rajasthan, India
+              Ahmedabad, Gujarat, India - 382330
             </p>
           </section>
         </div>

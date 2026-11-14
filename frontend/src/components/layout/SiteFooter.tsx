@@ -214,14 +214,14 @@ export function SiteFooter() {
               </li>
               <li>
                 <a
-                  href="https://maps.google.com"
+                  href="https://maps.google.com/?q=38,+Ambalalpark+Society,+near+Uma+Hospital,+Nava+Naroda,+Ahmedabad,+Gujarat+382330"
                   target="_blank"
                   rel="noreferrer"
                   className="text-warm-ivory/80 flex items-start gap-2.5 text-xs transition-colors hover:text-white group"
                 >
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-antique-gold" />
                   <span>
-                    Mehndi By Dhirali, 123 Heritage Lane, Near Central Park, Jaipur, Rajasthan 302001
+                    Mehndi By Dhirali, 38, Ambalalpark Society, near Uma Hospital, Nava Naroda, Ahmedabad, Gujarat, India - 382330
                   </span>
                 </a>
               </li>
@@ -264,7 +264,7 @@ export function SiteFooter() {
           </p>
 
           <p className="text-warm-ivory/40 text-xs">
-            Crafted with passion in Rajasthan, India
+            Crafted with passion in Gujarat, India
           </p>
         </div>
       </div>
