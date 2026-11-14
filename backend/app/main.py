@@ -457,11 +457,42 @@ def ensure_order_tracking_columns():
             for col_name, col_type in new_cols:
                 if col_name not in existing:
                     conn.execute(text(f"ALTER TABLE orders ADD COLUMN {col_name} {col_type};"))
-            if "addresses" in insp.get_table_names() and not is_sqlite:
-                try:
-                    conn.execute(text("ALTER TABLE addresses ALTER COLUMN user_id DROP NOT NULL;"))
-                except Exception:
-                    pass
+            if "addresses" in insp.get_table_names():
+                if not is_sqlite:
+                    try:
+                        conn.execute(text("ALTER TABLE addresses ALTER COLUMN user_id DROP NOT NULL;"))
+                    except Exception:
+                        pass
+                else:
+                    try:
+                        addr_cols = insp.get_columns("addresses")
+                        uid_col = next((c for c in addr_cols if c["name"] == "user_id"), None)
+                        if uid_col and not uid_col.get("nullable", True):
+                            conn.execute(text("PRAGMA foreign_keys = OFF;"))
+                            conn.execute(text("CREATE TABLE addresses_dg_tmp AS SELECT * FROM addresses;"))
+                            conn.execute(text("DROP TABLE addresses;"))
+                            conn.execute(text("""CREATE TABLE addresses (
+                                user_id VARCHAR(36),
+                                label VARCHAR(50) NOT NULL DEFAULT 'Home',
+                                full_name VARCHAR(100) NOT NULL,
+                                phone VARCHAR(20) NOT NULL,
+                                address_line_1 VARCHAR(255) NOT NULL,
+                                address_line_2 VARCHAR(255),
+                                city VARCHAR(100) NOT NULL,
+                                state VARCHAR(100) NOT NULL,
+                                postal_code VARCHAR(20) NOT NULL,
+                                country VARCHAR(100) NOT NULL DEFAULT 'India',
+                                is_default BOOLEAN NOT NULL DEFAULT 0,
+                                id VARCHAR(36) NOT NULL PRIMARY KEY,
+                                created_at DATETIME NOT NULL,
+                                updated_at DATETIME NOT NULL,
+                                FOREIGN KEY(user_id) REFERENCES users (id)
+                            );"""))
+                            conn.execute(text("INSERT INTO addresses SELECT * FROM addresses_dg_tmp;"))
+                            conn.execute(text("DROP TABLE addresses_dg_tmp;"))
+                            conn.execute(text("PRAGMA foreign_keys = ON;"))
+                    except Exception as sqle:
+                        logger.warning("SQLite address migration error", error=str(sqle))
             conn.commit()
     except Exception as e:
         logger.warning("Order tracking columns check skipped", error=str(e))

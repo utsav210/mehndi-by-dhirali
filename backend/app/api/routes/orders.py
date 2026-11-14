@@ -22,6 +22,9 @@ from app.schemas.order import (
     OrderItemResponse,
 )
 from app.integrations.razorpay.client import razorpay_client
+import structlog
+
+logger = structlog.get_logger(__name__)
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -182,7 +185,7 @@ def create_order(
 
     db.commit()
     db.refresh(new_order)
-    setattr(new_order, "razorpay_key_id", (settings.RAZORPAY_KEY_ID or "").strip().strip('"').strip("'"))
+    setattr(new_order, "razorpay_key_id", (razorpay_client.key_id or "").strip())
 
     return new_order
 
