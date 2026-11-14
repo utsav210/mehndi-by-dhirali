@@ -80,7 +80,7 @@ export default function RegisterPage() {
         <div className="rounded-3xl border border-subtle-border bg-white p-8 shadow-card">
           <div className="text-center mb-8">
             <span className="text-xs font-semibold uppercase tracking-widest text-antique-gold">
-              Join Our Boutique
+              Join Our Stock
             </span>
             <h1 className="font-serif text-3xl font-bold text-bottle-green mt-1">
               Create an Account

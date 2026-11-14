@@ -124,7 +124,7 @@ export default function AdminDashboardPage() {
             </div>
             <p className="font-serif text-2xl font-bold text-bottle-green mt-2">{stats.total_products}</p>
             <span className="text-[10px] text-secondary-text mt-1 block">
-              Active across boutique collections
+              Active across stock collections
             </span>
           </div>
 

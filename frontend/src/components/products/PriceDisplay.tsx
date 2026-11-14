@@ -32,7 +32,7 @@ export default function PriceDisplay({
 
   return (
     <div className={cn('flex flex-wrap items-center gap-2', className)}>
-      {/* Original price (strikethrough) — placed first to match boutique price showcase */}
+      {/* Original price (strikethrough) — placed first to match stock price showcase */}
       {isOnSale && (
         <span
           className={cn(

@@ -17,7 +17,7 @@ export default function SpecialOffers({ className }: { className?: string }) {
               Bridal DIY Kit + FREE Shipping
             </h2>
             <p className="mt-4 text-warm-ivory/90 text-sm sm:text-base leading-relaxed">
-              Curated especially for brides and boutique artists. Includes 200g triple-sifted henna powder, 100ml dark stain essential oil, 2x 0.38mm precision pins, 2 small piping bags, 20 transparent 20-micron sheets, 2 pre-rolled cones, stocking strainer, and bridal paste instruction card.
+              Curated especially for brides and stock artists. Includes 200g triple-sifted henna powder, 100ml dark stain essential oil, 2x 0.38mm precision pins, 2 small piping bags, 20 transparent 20-micron sheets, 2 pre-rolled cones, stocking strainer, and bridal paste instruction card.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
