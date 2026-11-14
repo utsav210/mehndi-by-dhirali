@@ -205,7 +205,7 @@ def get_user_orders(
 
 
 def generate_order_timeline(order: Order) -> List[TrackingTimelineStep]:
-    """Generates sequential tracking steps matching stock fulfillment."""
+    """Generates sequential tracking steps matching store fulfillment."""
     stages = [
         ("confirmed", "Order Confirmed", "Payment verified and order scheduled for fresh batch preparation."),
         ("processing", "Fresh Batch Prep", "Artisanal organic Sojat henna paste mixed and fresh cones rolled."),

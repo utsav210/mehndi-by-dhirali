@@ -24,7 +24,7 @@ logger = structlog.get_logger(__name__)
 
 
 def seed_initial_categories():
-    """Seeds default stock categories and cleans up removed categories."""
+    """Seeds default store categories and cleans up removed categories."""
     db = SessionLocal()
     try:
         # Clean up deprecated categories if present
@@ -499,7 +499,7 @@ def ensure_order_tracking_columns():
 
 
 def seed_initial_admin():
-    """Seeds default stock admin user if not present or ensures admin role is active."""
+    """Seeds default store admin user if not present or ensures admin role is active."""
     db = SessionLocal()
     try:
         admin_email = (os.getenv("ADMIN_EMAIL") or settings.ADMIN_EMAIL or "adminmehndibydhirali@gmail.com").lower().strip()

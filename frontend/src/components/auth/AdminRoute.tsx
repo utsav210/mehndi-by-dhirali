@@ -68,7 +68,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
             Admin Console Verification
           </h1>
           <p className="mt-2 text-xs text-secondary-text leading-relaxed">
-            This module requires administrative clearance to view and manage stock orders, product inventory, and prices.
+            This module requires administrative clearance to view and manage customer orders, product inventory, and prices.
           </p>
 
           <form onSubmit={handleAdminSignIn} className="mt-8 space-y-4 text-left">

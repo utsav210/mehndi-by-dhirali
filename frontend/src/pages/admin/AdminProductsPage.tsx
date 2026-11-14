@@ -294,7 +294,7 @@ export default function AdminProductsPage() {
                 </span>
               </div>
               <p className="text-xs text-warm-ivory/70">
-                Securely create, edit, activate, price, and maintain stock inventory
+                Securely create, edit, activate, price, and maintain store catalog & inventory
               </p>
             </div>
           </div>
@@ -578,7 +578,7 @@ export default function AdminProductsPage() {
             <div className="flex items-center justify-between pb-4 border-b border-subtle-border mb-6">
               <div>
                 <h3 className="font-serif text-xl font-bold text-bottle-green">
-                  {editingProduct ? 'Edit Stock Product' : 'Add New Stock Product'}
+                  {editingProduct ? 'Edit Product Details' : 'Add New Product'}
                 </h3>
                 <p className="text-xs text-secondary-text">
                   Configure pricing, inventory, categories, and photography
