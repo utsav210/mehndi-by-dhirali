@@ -502,7 +502,7 @@ def seed_initial_admin():
     """Seeds default boutique admin user if not present or ensures admin role is active."""
     db = SessionLocal()
     try:
-        admin_email = (settings.ADMIN_EMAIL or "admin@mehndibydhirali.com").lower().strip()
+        admin_email = (os.getenv("ADMIN_EMAIL") or settings.ADMIN_EMAIL or "adminmehndibydhirali@gmail.com").lower().strip()
         existing = db.query(User).filter(User.email == admin_email).first()
         admin_pw = settings.ADMIN_PASSWORD or os.environ.get("ADMIN_PASSWORD")
         if not existing and admin_pw:
@@ -510,7 +510,7 @@ def seed_initial_admin():
                 email=admin_email,
                 password_hash=hash_password(admin_pw),
                 first_name=settings.ADMIN_FIRST_NAME or "Admin",
-                last_name=settings.ADMIN_LAST_NAME or "Doe",
+                last_name=settings.ADMIN_LAST_NAME or "Dhirali",
                 phone="+919876543210",
                 role="admin",
                 is_active=True,
@@ -522,8 +522,10 @@ def seed_initial_admin():
             if existing.role != "admin" or not existing.is_active:
                 existing.role = "admin"
                 existing.is_active = True
-                db.commit()
-                logger.info("Elevated existing user to administrator", email=admin_email)
+            if admin_pw:
+                existing.password_hash = hash_password(admin_pw)
+            db.commit()
+            logger.info("Elevated existing user to administrator", email=admin_email)
     except Exception as e:
         logger.warning("Admin seeding skipped or failed", error=str(e))
     finally:

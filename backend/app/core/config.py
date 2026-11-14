@@ -96,10 +96,10 @@ class Settings(BaseSettings):
         return str(raw).strip().strip("'\"")
 
     # Admin Credentials (configured via environment / .env)
-    ADMIN_EMAIL: str = "admin@mehndibydhirali.com"
+    ADMIN_EMAIL: str = "adminmehndibydhirali@gmail.com"
     ADMIN_PASSWORD: str = ""
     ADMIN_FIRST_NAME: str = "Admin"
-    ADMIN_LAST_NAME: str = "Doe"
+    ADMIN_LAST_NAME: str = "Dhirali"
 
     # Razorpay (Test / Production Mode - configured via environment / .env)
     RAZORPAY_KEY_ID: str = ""
