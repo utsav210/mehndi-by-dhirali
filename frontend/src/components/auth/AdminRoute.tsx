@@ -15,7 +15,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
   const login = useAuthStore((s) => s.login)
 
   // Quick inline login form state for administrators
-  const [email, setEmail] = useState('admin@mehndibydhirali.com')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -81,7 +81,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@mehndibydhirali.com"
+                placeholder="admin@example.com"
                 className="w-full rounded-xl border border-subtle-border px-3.5 py-2.5 text-sm text-primary-text focus:border-bottle-green focus:outline-none bg-warm-ivory/20"
               />
             </div>

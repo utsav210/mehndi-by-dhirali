@@ -30,9 +30,13 @@ export default function LoginPage() {
 
     setIsLoading(true)
     try {
-      await login(email, password)
+      const loggedUser = await login(email, password)
       toast.success('Welcome back!')
-      navigate('/account')
+      if (loggedUser?.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/account')
+      }
     } catch (err: any) {
       // In development / demo when backend API isn't connected yet, provide simulated login
       useAuthStore.getState().setUser({

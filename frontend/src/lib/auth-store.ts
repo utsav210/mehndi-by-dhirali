@@ -8,7 +8,7 @@ interface AuthState {
   isAuthenticated: boolean
 
   // Actions
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string) => Promise<User>
   register: (data: RegisterData) => Promise<void>
   logout: () => Promise<void>
   fetchUser: () => Promise<void>
@@ -31,6 +31,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
   login: async (email: string, password: string) => {
     const user = await apiClient.post<User>('/auth/login', { email, password })
     set({ user, isAuthenticated: true, isLoading: false })
+    return user
   },
 
   register: async (data: RegisterData) => {
