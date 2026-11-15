@@ -452,11 +452,23 @@ def ensure_order_tracking_columns():
             ("tracking_notes", "TEXT"),
             ("payment_method", "VARCHAR(30) DEFAULT 'prepaid'"),
             ("cod_fee_minor", "INTEGER DEFAULT 0"),
+            ("payment_status", "VARCHAR(30) DEFAULT 'pending'"),
         ]
         with engine.connect() as conn:
             for col_name, col_type in new_cols:
                 if col_name not in existing:
                     conn.execute(text(f"ALTER TABLE orders ADD COLUMN {col_name} {col_type};"))
+            # Synchronize historical order status and payment status in database
+            try:
+                # 1. Update any 'paid' order status to 'confirmed'
+                conn.execute(text("UPDATE orders SET status = 'confirmed' WHERE status = 'paid';"))
+                # 2. Update completed online payment orders to payment_status = 'succeeded'
+                conn.execute(text("UPDATE orders SET payment_status = 'succeeded' WHERE (payment_status IS NULL OR payment_status = '' OR payment_status = 'pending' OR payment_status = 'paid') AND (payment_method != 'cod' OR payment_method IS NULL) AND status IN ('confirmed', 'processing', 'shipped', 'in_transit', 'out_for_delivery', 'delivered');"))
+                # 3. Update COD orders: 'succeeded' if delivered, 'pending' otherwise
+                conn.execute(text("UPDATE orders SET payment_status = 'succeeded' WHERE LOWER(payment_method) = 'cod' AND status = 'delivered';"))
+                conn.execute(text("UPDATE orders SET payment_status = 'pending' WHERE (payment_status IS NULL OR payment_status = '') AND LOWER(payment_method) = 'cod';"))
+            except Exception as bfe:
+                logger.warning("Order payment status synchronization notice", error=str(bfe))
             if "addresses" in insp.get_table_names():
                 if not is_sqlite:
                     try:

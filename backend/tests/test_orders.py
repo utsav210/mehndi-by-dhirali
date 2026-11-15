@@ -102,6 +102,7 @@ def test_create_order_cash_on_delivery(client, admin_headers):
     assert data["total_minor"] == 9900 + 8000 + 3000  # 20900 (₹209)
     assert data["payment_method"] == "cod"
     assert data["status"] == "confirmed"
+    assert data["payment_status"] == "pending"
     assert data["razorpay_order_id"] is None
 
 

@@ -217,7 +217,7 @@ export default function CheckoutPage() {
         clearCart()
         toast.success('Prepaid order placed in simulation mode!')
         navigate(
-          `/payment/result?status=success&method=prepaid&order_number=${createdOrder.order_number}&payment_id=mock_pay_${Date.now()}&payment_status=paid`
+          `/payment/result?status=success&method=prepaid&order_number=${createdOrder.order_number}&payment_id=mock_pay_${Date.now()}&payment_status=succeeded`
         )
         return
       }
@@ -266,7 +266,7 @@ export default function CheckoutPage() {
           clearCart()
           toast.success('Payment completed successfully!')
           navigate(
-            `/payment/result?status=success&method=prepaid&order_number=${createdOrder.order_number}&payment_id=${response.razorpay_payment_id || 'pay_online'}&payment_status=paid`
+            `/payment/result?status=success&method=prepaid&order_number=${createdOrder.order_number}&payment_id=${response.razorpay_payment_id || 'pay_online'}&payment_status=succeeded`
           )
         },
         prefill: {

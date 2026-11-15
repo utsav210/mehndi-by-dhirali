@@ -29,12 +29,12 @@ def verify_payment(
         )
 
     # 2. Check if already marked as paid (idempotency guard)
-    if order.status in ["paid", "processing", "shipped", "delivered"]:
+    if order.status in ["confirmed", "paid", "processing", "shipped", "delivered"] and order.payment_status == "succeeded":
         return PaymentVerifyResponse(
             success=True,
             order_id=order.id,
             order_number=order.order_number,
-            payment_status=order.status,
+            payment_status=order.payment_status or "succeeded",
             message="Payment already verified.",
         )
 
@@ -47,6 +47,7 @@ def verify_payment(
 
     if not is_valid:
         order.status = "payment_failed"
+        order.payment_status = "failed"
         db.commit()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -72,8 +73,9 @@ def verify_payment(
             if product:
                 product.stock_quantity = max(0, product.stock_quantity - item.quantity)
 
-    # 6. Update order status to paid
-    order.status = "paid"
+    # 6. Update order status to confirmed and payment status to succeeded
+    order.status = "confirmed"
+    order.payment_status = "succeeded"
     db.commit()
     db.refresh(order)
 
@@ -81,7 +83,7 @@ def verify_payment(
         success=True,
         order_id=order.id,
         order_number=order.order_number,
-        payment_status="paid",
+        payment_status="succeeded",
         message="Payment verified successfully. Order confirmed.",
     )
 
@@ -128,8 +130,10 @@ async def razorpay_webhook(
 
         if rzp_order_id:
             order = db.query(Order).filter(Order.razorpay_order_id == rzp_order_id).first()
-            if order and order.status == "pending_payment":
-                order.status = "paid"
+            if order:
+                if order.status in ("pending_payment", "paid"):
+                    order.status = "confirmed"
+                order.payment_status = "succeeded"
                 # Record payment if not already present
                 existing_payment = db.query(Payment).filter(Payment.razorpay_payment_id == rzp_payment_id).first()
                 if not existing_payment:

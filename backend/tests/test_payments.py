@@ -38,7 +38,7 @@ def test_verify_payment_transitions_order_to_paid(client, admin_headers):
     })
     assert verify_res.status_code == 200
     assert verify_res.json()["success"] is True
-    assert verify_res.json()["payment_status"] == "paid"
+    assert verify_res.json()["payment_status"] == "succeeded"
 
     # 3. Repeated verification check (idempotency: does not fail, stays paid)
     repeat_res = client.post("/api/payments/verify", json={
@@ -49,6 +49,12 @@ def test_verify_payment_transitions_order_to_paid(client, admin_headers):
     assert repeat_res.status_code == 200
     assert repeat_res.json()["success"] is True
     assert "already verified" in repeat_res.json()["message"].lower()
+
+    # 4. Verify order status is confirmed and payment status is succeeded
+    track_res = client.get(f"/api/orders/track?order_number={order['order_number']}&email_or_phone=test@example.com")
+    assert track_res.status_code == 200
+    assert track_res.json()["status"] == "confirmed"
+    assert track_res.json()["payment_status"] == "succeeded"
 
 
 def test_verify_nonexistent_order_fails(client):

@@ -145,6 +145,7 @@ def create_order(
             )
             rzp_order_id = rzp_order.get("id")
             initial_status = "pending_payment"
+            initial_payment_status = "pending"
         except Exception as rzp_err:
             logger.error("Razorpay order creation failed", error=str(rzp_err))
             raise HTTPException(
@@ -153,6 +154,7 @@ def create_order(
             )
     else:
         initial_status = "confirmed"
+        initial_payment_status = "pending"
 
     # 7. Create local order record
     new_order = Order(
@@ -160,6 +162,7 @@ def create_order(
         user_id=current_user.id if current_user else None,
         shipping_address_id=shipping_addr.id,
         status=initial_status,
+        payment_status=initial_payment_status,
         subtotal_minor=subtotal_minor,
         shipping_minor=shipping_minor,
         cod_fee_minor=cod_fee_minor,

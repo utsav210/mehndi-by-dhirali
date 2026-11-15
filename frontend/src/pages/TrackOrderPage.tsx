@@ -393,7 +393,21 @@ export default function TrackOrderPage() {
                   <div className="flex justify-between items-center pb-2 border-b border-subtle-border">
                     <span className="text-secondary-text">Payment Status</span>
                     <span className="font-semibold text-charcoal">
-                      {trackingData.payment_status || (trackingData.payment_method === 'cod' ? 'Pending COD Collection' : 'Paid in Full')}
+                      {(() => {
+                        const raw = (trackingData.payment_status || (trackingData.payment_method === 'cod' ? 'pending' : 'succeeded')).toLowerCase()
+                        if (raw.includes('success') || raw.includes('paid') || raw.includes('captured')) {
+                          return (
+                            <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 text-xs">
+                              <CheckCircle2 className="h-3 w-3" /> Succeeded
+                            </span>
+                          )
+                        }
+                        return (
+                          <span className="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 text-xs">
+                            <Banknote className="h-3 w-3" /> Pending
+                          </span>
+                        )
+                      })()}
                     </span>
                   </div>
 

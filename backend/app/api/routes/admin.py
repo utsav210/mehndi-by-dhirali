@@ -31,9 +31,9 @@ def get_dashboard_stats(
     db: Session = Depends(get_db),
 ):
     total_orders = db.query(Order).count()
-    paid_orders = db.query(Order).filter(Order.status == "paid").count()
+    paid_orders = db.query(Order).filter(Order.status.in_(["confirmed", "paid"])).count()
     total_revenue_minor = sum(
-        o.total_minor for o in db.query(Order).filter(Order.status.in_(["paid", "processing", "shipped", "delivered"])).all()
+        o.total_minor for o in db.query(Order).filter(Order.status.in_(["confirmed", "paid", "processing", "shipped", "delivered"])).all()
     )
     total_products = db.query(Product).count()
     total_categories = db.query(Category).count()
@@ -439,8 +439,12 @@ def admin_update_order_status(
     order.status = new_status
     if new_status in ["shipped", "in_transit", "out_for_delivery"] and not order.shipped_at:
         order.shipped_at = datetime.now(timezone.utc)
-    elif new_status == "delivered" and not order.delivered_at:
-        order.delivered_at = datetime.now(timezone.utc)
+    elif new_status == "delivered":
+        if not order.delivered_at:
+            order.delivered_at = datetime.now(timezone.utc)
+        # COD is collected upon delivery, so payment status transitions to succeeded
+        if (order.payment_method or "").lower() == "cod":
+            order.payment_status = "succeeded"
 
     audit = AuditLog(
         user_id=admin.id,

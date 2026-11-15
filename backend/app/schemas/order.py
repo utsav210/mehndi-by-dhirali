@@ -4,7 +4,7 @@ Calculations are always server-authoritative.
 """
 from typing import List, Optional
 from datetime import datetime
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, model_validator
 from app.schemas.address import AddressResponse
 
 
@@ -86,6 +86,24 @@ class OrderResponse(BaseModel):
     destination_city: Optional[str] = None
     shipping_address: Optional[AddressResponse] = None
     notes: Optional[str] = None
+
+    @model_validator(mode="after")
+    def ensure_tracking_payment_status(self):
+        if not self.payment_status:
+            method = (self.payment_method or "").lower()
+            if method == "cod":
+                self.payment_status = "succeeded" if self.status == "delivered" else "pending"
+            elif self.status in ("confirmed", "paid", "processing", "shipped", "in_transit", "out_for_delivery", "delivered"):
+                self.payment_status = "succeeded"
+            else:
+                self.payment_status = "pending"
+        else:
+            v = str(self.payment_status).strip().lower()
+            if v in ("paid", "succeeded", "success", "captured"):
+                self.payment_status = "succeeded"
+            elif v in ("pending", "pending_payment"):
+                self.payment_status = "pending"
+        return self
     payments: List[PaymentResponse] = []
     # Fulfillment & Tracking fields
     tracking_number: Optional[str] = None
@@ -98,6 +116,24 @@ class OrderResponse(BaseModel):
     guest_name: Optional[str] = None
     guest_email: Optional[str] = None
     guest_phone: Optional[str] = None
+
+    @model_validator(mode="after")
+    def ensure_payment_status(self):
+        if not self.payment_status:
+            method = (self.payment_method or "").lower()
+            if method == "cod":
+                self.payment_status = "succeeded" if self.status == "delivered" else "pending"
+            elif self.status in ("confirmed", "paid", "processing", "shipped", "in_transit", "out_for_delivery", "delivered"):
+                self.payment_status = "succeeded"
+            else:
+                self.payment_status = "pending"
+        else:
+            v = str(self.payment_status).strip().lower()
+            if v in ("paid", "succeeded", "success", "captured"):
+                self.payment_status = "succeeded"
+            elif v in ("pending", "pending_payment"):
+                self.payment_status = "pending"
+        return self
 
     class Config:
         from_attributes = True
@@ -149,3 +185,21 @@ class OrderTrackingResponse(BaseModel):
     destination_state: Optional[str] = None
     shipping_address: Optional[AddressResponse] = None
     notes: Optional[str] = None
+
+    @model_validator(mode="after")
+    def ensure_tracking_payment_status(self):
+        if not self.payment_status:
+            method = (self.payment_method or "").lower()
+            if method == "cod":
+                self.payment_status = "succeeded" if self.status == "delivered" else "pending"
+            elif self.status in ("confirmed", "paid", "processing", "shipped", "in_transit", "out_for_delivery", "delivered"):
+                self.payment_status = "succeeded"
+            else:
+                self.payment_status = "pending"
+        else:
+            v = str(self.payment_status).strip().lower()
+            if v in ("paid", "succeeded", "success", "captured"):
+                self.payment_status = "succeeded"
+            elif v in ("pending", "pending_payment"):
+                self.payment_status = "pending"
+        return self

@@ -121,7 +121,9 @@ export default function AdminOrdersPage() {
 
   const filteredOrders = orders.filter((order) => {
     const matchesStatus =
-      statusFilter === 'all' || order.status === statusFilter
+      statusFilter === 'all' ||
+      order.status === statusFilter ||
+      ((statusFilter === 'confirmed' || statusFilter === 'paid') && (order.status === 'confirmed' || order.status === 'paid'))
 
     const q = searchQuery.toLowerCase().trim()
     if (!q) return matchesStatus
@@ -163,21 +165,21 @@ export default function AdminOrdersPage() {
   }
 
   const getPaymentStatusBadge = (order: Order) => {
-    const statusText = order.payment_status || (order.payment_method === 'cod' ? 'Pending (COD)' : 'Paid (Online)')
-    const isPaid = statusText.toLowerCase().includes('paid') || statusText.toLowerCase().includes('captured')
+    const raw = (order.payment_status || (order.payment_method === 'cod' ? 'pending' : 'succeeded')).toLowerCase()
+    const isSucceeded = raw.includes('success') || raw.includes('paid') || raw.includes('captured')
 
-    if (isPaid) {
+    if (isSucceeded) {
       return (
         <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 text-emerald-700 px-2.5 py-0.5 text-[11px] font-semibold border border-emerald-200">
           <CheckCircle2 className="h-3 w-3" />
-          {statusText}
+          Succeeded
         </span>
       )
     }
     return (
       <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 text-amber-700 px-2.5 py-0.5 text-[11px] font-semibold border border-amber-200">
         <Banknote className="h-3 w-3" />
-        {statusText}
+        Pending
       </span>
     )
   }
@@ -241,7 +243,7 @@ export default function AdminOrdersPage() {
               <Filter className="h-4 w-4 text-secondary-text shrink-0" />
               {[
                 { id: 'all', label: 'All Orders' },
-                { id: 'paid', label: 'Paid / Confirmed' },
+                { id: 'confirmed', label: 'Confirmed' },
                 { id: 'processing', label: 'Processing' },
                 { id: 'shipped', label: 'Shipped' },
                 { id: 'in_transit', label: 'In Transit' },
@@ -580,7 +582,7 @@ export default function AdminOrdersPage() {
                 <div className="rounded-2xl bg-warm-ivory/30 p-4 border border-subtle-border">
                   <h4 className="text-xs font-semibold uppercase tracking-wider text-bottle-green flex items-center gap-1.5 mb-3">
                     <MapPin className="h-4 w-4 text-antique-gold" />
-                    Delivery / Shipping Address (Taken During Checkout)
+                    Delivery / Shipping Address
                   </h4>
                   {selectedOrder.shipping_address ? (
                     <div className="text-xs space-y-1">
@@ -629,7 +631,21 @@ export default function AdminOrdersPage() {
                     <div>
                       <span className="text-secondary-text block">Payment Status</span>
                       <span className="font-semibold text-charcoal">
-                        {selectedOrder.payment_status || (selectedOrder.payment_method === 'cod' ? 'Pending COD Collection' : 'Paid')}
+                        {(() => {
+                          const raw = (selectedOrder.payment_status || (selectedOrder.payment_method === 'cod' ? 'pending' : 'succeeded')).toLowerCase()
+                          if (raw.includes('success') || raw.includes('paid') || raw.includes('captured')) {
+                            return (
+                              <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold text-xs">
+                                <CheckCircle2 className="h-3 w-3" /> Succeeded
+                              </span>
+                            )
+                          }
+                          return (
+                            <span className="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-semibold text-xs">
+                              <Banknote className="h-3 w-3" /> Pending
+                            </span>
+                          )
+                        })()}
                       </span>
                     </div>
 

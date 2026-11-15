@@ -555,6 +555,7 @@ def sync_database(db_url: str, db_label: str) -> bool:
                 ("tracking_notes", "TEXT"),
                 ("payment_method", "VARCHAR(30) DEFAULT 'prepaid'"),
                 ("cod_fee_minor", "INTEGER DEFAULT 0"),
+                ("payment_status", "VARCHAR(30) DEFAULT 'pending'"),
             ]
 
             with engine.connect() as conn:
@@ -564,6 +565,17 @@ def sync_database(db_url: str, db_label: str) -> bool:
                         conn.execute(text(f"ALTER TABLE orders ADD COLUMN {col_name} {col_type};"))
                     else:
                         print(f"  [OK] Column 'orders.{col_name}' already exists.")
+
+                # Synchronize historical order status and payment status
+                try:
+                    conn.execute(text("UPDATE orders SET status = 'confirmed' WHERE status = 'paid';"))
+                    conn.execute(text("UPDATE orders SET payment_status = 'succeeded' WHERE (payment_status IS NULL OR payment_status = '' OR payment_status = 'pending' OR payment_status = 'paid') AND (payment_method != 'cod' OR payment_method IS NULL) AND status IN ('confirmed', 'processing', 'shipped', 'in_transit', 'out_for_delivery', 'delivered');"))
+                    conn.execute(text("UPDATE orders SET payment_status = 'succeeded' WHERE LOWER(payment_method) = 'cod' AND status = 'delivered';"))
+                    conn.execute(text("UPDATE orders SET payment_status = 'pending' WHERE (payment_status IS NULL OR payment_status = '') AND LOWER(payment_method) = 'cod';"))
+                    conn.commit()
+                    print("  [OK] Order status and payment status synchronized in database.")
+                except Exception as bfe:
+                    print(f"  [Notice] Status synchronization: {bfe}")
                 # Ensure addresses.user_id is nullable for guest checkout
                 if "addresses" in insp.get_table_names():
                     if not is_sqlite:

@@ -4,7 +4,7 @@ All monetary totals are stored in integer minor units (paise).
 Historical product name, SKU, and unit price are snapshotted to preserve invoicing integrity.
 """
 from sqlalchemy import Column, String, Integer, ForeignKey, Text, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, validates
 from app.db.base import Base, UUIDMixin, TimestampMixin
 
 
@@ -27,6 +27,20 @@ class Order(Base, UUIDMixin, TimestampMixin):
     total_minor = Column(Integer, nullable=False)
     currency = Column(String(10), default="INR", nullable=False)
     payment_method = Column(String(30), default="prepaid", nullable=True)
+
+    # Synchronized payment status column ('pending' or 'succeeded')
+    payment_status = Column(String(30), default="pending", nullable=True)
+
+    @validates("payment_status")
+    def validate_payment_status(self, key, value):
+        if value:
+            v_lower = str(value).strip().lower()
+            if v_lower in ("paid", "succeeded", "success", "captured"):
+                return "succeeded"
+            if v_lower in ("pending", "pending_payment"):
+                return "pending"
+            return v_lower
+        return "pending"
 
     # Razorpay tracking
     razorpay_order_id = Column(String(100), unique=True, index=True, nullable=True)
@@ -85,27 +99,6 @@ class Order(Base, UUIDMixin, TimestampMixin):
         if self.shipping_address and self.shipping_address.city:
             return self.shipping_address.city
         return ""
-
-    @property
-    def payment_status(self) -> str:
-        """Returns formatted payment status."""
-        if self.payments:
-            for p in self.payments:
-                if p.status == "captured":
-                    return "Paid (Captured)"
-                elif p.status == "failed":
-                    return "Payment Failed"
-        if (self.payment_method or "").lower() == "cod":
-            if self.status == "delivered":
-                return "Paid (COD Delivered)"
-            return "Pending (Cash on Delivery)"
-        if self.status in ("paid", "confirmed", "processing", "shipped", "in_transit", "out_for_delivery", "delivered"):
-            return "Paid (Online)"
-        if self.status == "payment_failed":
-            return "Failed"
-        if self.status == "cancelled":
-            return "Cancelled"
-        return "Pending Payment"
 
 
 class OrderItem(Base, UUIDMixin):

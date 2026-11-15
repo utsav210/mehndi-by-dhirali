@@ -46,11 +46,11 @@ export default function PaymentResultPage() {
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
                       <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                      Order Placed
+                      Order Confirmed
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200">
                       <Clock className="h-3 w-3 text-amber-600" />
-                      Payment: {isPaymentPending ? 'Pending (Pay on Delivery)' : 'Paid'}
+                      Payment: Pending (Pay on Delivery)
                     </span>
                   </div>
 
@@ -63,7 +63,7 @@ export default function PaymentResultPage() {
                     )}
                     <div className="flex justify-between">
                       <span className="text-secondary-text">Order Status:</span>
-                      <span className="font-semibold text-bottle-green">Confirmed / Order Placed</span>
+                      <span className="font-semibold text-bottle-green">Confirmed</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-secondary-text">Payment Method:</span>
@@ -76,7 +76,7 @@ export default function PaymentResultPage() {
                           ? 'text-amber-700 bg-amber-100/70'
                           : 'text-emerald-700 bg-emerald-100/70'
                       }`}>
-                        {isPaymentPending ? 'Payment Pending' : 'Paid & Verified'}
+                        {isPaymentPending ? 'Pending' : 'Succeeded'}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -103,7 +103,11 @@ export default function PaymentResultPage() {
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
                       <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-                      Order Placed &amp; Paid
+                      Order Confirmed
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                      <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                      Payment: Succeeded
                     </span>
                   </div>
 
@@ -127,7 +131,7 @@ export default function PaymentResultPage() {
                     <div className="flex justify-between">
                       <span className="text-secondary-text">Payment Status:</span>
                       <span className="font-semibold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded text-[11px]">
-                        Paid &amp; Verified
+                        Succeeded
                       </span>
                     </div>
                     <div className="flex justify-between">
