@@ -67,7 +67,7 @@ export interface User {
 
 export interface Address {
   id: string
-  user_id: string
+  user_id?: string | null
   label: string
   full_name: string
   phone: string
@@ -78,12 +78,25 @@ export interface Address {
   postal_code: string
   country: string
   is_default: boolean
+  created_at?: string
+  updated_at?: string
+}
+
+export interface Payment {
+  id: string
+  razorpay_payment_id?: string | null
+  razorpay_order_id?: string | null
+  status: string
+  amount_minor: number
+  currency: string
+  method?: string | null
+  created_at?: string | null
 }
 
 export interface Order {
   id: string
   order_number: string
-  user_id: string
+  user_id?: string | null
   status: OrderStatus
   subtotal_minor: number
   shipping_minor: number
@@ -92,7 +105,14 @@ export interface Order {
   total_minor: number
   currency: string
   payment_method?: string | null
-  shipping_address: Address
+  payment_status?: string | null
+  customer_name?: string | null
+  customer_email?: string | null
+  customer_phone?: string | null
+  destination_city?: string | null
+  shipping_address?: Address | null
+  notes?: string | null
+  payments?: Payment[]
   items: OrderItem[]
   razorpay_order_id: string | null
   razorpay_key_id?: string | null
@@ -103,8 +123,11 @@ export interface Order {
   shipped_at?: string | null
   delivered_at?: string | null
   tracking_notes?: string | null
+  guest_name?: string | null
+  guest_email?: string | null
+  guest_phone?: string | null
   created_at: string
-  updated_at: string
+  updated_at?: string
 }
 
 export type OrderStatus =
@@ -137,15 +160,24 @@ export interface OrderTrackingResponse {
   tracking_url: string | null
   status: string
   status_label: string
+  payment_method?: string | null
+  payment_status?: string | null
+  subtotal_minor?: number | null
+  shipping_minor?: number | null
+  cod_fee_minor?: number | null
+  discount_minor?: number | null
+  total_minor: number
+  currency: string
   estimated_delivery: string | null
   shipped_at: string | null
   delivered_at: string | null
   tracking_notes: string | null
   recipient_name: string | null
+  recipient_phone?: string | null
   destination_city: string | null
   destination_state: string | null
-  total_minor: number
-  currency: string
+  shipping_address?: Address | null
+  notes?: string | null
   items: OrderItem[]
   timeline: TrackingTimelineStep[]
   created_at: string

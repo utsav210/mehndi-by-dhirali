@@ -52,6 +52,61 @@ class Order(Base, UUIDMixin, TimestampMixin):
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
     payments = relationship("Payment", back_populates="order", cascade="all, delete-orphan")
 
+    @property
+    def customer_name(self) -> str:
+        """Returns the customer's full name from registered account, shipping address, or snapshot."""
+        if self.user:
+            name = f"{self.user.first_name} {self.user.last_name}".strip()
+            if name:
+                return name
+        if self.shipping_address and self.shipping_address.full_name:
+            return self.shipping_address.full_name
+        return self.guest_name or "Customer"
+
+    @property
+    def customer_email(self) -> str:
+        """Returns customer email from user account or guest checkout."""
+        if self.user and self.user.email:
+            return self.user.email
+        return self.guest_email or ""
+
+    @property
+    def customer_phone(self) -> str:
+        """Returns contact phone from shipping address, account, or snapshot."""
+        if self.shipping_address and self.shipping_address.phone:
+            return self.shipping_address.phone
+        if self.user and self.user.phone:
+            return self.user.phone
+        return self.guest_phone or ""
+
+    @property
+    def destination_city(self) -> str:
+        """Returns destination delivery city."""
+        if self.shipping_address and self.shipping_address.city:
+            return self.shipping_address.city
+        return ""
+
+    @property
+    def payment_status(self) -> str:
+        """Returns formatted payment status."""
+        if self.payments:
+            for p in self.payments:
+                if p.status == "captured":
+                    return "Paid (Captured)"
+                elif p.status == "failed":
+                    return "Payment Failed"
+        if (self.payment_method or "").lower() == "cod":
+            if self.status == "delivered":
+                return "Paid (COD Delivered)"
+            return "Pending (Cash on Delivery)"
+        if self.status in ("paid", "confirmed", "processing", "shipped", "in_transit", "out_for_delivery", "delivered"):
+            return "Paid (Online)"
+        if self.status == "payment_failed":
+            return "Failed"
+        if self.status == "cancelled":
+            return "Cancelled"
+        return "Pending Payment"
+
 
 class OrderItem(Base, UUIDMixin):
     __tablename__ = "order_items"

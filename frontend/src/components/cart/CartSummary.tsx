@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Shield, Truck, RotateCcw } from 'lucide-react'
 import { cn, formatPrice } from '@/lib/utils'
 import { useCartStore } from '@/lib/cart-store'
+import { useAuthStore } from '@/lib/auth-store'
 
 interface CartSummaryProps {
   /** Discount amount in minor units */
@@ -38,6 +39,11 @@ export default function CartSummary({
   const getSubtotal = useCartStore((s) => s.getSubtotal)
   const getShippingMinor = useCartStore((s) => s.getShippingMinor)
   const items = useCartStore((s) => s.items)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+
+  const effectiveHref = (!isAuthenticated && ctaHref === '/checkout')
+    ? '/login?redirect=/checkout'
+    : ctaHref
 
   const subtotal = getSubtotal()
   const shippingAmount = shippingMinor != null ? shippingMinor : getShippingMinor()
@@ -123,7 +129,7 @@ export default function CartSummary({
           </button>
         ) : (
           <Link
-            to={ctaHref}
+            to={effectiveHref}
             className={cn(
               'block w-full rounded-full bg-bottle-green py-3 text-center text-sm font-medium text-white transition-colors hover:bg-forest-green focus-visible:ring-2 focus-visible:ring-bottle-green focus-visible:ring-offset-2',
               ctaDisabled && 'pointer-events-none opacity-50'

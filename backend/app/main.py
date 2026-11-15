@@ -535,15 +535,16 @@ def seed_initial_admin():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: Ensure tables exist
-    try:
-        Base.metadata.create_all(bind=engine)
-        ensure_order_tracking_columns()
-        seed_initial_categories()
-        seed_initial_products()
-        seed_initial_admin()
-        logger.info("Database schema verified.")
-    except Exception as e:
-        logger.error("Database connection initialization failed", error=str(e))
+    if os.getenv("APP_ENV") != "testing":
+        try:
+            Base.metadata.create_all(bind=engine)
+            ensure_order_tracking_columns()
+            seed_initial_categories()
+            seed_initial_products()
+            seed_initial_admin()
+            logger.info("Database schema verified.")
+        except Exception as e:
+            logger.error("Database connection initialization failed", error=str(e))
     yield
     # Shutdown
 

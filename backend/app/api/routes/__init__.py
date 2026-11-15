@@ -11,6 +11,7 @@ from app.api.routes.payments import router as payments_router
 from app.api.routes.wishlist import router as wishlist_router
 from app.api.routes.admin import router as admin_router
 from app.api.routes.contact import router as contact_router
+from app.api.routes.addresses import router as addresses_router
 
 api_router = APIRouter()
 
@@ -23,5 +24,6 @@ api_router.include_router(payments_router)
 api_router.include_router(wishlist_router)
 api_router.include_router(admin_router)
 api_router.include_router(contact_router)
+api_router.include_router(addresses_router)
 
 __all__ = ["api_router"]

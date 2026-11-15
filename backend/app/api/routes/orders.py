@@ -21,6 +21,7 @@ from app.schemas.order import (
     TrackingTimelineStep,
     OrderItemResponse,
 )
+from app.schemas.address import AddressResponse
 from app.integrations.razorpay.client import razorpay_client
 import structlog
 
@@ -382,10 +383,39 @@ def track_order(
         for item in order.items
     ]
 
+    shipping_addr_res = None
+    if order.shipping_address:
+        shipping_addr_res = AddressResponse(
+            id=order.shipping_address.id,
+            user_id=order.shipping_address.user_id,
+            label=order.shipping_address.label,
+            full_name=order.shipping_address.full_name,
+            phone=order.shipping_address.phone,
+            address_line_1=order.shipping_address.address_line_1,
+            address_line_2=order.shipping_address.address_line_2,
+            city=order.shipping_address.city,
+            state=order.shipping_address.state,
+            postal_code=order.shipping_address.postal_code,
+            country=order.shipping_address.country,
+            is_default=order.shipping_address.is_default,
+            created_at=order.shipping_address.created_at,
+            updated_at=order.shipping_address.updated_at,
+        )
+
+    recipient_phone = order.shipping_address.phone if order.shipping_address else order.guest_phone
+
     return OrderTrackingResponse(
         order_number=order.order_number,
         status=order.status,
         status_label=status_labels.get(order.status, order.status.replace("_", " ").title()),
+        payment_method=order.payment_method,
+        payment_status=order.payment_status,
+        subtotal_minor=order.subtotal_minor,
+        shipping_minor=order.shipping_minor,
+        cod_fee_minor=order.cod_fee_minor or 0,
+        discount_minor=order.discount_minor or 0,
+        total_minor=order.total_minor,
+        currency=order.currency,
         tracking_number=order.tracking_number,
         courier_partner=order.courier_partner,
         tracking_url=order.tracking_url,
@@ -397,10 +427,11 @@ def track_order(
         timeline=timeline,
         items=items_res,
         recipient_name=recipient,
+        recipient_phone=recipient_phone,
         destination_city=city,
         destination_state=state,
-        total_minor=order.total_minor,
-        currency=order.currency,
+        shipping_address=shipping_addr_res,
+        notes=order.notes,
     )
 
 

@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import PageLayout from '@/components/layout/PageLayout'
 import { useAuthStore } from '@/lib/auth-store'
 import { toast } from 'sonner'
-import { Lock, Mail, ArrowRight } from 'lucide-react'
+import { Lock, Mail, ArrowRight, ShoppingBag } from 'lucide-react'
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const redirectParam = searchParams.get('redirect')
+  const defaultRedirect = redirectParam || '/account'
+
   const login = useAuthStore((s) => s.login)
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
 
@@ -17,9 +21,9 @@ export default function LoginPage() {
   useEffect(() => {
     document.title = 'Sign In — Mehndi By Dhirali'
     if (isAuthenticated) {
-      navigate('/account')
+      navigate(defaultRedirect)
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate, defaultRedirect])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,10 +36,10 @@ export default function LoginPage() {
     try {
       const loggedUser = await login(email, password)
       toast.success('Welcome back!')
-      if (loggedUser?.role === 'admin') {
+      if (loggedUser?.role === 'admin' && !redirectParam) {
         navigate('/admin')
       } else {
-        navigate('/account')
+        navigate(defaultRedirect)
       }
     } catch (err: any) {
       // In development / demo when backend API isn't connected yet, provide simulated login
@@ -50,16 +54,34 @@ export default function LoginPage() {
         created_at: new Date().toISOString(),
       })
       toast.success('Signed in successfully!')
-      navigate(email.includes('admin') ? '/admin' : '/account')
+      if (email.includes('admin') && !redirectParam) {
+        navigate('/admin')
+      } else {
+        navigate(defaultRedirect)
+      }
     } finally {
       setIsLoading(false)
     }
   }
 
+  const isCheckoutRedirect = redirectParam === '/checkout' || redirectParam?.includes('checkout')
+
   return (
     <PageLayout>
       <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
         <div className="rounded-3xl border border-subtle-border bg-white p-8 shadow-card">
+          {isCheckoutRedirect && (
+            <div className="mb-6 rounded-2xl border border-antique-gold/40 bg-warm-ivory/60 p-4 text-xs text-bottle-green flex items-center gap-3">
+              <ShoppingBag className="h-5 w-5 text-antique-gold shrink-0" />
+              <div>
+                <span className="font-semibold block">Checkout Sign-In Required</span>
+                <span className="text-secondary-text">
+                  Please sign in to proceed with your order and delivery address.
+                </span>
+              </div>
+            </div>
+          )}
+
           <div className="text-center mb-8">
             <span className="text-xs font-semibold uppercase tracking-widest text-antique-gold">
               Welcome Back
@@ -124,7 +146,10 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center text-xs text-secondary-text">
             <span>Don't have an account yet? </span>
-            <Link to="/register" className="font-semibold text-bottle-green hover:underline">
+            <Link
+              to={redirectParam ? `/register?redirect=${encodeURIComponent(redirectParam)}` : '/register'}
+              className="font-semibold text-bottle-green hover:underline"
+            >
               Create an account
             </Link>
           </div>

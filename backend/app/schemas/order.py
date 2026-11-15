@@ -5,6 +5,7 @@ Calculations are always server-authoritative.
 from typing import List, Optional
 from datetime import datetime
 from pydantic import BaseModel, Field, EmailStr
+from app.schemas.address import AddressResponse
 
 
 class OrderItemCreate(BaseModel):
@@ -22,6 +23,7 @@ class AddressCreate(BaseModel):
     state: str = Field(min_length=2, max_length=100)
     postal_code: str = Field(min_length=4, max_length=20)
     country: str = "India"
+    save_to_profile: Optional[bool] = False
 
 
 class OrderCreateRequest(BaseModel):
@@ -47,6 +49,20 @@ class OrderItemResponse(BaseModel):
         from_attributes = True
 
 
+class PaymentResponse(BaseModel):
+    id: str
+    razorpay_payment_id: Optional[str] = None
+    razorpay_order_id: Optional[str] = None
+    status: str
+    amount_minor: int
+    currency: str = "INR"
+    method: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
 class OrderResponse(BaseModel):
     id: str
     order_number: str
@@ -58,10 +74,19 @@ class OrderResponse(BaseModel):
     total_minor: int
     currency: str
     payment_method: Optional[str] = "prepaid"
+    payment_status: Optional[str] = None
     razorpay_order_id: Optional[str] = None
     razorpay_key_id: Optional[str] = None
     items: List[OrderItemResponse] = []
     created_at: datetime
+    # Customer Details
+    customer_name: Optional[str] = None
+    customer_email: Optional[str] = None
+    customer_phone: Optional[str] = None
+    destination_city: Optional[str] = None
+    shipping_address: Optional[AddressResponse] = None
+    notes: Optional[str] = None
+    payments: List[PaymentResponse] = []
     # Fulfillment & Tracking fields
     tracking_number: Optional[str] = None
     courier_partner: Optional[str] = None
@@ -100,6 +125,14 @@ class OrderTrackingResponse(BaseModel):
     order_number: str
     status: str
     status_label: str
+    payment_method: Optional[str] = "prepaid"
+    payment_status: Optional[str] = None
+    subtotal_minor: Optional[int] = None
+    shipping_minor: Optional[int] = None
+    cod_fee_minor: Optional[int] = 0
+    discount_minor: Optional[int] = 0
+    total_minor: int
+    currency: str = "INR"
     tracking_number: Optional[str] = None
     courier_partner: Optional[str] = None
     tracking_url: Optional[str] = None
@@ -111,7 +144,8 @@ class OrderTrackingResponse(BaseModel):
     timeline: List[TrackingTimelineStep] = []
     items: List[OrderItemResponse] = []
     recipient_name: Optional[str] = None
+    recipient_phone: Optional[str] = None
     destination_city: Optional[str] = None
     destination_state: Optional[str] = None
-    total_minor: int
-    currency: str = "INR"
+    shipping_address: Optional[AddressResponse] = None
+    notes: Optional[str] = None

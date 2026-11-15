@@ -19,6 +19,9 @@ import {
   Calendar,
   Phone,
   Mail,
+  CreditCard,
+  Banknote,
+  Receipt,
 } from 'lucide-react'
 
 export default function TrackOrderPage() {
@@ -159,7 +162,7 @@ export default function TrackOrderPage() {
                     type="text"
                     value={orderQuery}
                     onChange={(e) => setOrderQuery(e.target.value)}
-                    placeholder="e.g. MBD-2026-1001 or DEL123456789"
+                    placeholder="e.g. MBD-202611-XXXX or DEL123456789"
                     required
                     className="w-full rounded-xl border border-subtle-border bg-warm-ivory/30 px-4 py-3 pl-10 text-sm text-charcoal placeholder:text-secondary-text/60 focus:border-bottle-green focus:bg-white focus:outline-hidden transition"
                   />
@@ -176,7 +179,7 @@ export default function TrackOrderPage() {
                     type="text"
                     value={contactQuery}
                     onChange={(e) => setContactQuery(e.target.value)}
-                    placeholder="e.g. john.doe@example.com or 9876543210"
+                    placeholder="e.g. your.email@example.com or 9876543210"
                     className="w-full rounded-xl border border-subtle-border bg-warm-ivory/30 px-4 py-3 pl-10 text-sm text-charcoal placeholder:text-secondary-text/60 focus:border-bottle-green focus:bg-white focus:outline-hidden transition"
                   />
                   <ShieldCheck className="h-4 w-4 text-secondary-text absolute left-3.5 top-3.5" />
@@ -193,7 +196,7 @@ export default function TrackOrderPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-bottle-green px-8 py-3 text-sm font-medium text-warm-ivory shadow-xs hover:bg-deep-forest hover:text-white transition disabled:opacity-50"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-bottle-green px-8 py-3 text-sm font-medium text-warm-ivory shadow-xs hover:bg-forest-green hover:text-white transition disabled:opacity-50 cursor-pointer"
               >
                 {isLoading ? (
                   <>
@@ -318,6 +321,110 @@ export default function TrackOrderPage() {
               )}
             </div>
 
+            {/* ── Order Delivery Address & Customer Information ── */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Delivery Address Card */}
+              <div className="rounded-2xl border border-subtle-border bg-white p-6 shadow-sm">
+                <h3 className="font-serif text-base font-bold text-bottle-green mb-3 flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-antique-gold" />
+                  Delivery &amp; Shipping Address
+                </h3>
+                {trackingData.shipping_address ? (
+                  <div className="text-xs space-y-1 text-charcoal">
+                    <p className="font-semibold text-sm text-bottle-green">
+                      {trackingData.shipping_address.full_name}
+                    </p>
+                    <p className="text-secondary-text">{trackingData.shipping_address.address_line_1}</p>
+                    {trackingData.shipping_address.address_line_2 && (
+                      <p className="text-secondary-text">{trackingData.shipping_address.address_line_2}</p>
+                    )}
+                    <p className="font-medium">
+                      {trackingData.shipping_address.city}, {trackingData.shipping_address.state} - {trackingData.shipping_address.postal_code}
+                    </p>
+                    <p className="text-secondary-text">{trackingData.shipping_address.country}</p>
+                    <p className="text-secondary-text pt-1 font-mono">
+                      Phone: {trackingData.shipping_address.phone}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="text-xs space-y-1 text-charcoal">
+                    <p className="font-semibold">{trackingData.recipient_name || 'Valued Customer'}</p>
+                    <p className="text-secondary-text">
+                      {trackingData.destination_city}{trackingData.destination_state ? `, ${trackingData.destination_state}` : ''}
+                    </p>
+                    {trackingData.recipient_phone && (
+                      <p className="text-secondary-text font-mono">Phone: {trackingData.recipient_phone}</p>
+                    )}
+                  </div>
+                )}
+
+                {trackingData.notes && (
+                  <div className="mt-3 pt-3 border-t border-subtle-border text-xs text-secondary-text">
+                    <span className="font-semibold text-charcoal">Delivery Note: </span>
+                    <span>{trackingData.notes}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Payment Summary Card */}
+              <div className="rounded-2xl border border-subtle-border bg-white p-6 shadow-sm">
+                <h3 className="font-serif text-base font-bold text-bottle-green mb-3 flex items-center gap-2">
+                  <Receipt className="h-4 w-4 text-antique-gold" />
+                  Payment &amp; Billing Details
+                </h3>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between items-center pb-2 border-b border-subtle-border">
+                    <span className="text-secondary-text">Payment Method</span>
+                    <span className="font-semibold text-charcoal capitalize flex items-center gap-1.5">
+                      {trackingData.payment_method === 'cod' ? (
+                        <>
+                          <Banknote className="h-3.5 w-3.5 text-bottle-green" />
+                          Cash on Delivery (COD)
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="h-3.5 w-3.5 text-bottle-green" />
+                          Prepaid (Razorpay Instant)
+                        </>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center pb-2 border-b border-subtle-border">
+                    <span className="text-secondary-text">Payment Status</span>
+                    <span className="font-semibold text-charcoal">
+                      {trackingData.payment_status || (trackingData.payment_method === 'cod' ? 'Pending COD Collection' : 'Paid in Full')}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5 pt-1 text-xs">
+                    {trackingData.subtotal_minor != null && (
+                      <div className="flex justify-between text-secondary-text">
+                        <span>Items Subtotal:</span>
+                        <span>{formatPrice(trackingData.subtotal_minor)}</span>
+                      </div>
+                    )}
+                    {trackingData.shipping_minor != null && (
+                      <div className="flex justify-between text-secondary-text">
+                        <span>Shipping:</span>
+                        <span>{trackingData.shipping_minor === 0 ? 'Free' : formatPrice(trackingData.shipping_minor)}</span>
+                      </div>
+                    )}
+                    {trackingData.cod_fee_minor ? (
+                      <div className="flex justify-between text-secondary-text">
+                        <span>COD Handling Fee:</span>
+                        <span>{formatPrice(trackingData.cod_fee_minor)}</span>
+                      </div>
+                    ) : null}
+                    <div className="flex justify-between font-bold text-bottle-green text-sm pt-2 border-t border-subtle-border">
+                      <span>Total Amount:</span>
+                      <span>{formatPrice(trackingData.total_minor)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Visual Shipment Timeline */}
             <div className="rounded-2xl border border-subtle-border bg-white p-6 sm:p-8 shadow-sm">
               <h3 className="font-serif text-lg font-bold text-bottle-green mb-6 flex items-center gap-2">
@@ -384,7 +491,7 @@ export default function TrackOrderPage() {
             <div className="rounded-2xl border border-subtle-border bg-white p-6 sm:p-8 shadow-sm">
               <h3 className="font-serif text-lg font-bold text-bottle-green mb-4 flex items-center gap-2">
                 <Package className="h-5 w-5 text-antique-gold" />
-                Items In This Package
+                Products Purchased ({trackingData.items.length})
               </h3>
 
               <div className="divide-y divide-subtle-border">
@@ -407,7 +514,7 @@ export default function TrackOrderPage() {
                           {item.product_name}
                         </h4>
                         <p className="text-xs text-secondary-text mt-0.5">
-                          Qty: {item.quantity} · SKU: {item.sku}
+                          Qty: {item.quantity} · SKU: {item.sku} · Unit Price: {formatPrice(item.unit_price_minor)}
                         </p>
                       </div>
                     </div>
@@ -434,7 +541,7 @@ export default function TrackOrderPage() {
                   Need Help With Your Shipment?
                 </h4>
                 <p className="text-xs text-secondary-text mt-1">
-                  Our artisan dispatch team is available Monday to Saturday to assist with tracking & delivery queries.
+                  Our artisan dispatch team is available Monday to Saturday to assist with tracking &amp; delivery queries.
                 </p>
               </div>
               <div className="flex items-center gap-3 shrink-0">

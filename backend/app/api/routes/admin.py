@@ -8,7 +8,7 @@ import re
 from typing import List, Optional
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import desc
 from app.db.session import get_db
 from app.models.user import User
@@ -409,7 +409,16 @@ def admin_list_orders(
     admin: User = Depends(get_admin_user),
     db: Session = Depends(get_db),
 ):
-    query = db.query(Order).order_by(desc(Order.created_at))
+    query = (
+        db.query(Order)
+        .options(
+            joinedload(Order.shipping_address),
+            joinedload(Order.user),
+            joinedload(Order.payments),
+            joinedload(Order.items),
+        )
+        .order_by(desc(Order.created_at))
+    )
     if status_filter:
         query = query.filter(Order.status == status_filter)
     return query.all()
