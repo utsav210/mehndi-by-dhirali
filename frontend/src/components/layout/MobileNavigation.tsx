@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { ShoppingBag, User, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { ShoppingBag, User, X, LogOut, Package, Shield } from 'lucide-react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useCartStore } from '@/lib/cart-store'
 import { useAuthStore } from '@/lib/auth-store'
@@ -24,14 +25,33 @@ const NAV_LINKS: MobileNavLink[] = [
 ]
 
 export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
+  const navigate = useNavigate()
   const { pathname } = useLocation()
   const drawerRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   const itemCount = useCartStore((s) => s.getItemCount())
   const openCart = useCartStore((s) => s.openCart)
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
   const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+
+  const handleMobileLogout = async () => {
+    if (isLoggingOut) return
+    setIsLoggingOut(true)
+    onClose()
+    try {
+      await logout()
+      toast.success('Signed out successfully.')
+    } catch (err) {
+      console.warn('Sign out notice:', err)
+      toast.success('Signed out successfully.')
+    } finally {
+      setIsLoggingOut(false)
+      navigate('/', { replace: true })
+    }
+  }
 
   // Close when navigating
   useEffect(() => {
@@ -155,6 +175,43 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
                 {isAuthenticated ? (user?.first_name ? `Hi, ${user.first_name}` : 'My Account') : 'Login / Register'}
               </Link>
             </li>
+            {isAuthenticated && (
+              <>
+                <li>
+                  <Link
+                    to="/account/orders"
+                    onClick={onClose}
+                    className="text-primary-text flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-warm-ivory"
+                  >
+                    <Package className="text-bottle-green h-4 w-4" />
+                    Order History
+                  </Link>
+                </li>
+                {user?.role === 'admin' && (
+                  <li>
+                    <Link
+                      to="/admin"
+                      onClick={onClose}
+                      className="text-primary-text flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-warm-ivory"
+                    >
+                      <Shield className="text-antique-gold h-4 w-4" />
+                      Admin Console
+                    </Link>
+                  </li>
+                )}
+                <li>
+                  <button
+                    type="button"
+                    disabled={isLoggingOut}
+                    onClick={handleMobileLogout}
+                    className="text-red-600 flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-red-50 cursor-pointer disabled:opacity-50"
+                  >
+                    <LogOut className="h-4 w-4 text-red-500" />
+                    <span>{isLoggingOut ? 'Signing Out…' : 'Sign Out'}</span>
+                  </button>
+                </li>
+              </>
+            )}
             <li>
               <button
                 type="button"

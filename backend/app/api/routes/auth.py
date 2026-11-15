@@ -93,7 +93,27 @@ def login(
 
 @router.post("/logout", response_model=MessageResponse)
 def logout(response: Response):
-    response.delete_cookie(key="access_token", httponly=True, secure=True, samesite="lax")
+    """
+    Securely terminates user/customer session by invalidating and expiring the HttpOnly cookie.
+    """
+    response.delete_cookie(
+        key="access_token",
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="lax",
+    )
+    # Also overwrite with max_age=0 for legacy browser engine compatibility
+    response.set_cookie(
+        key="access_token",
+        value="",
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=0,
+        expires=0,
+    )
     return {"message": "Logged out successfully.", "success": True}
 
 

@@ -65,3 +65,30 @@ def test_login_invalid_password(client):
         "password": "WrongPassword!",
     })
     assert response.status_code == 401
+
+
+def test_logout_clears_cookie_and_session(client):
+    # 1. Register user
+    client.post("/api/auth/register", json={
+        "email": "logout.user@example.com",
+        "password": "Password12345!",
+        "first_name": "Logout",
+        "last_name": "User",
+    })
+
+    # 2. Login user
+    login_res = client.post("/api/auth/login", json={
+        "email": "logout.user@example.com",
+        "password": "Password12345!",
+    })
+    assert login_res.status_code == 200
+    assert "access_token" in login_res.cookies
+
+    # 3. Invoke logout endpoint
+    logout_res = client.post("/api/auth/logout")
+    assert logout_res.status_code == 200
+    assert logout_res.json()["success"] is True
+
+    # 4. Subsequent /auth/me call should fail with 401
+    me_res = client.get("/api/auth/me")
+    assert me_res.status_code == 401

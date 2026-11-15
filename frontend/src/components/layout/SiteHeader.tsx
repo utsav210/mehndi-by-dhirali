@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Menu,
@@ -7,7 +7,11 @@ import {
   User,
   Shield,
   X,
+  ChevronDown,
+  LogOut,
+  Package,
 } from 'lucide-react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useCartStore } from '@/lib/cart-store'
 import { useAuthStore } from '@/lib/auth-store'
@@ -17,12 +21,50 @@ export function SiteHeader() {
   const navigate = useNavigate()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const accountMenuRef = useRef<HTMLDivElement>(null)
 
   const itemCount = useCartStore((s) => s.getItemCount())
   const openCart = useCartStore((s) => s.openCart)
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
   const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+
+  useEffect(() => {
+    if (!isAccountMenuOpen) return
+    const handleClickOutside = (event: MouseEvent) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target as Node)) {
+        setIsAccountMenuOpen(false)
+      }
+    }
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsAccountMenuOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleEscape)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleEscape)
+    }
+  }, [isAccountMenuOpen])
+
+  const handleHeaderLogout = async () => {
+    if (isLoggingOut) return
+    setIsLoggingOut(true)
+    setIsAccountMenuOpen(false)
+    try {
+      await logout()
+      toast.success('Signed out successfully.')
+    } catch (err) {
+      console.warn('Sign out notice:', err)
+      toast.success('Signed out successfully.')
+    } finally {
+      setIsLoggingOut(false)
+      navigate('/', { replace: true })
+    }
+  }
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -104,18 +146,89 @@ export function SiteHeader() {
               </Link>
             )}
 
-            {/* Account (man / sign-in icon + Login / Register text) */}
-            <Link
-              to={isAuthenticated ? '/account' : '/login'}
-              className="text-bottle-green group flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors hover:bg-warm-ivory cursor-pointer"
-              aria-label={isAuthenticated ? 'My account' : 'Login / Register'}
-              title={isAuthenticated ? 'My Account' : 'Login / Register'}
-            >
-              <User className="h-5 w-5 text-bottle-green shrink-0 transition-transform group-hover:scale-105" />
-              <span className="hidden sm:inline font-medium text-primary-text group-hover:text-bottle-green tracking-tight whitespace-nowrap">
-                {isAuthenticated ? (user?.first_name ? `Hi, ${user.first_name}` : 'My Account') : 'Login / Register'}
-              </span>
-            </Link>
+            {/* Account (man / sign-in icon + Login / Register text or Account dropdown) */}
+            {isAuthenticated ? (
+              <div className="relative" ref={accountMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsAccountMenuOpen((o) => !o)}
+                  className="text-bottle-green group flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors hover:bg-warm-ivory cursor-pointer"
+                  aria-expanded={isAccountMenuOpen}
+                  aria-haspopup="true"
+                  title="Account Menu"
+                >
+                  <User className="h-5 w-5 text-bottle-green shrink-0 transition-transform group-hover:scale-105" />
+                  <span className="hidden sm:inline font-medium text-primary-text group-hover:text-bottle-green tracking-tight whitespace-nowrap">
+                    {user?.first_name ? `Hi, ${user.first_name}` : 'My Account'}
+                  </span>
+                  <ChevronDown className={`h-3 w-3 text-secondary-text transition-transform duration-200 ${isAccountMenuOpen ? 'rotate-180 text-bottle-green' : ''}`} />
+                </button>
+
+                {isAccountMenuOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white shadow-xl border border-subtle-border p-2 z-50">
+                    <div className="px-3 py-2 border-b border-subtle-border mb-1">
+                      <p className="text-xs font-semibold text-charcoal truncate">
+                        {user?.first_name ? `${user.first_name} ${user?.last_name || ''}`.trim() : 'Customer Account'}
+                      </p>
+                      <p className="text-[11px] text-secondary-text truncate">{user?.email}</p>
+                    </div>
+
+                    <Link
+                      to="/account"
+                      onClick={() => setIsAccountMenuOpen(false)}
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-charcoal hover:bg-warm-ivory transition"
+                    >
+                      <User className="h-4 w-4 text-bottle-green" />
+                      <span>My Profile &amp; Addresses</span>
+                    </Link>
+
+                    <Link
+                      to="/account/orders"
+                      onClick={() => setIsAccountMenuOpen(false)}
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-charcoal hover:bg-warm-ivory transition"
+                    >
+                      <Package className="h-4 w-4 text-bottle-green" />
+                      <span>Order History</span>
+                    </Link>
+
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsAccountMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-bottle-green hover:bg-warm-ivory transition"
+                      >
+                        <Shield className="h-4 w-4 text-antique-gold" />
+                        <span>Admin Console</span>
+                      </Link>
+                    )}
+
+                    <div className="my-1 border-t border-subtle-border" />
+
+                    <button
+                      type="button"
+                      disabled={isLoggingOut}
+                      onClick={handleHeaderLogout}
+                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 transition cursor-pointer disabled:opacity-50"
+                    >
+                      <LogOut className="h-4 w-4 text-red-500" />
+                      <span>{isLoggingOut ? 'Signing Out…' : 'Sign Out'}</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="text-bottle-green group flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors hover:bg-warm-ivory cursor-pointer"
+                aria-label="Login / Register"
+                title="Login / Register"
+              >
+                <User className="h-5 w-5 text-bottle-green shrink-0 transition-transform group-hover:scale-105" />
+                <span className="hidden sm:inline font-medium text-primary-text group-hover:text-bottle-green tracking-tight whitespace-nowrap">
+                  Login / Register
+                </span>
+              </Link>
+            )}
 
             {/* Cart */}
             <button

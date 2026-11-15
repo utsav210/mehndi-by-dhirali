@@ -68,14 +68,21 @@ export default function AccountPage() {
     }
   }
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
   const handleLogout = async () => {
+    if (isLoggingOut) return
+    setIsLoggingOut(true)
     try {
       await logout()
       toast.success('Signed out successfully.')
-    } catch {
-      toast.success('Signed out.')
+    } catch (err) {
+      console.warn('Sign out notice:', err)
+      toast.success('Signed out successfully.')
+    } finally {
+      setIsLoggingOut(false)
+      navigate('/', { replace: true })
     }
-    navigate('/login')
   }
 
   const openAddModal = () => {
@@ -227,10 +234,11 @@ export default function AccountPage() {
             <button
               type="button"
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 rounded-full border border-subtle-border px-4 py-2 text-xs font-semibold text-secondary-text hover:text-red-700 hover:border-red-300 transition cursor-pointer"
+              disabled={isLoggingOut}
+              className="inline-flex items-center gap-1.5 rounded-full border border-subtle-border px-4 py-2 text-xs font-semibold text-secondary-text hover:text-red-700 hover:border-red-300 transition cursor-pointer disabled:opacity-50"
             >
               <LogOut className="h-3.5 w-3.5" />
-              <span>Sign Out</span>
+              <span>{isLoggingOut ? 'Signing Out…' : 'Sign Out'}</span>
             </button>
           </div>
         </div>

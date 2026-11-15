@@ -42,10 +42,12 @@ export const useAuthStore = create<AuthState>()((set) => ({
   logout: async () => {
     try {
       await apiClient.post('/auth/logout')
-    } catch {
-      // Logout should succeed even if the API call fails
+    } catch (err) {
+      // Logout should succeed locally even if the network or API call fails
+      console.warn('Backend logout notification warning:', err)
+    } finally {
+      set({ user: null, isAuthenticated: false, isLoading: false })
     }
-    set({ user: null, isAuthenticated: false, isLoading: false })
   },
 
   fetchUser: async () => {

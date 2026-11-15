@@ -13,13 +13,15 @@ def extract_token_from_request(request: Request) -> Optional[str]:
     """Extracts JWT token from HttpOnly cookie or Authorization header."""
     # 1. Check HttpOnly session cookie
     token = request.cookies.get("access_token")
-    if token:
-        return token
+    if token and token.strip():
+        return token.strip()
 
     # 2. Check Authorization Bearer header
     auth_header = request.headers.get("Authorization")
     if auth_header and auth_header.startswith("Bearer "):
-        return auth_header[7:].strip()
+        val = auth_header[7:].strip()
+        if val:
+            return val
 
     return None
 
